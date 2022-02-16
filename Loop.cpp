@@ -40,16 +40,16 @@ bool Loop::start(RenderHandler onBeforeRender, RenderHandler onAfterRender, Leve
 Loop::~Loop()
 {}
 
-void Loop::addListener(Object* listenObject)
+void Loop::addEventListener(Object* listenObject)
 {
 	listeners.push_back(listenObject);
 }
 
-void Loop::addListeners(std::vector<Object*>& listenObjects)
+void Loop::addEventListeners(std::vector<Object*>& listenObjects)
 {
 	for (int i = 0; i < listenObjects.size(); i++)
 	{
-		addListener(listenObjects[i]);
+		addEventListener(listenObjects[i]);
 	}
 }
 

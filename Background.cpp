@@ -1,14 +1,12 @@
 #include "Background.h"
 #include "Texture.h"
+#include <iostream>
 
 Background::Background(SDL_Renderer* p_renderer, std::string path) : Texture(p_renderer)
 {
 	loadFromFile(path);
 	scrollingOffset = 0;
 }
-
-Background::~Background()
-{}
 
 void Background::onBeforeRender()
 {

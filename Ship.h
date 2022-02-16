@@ -3,31 +3,23 @@
 #include "Object.h"
 #include "Texture.h"
 #include "Consts.h"
+#include "WeaponModule.h"
 
 class Ship: public Texture
 {
 public:
-    static const int WIDTH = 98;
-    static const int HEIGHT = 90;
-    static const int MAX_VELOCITY = 5;
+    const int WIDTH = 109; // Todo: init from params
+    const int HEIGHT = 96;
+    const int MAX_VELOCITY = 5;
 
-    Ship(
-        SDL_Renderer* p_renderer, 
-        int p_screenWidth, 
-        int p_screenHeight, 
-        std::string path, 
-        SpriteParams shipParams
-    );
+    Ship(SDL_Renderer* p_renderer, std::string path, SpriteParams shipParams ); //Todo: remove renderer passing?
     void move();
-    int getPosX();
-    int getPosY();
     virtual void onBeforeRender();
     virtual void onAfterRender();
     virtual void handleEvent(SDL_Event& e);
 private:
-    int x, y;
+    SDL_Point position;
     int velX, velY;
-    int screenWidth;
-    int screenHeight;
     int frame;
+    WeaponModule gun;
 };

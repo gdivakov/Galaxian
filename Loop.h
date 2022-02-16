@@ -12,8 +12,8 @@ public:
 	Loop(SDL_Renderer* p_renderer);
 	~Loop();
 	bool start(RenderHandler onBeforeRender, RenderHandler onAfterRender, Level* level);
-	void addListener(Object* listenObject);
-	void addListeners(std::vector<Object*>& listenObjects);
+	void addEventListener(Object* listenObject);
+	void addEventListeners(std::vector<Object*>& listenObjects);
 	void removeListener();
 private:
 	SDL_Renderer* renderer;

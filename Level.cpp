@@ -17,18 +17,15 @@ Level::Level(SDL_Renderer* p_renderer): gameLoop(p_renderer)
 
 Level::~Level()
 {
-	//for (int i = 0; i < objects.size(); i++)
-	//{
-	//	objects[i]->free();
-	//}
+	renderer = NULL;
 }
 
 bool Level::start()
 {
-	SpriteParams shipParams = { 109, 96, 3 };
+	SpriteParams shipParams = { 109, 96, 3 }; // Todo: Move to const
 
 	Background backgroundLvl1(renderer, "res/space.png");
-	Ship playerShip(renderer, SCREEN_WIDTH, SCREEN_HEIGHT, "res/shipA.png", shipParams);
+	Ship playerShip(renderer, "res/shipA.png", shipParams);
 
 	bool res = audioPlayer.load("res/lvl1.mp3");
 	audioPlayer.play();
@@ -38,7 +35,7 @@ bool Level::start()
 	objects.push_back(&backgroundLvl1);
 	objects.push_back(&playerShip);
 
-	gameLoop.addListeners(objects);
+	gameLoop.addEventListeners(objects); // All objects are listening by default
 	gameLoop.start(onBeforeRender, onAfterRender, this);
 
 	playerShip.free();

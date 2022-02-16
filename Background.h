@@ -7,7 +7,6 @@ class Background : public Texture
 {
 public: 
 	Background(SDL_Renderer* p_renderer, std::string path);
-	~Background();
 	virtual void onBeforeRender();
 	virtual void onAfterRender();
 	virtual void handleEvent();

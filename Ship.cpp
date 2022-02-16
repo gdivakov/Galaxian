@@ -6,38 +6,36 @@ const int FRAMES_PER_SHIP_UDPATE = 3;
 
 Ship::Ship(
     SDL_Renderer* p_renderer,
-    int p_screenWidth, 
-    int p_screenHeight, 
     std::string path,
     SpriteParams shipParams
-): Texture(p_renderer)
+) : position({ (SCREEN_WIDTH - WIDTH) / 2, SCREEN_HEIGHT - HEIGHT - 20 }), // Todo: Replace by function getPosition
+    Texture(p_renderer), 
+    gun(ROCKET, p_renderer, &position) // Todo: type should come from above
 {
-    x = (p_screenWidth - WIDTH) / 2;
-    y = p_screenHeight - HEIGHT - 20;
     velX = velY = 0;
     frame = 0;
-    screenWidth = p_screenWidth;
-    screenHeight = p_screenHeight;
 
     loadFromSprite(path, shipParams);
 }
 
 void Ship::handleEvent(SDL_Event& e)
 {
+    gun.handleEvent(e);
+
     if (e.type == SDL_KEYDOWN && e.key.repeat == 0)
     {
         switch (e.key.keysym.sym)
         {
         case SDLK_UP:
-        case SDLK_w: 
+        case SDLK_w:
             velY -= MAX_VELOCITY; break;
-        case SDLK_DOWN: 
+        case SDLK_DOWN:
         case SDLK_s:
             velY += MAX_VELOCITY; break;
         case SDLK_LEFT:
         case SDLK_a:
             velX -= MAX_VELOCITY; break;
-        case SDLK_RIGHT: 
+        case SDLK_RIGHT:
         case SDLK_d:
             velX += MAX_VELOCITY; break;
         }
@@ -64,29 +62,19 @@ void Ship::handleEvent(SDL_Event& e)
 
 void Ship::move()
 {
-    x += velX;
+    position.x += velX;
 
-    if ((x < 0) || (x + WIDTH > screenWidth))
+    if ((position.x < 0) || (position.x + WIDTH > SCREEN_WIDTH))
     {
-        x -= velX;
+        position.x -= velX;
     }
 
-    y += velY;
+    position.y += velY;
 
-    if ((y < 0) || (y + HEIGHT > screenHeight))
+    if ((position.y < 0) || (position.y + HEIGHT > SCREEN_HEIGHT))
     {
-        y -= velY;
+        position.y -= velY;
     }
-}
-
-int Ship::getPosX()
-{
-    return x;
-}
-
-int Ship::getPosY()
-{
-    return y;
 }
 
 void Ship::onBeforeRender()
@@ -94,7 +82,9 @@ void Ship::onBeforeRender()
     move();
     std::vector<SDL_Rect>& shipClips = getClips();
     SDL_Rect* currentClip = &shipClips[frame / shipClips.size()];
-    render(getPosX(), getPosY(), currentClip);
+    render(position.x, position.y, currentClip);
+
+    gun.onBeforeRender();
 }
 
 void Ship::onAfterRender()

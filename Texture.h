@@ -14,7 +14,7 @@ class Texture: public Object
 {
 public: 
 	Texture(SDL_Renderer* p_renderer);
-	~Texture();
+	virtual ~Texture();
 
 	bool loadFromFile(std::string path, RGB* colorKeyRGB = NULL);
 	bool loadFromSprite(std::string, SpriteParams params, RGB* colorKeyRGB = NULL);
@@ -25,8 +25,6 @@ public:
 	int getHeight();
 	std::vector<SDL_Rect>& getClips();
 
-	void virtual onBeforeRender();
-	void virtual onAfterRender();
 	void virtual handleEvent(SDL_Event& e);
 private: 
 	SDL_Texture* texture;

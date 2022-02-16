@@ -107,6 +107,7 @@ bool Texture::loadFromSprite(std::string path, SpriteParams params, RGB* colorKe
 		return false;
 	}
 
+	std::cout << "path: " << path << std::endl;
 	for (int i = 0; i < params.length; i++)
 	{
 		SDL_Rect nextImage = { params.imageW * i, 0, params.imageW, params.imageH };
@@ -130,15 +131,10 @@ void Texture::free()
 
 	SDL_DestroyTexture(texture);
 	texture = NULL;
+	renderer = NULL;
 	width = 0;
 	height = 0;
 }
-
-void Texture::onBeforeRender()
-{}
-
-void Texture::onAfterRender()
-{}
 
 void Texture::handleEvent(SDL_Event& e)
 {}
