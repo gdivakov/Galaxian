@@ -5,13 +5,8 @@
 #include "Projectile.h"
 #include "Consts.h"
 
-//struct Gun
-//{
-//	GunTypes gun;
-//	float cooldownMs;
-//	TextureParams texture;
-//	Projectile ammo;
-//};
+class Projectile;
+class Texture;
 
 class WeaponModule : public Texture
 {
@@ -37,4 +32,15 @@ private:
 	Timer cooldownTimer;
 	SDL_Point* shipPosition;
 	Projectile ammo;
+};
+
+const float ROCKET_COOLDOWN = 100.0f;
+const float LAZER_COOLDOWN = 0;
+const TextureParams ROCKET_TEXTURE_PARAMS = { TEXTURE_SPRITE, "res/rocket.png" };
+const TextureParams LAZER_TEXTURE_PARAMS = { TEXTURE_SPRITE, "res/lazer.png" };
+
+struct GunParams
+{
+	float cooldownMs;
+	TextureParams texture;
 };

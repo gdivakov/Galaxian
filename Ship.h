@@ -9,7 +9,7 @@ class Ship: public Texture
 {
 public:
     const int WIDTH = 109; // Todo: init from params
-    const int HEIGHT = 96;
+    const int HEIGHT = 102;
     const int MAX_VELOCITY = 5;
 
     Ship(SDL_Renderer* p_renderer, std::string path, SpriteParams shipParams ); //Todo: remove renderer passing?

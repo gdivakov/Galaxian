@@ -13,6 +13,7 @@ struct SpriteParams;
 class Texture: public Object
 {
 public: 
+	typedef std::vector<SDL_Rect> Clips;
 	Texture(SDL_Renderer* p_renderer);
 	virtual ~Texture();
 
@@ -23,13 +24,13 @@ public:
 
 	int getWidth();
 	int getHeight();
-	std::vector<SDL_Rect>& getClips();
+	Clips& getClips();
 
 	void virtual handleEvent(SDL_Event& e);
 private: 
 	SDL_Texture* texture;
 	SDL_Renderer* renderer;
-	std::vector<SDL_Rect> spriteClips;
+	Clips spriteClips;
 	int width;
 	int height;
 };

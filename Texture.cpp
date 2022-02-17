@@ -107,7 +107,6 @@ bool Texture::loadFromSprite(std::string path, SpriteParams params, RGB* colorKe
 		return false;
 	}
 
-	std::cout << "path: " << path << std::endl;
 	for (int i = 0; i < params.length; i++)
 	{
 		SDL_Rect nextImage = { params.imageW * i, 0, params.imageW, params.imageH };
@@ -117,7 +116,7 @@ bool Texture::loadFromSprite(std::string path, SpriteParams params, RGB* colorKe
 	return true;
 }
 
-std::vector<SDL_Rect>& Texture::getClips()
+Texture::Clips& Texture::getClips()
 {
 	return spriteClips;
 }

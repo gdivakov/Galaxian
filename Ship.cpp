@@ -20,8 +20,6 @@ Ship::Ship(
 
 void Ship::handleEvent(SDL_Event& e)
 {
-    gun.handleEvent(e);
-
     if (e.type == SDL_KEYDOWN && e.key.repeat == 0)
     {
         switch (e.key.keysym.sym)
@@ -58,6 +56,8 @@ void Ship::handleEvent(SDL_Event& e)
                 velX -= MAX_VELOCITY; break;
         }
     }
+    gun.handleEvent(e);
+
 }
 
 void Ship::move()
@@ -89,6 +89,8 @@ void Ship::onBeforeRender()
 
 void Ship::onAfterRender()
 {
+    gun.onAfterRender();
+
     ++frame;
     if (frame / FRAMES_PER_SHIP_UDPATE >= getClips().size())
     {

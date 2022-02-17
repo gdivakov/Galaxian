@@ -20,28 +20,20 @@ Level::~Level()
 	renderer = NULL;
 }
 
-bool Level::start()
+void Level::start()
 {
-	SpriteParams shipParams = { 109, 96, 3 }; // Todo: Move to const
-
 	Background backgroundLvl1(renderer, "res/space.png");
-	Ship playerShip(renderer, "res/shipA.png", shipParams);
+	Ship playerShip(renderer, "res/shipA.png", DEFAULT_PLAYER_SHIP_SPRITE_PARAMS);
 
-	bool res = audioPlayer.load("res/lvl1.mp3");
-	audioPlayer.play();
-
-	std::cout << res << std::endl;
+	audioPlayer.load("res/lvl1.mp3");
+	//audioPlayer.play(); 
 
 	objects.push_back(&backgroundLvl1);
 	objects.push_back(&playerShip);
 
-	gameLoop.addEventListeners(objects); // All objects are listening by default
+	// All level objects are listening by default
+	gameLoop.addEventListeners(objects); 
 	gameLoop.start(onBeforeRender, onAfterRender, this);
-
-	playerShip.free();
-	backgroundLvl1.free();
-
-	return true;
 }
 
 void onBeforeRender(Level* level)

@@ -11,7 +11,8 @@ class Level {
 public: 
 	Level(SDL_Renderer* p_renderer);
 	~Level();
-	bool start();
+	void start();
+
 	friend void onBeforeRender(Level* level);
 	friend void onAfterRender(Level* level);
 private:

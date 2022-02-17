@@ -1,7 +1,6 @@
 #include <iostream>
 
 #include "Projectile.h"
-#include "Consts.h"
 
 struct AmmoParams
 {
@@ -11,10 +10,12 @@ struct AmmoParams
 
 AmmoParams getAmmoParamsByGunType(GunTypes type);
 
-const int ROCKET_AMMO_SPEED = 20;
+const int EXPLOSION_PROJECTILE_CLIP_LENGTH = 1;
+
+const int ROCKET_AMMO_SPEED = 8;
 const int LAZER_AMMO_SPEED = 1000;
 
-TextureParams ROCKET_AMMO_TEXTURE_PARAMS = { TEXTURE_SPRITE, "res/rocket2.png", { 30, 76, 3 } };
+TextureParams ROCKET_AMMO_TEXTURE_PARAMS = { TEXTURE_SPRITE, "res/rocket3.png", { 30, 90, 3 } };
 TextureParams LAZER_AMMO_TEXTURE_PARAMS = { TEXTURE_SPRITE, "res/lazer_ammo.png" , { 27, 111, 3 } };
 
 Projectile::Projectile(GunTypes p_type, SDL_Renderer* p_renderer) : Texture(p_renderer)
@@ -27,10 +28,26 @@ Projectile::Projectile(GunTypes p_type, SDL_Renderer* p_renderer) : Texture(p_re
 	vel = params.speed; // Todo: replace by velocity
 	gunType = p_type;
 
-	
+	loadFromSprite(params.texture.path, params.texture.spriteParams);
+
+	// Set up explosion and common clips
+	Clips& pjClips = getClips();
+
+	for (short i = 0; i < pjClips.size(); i++)
+	{
+		if (i < EXPLOSION_PROJECTILE_CLIP_LENGTH) // Todo: length should relate on type
+		{
+			explosionClips.push_back(&pjClips[i]);
+		}
+		else
+		{
+			clips.push_back(&pjClips[i]);
+		}
+	}
+
 	//if (params.texture.type == TEXTURE_SPRITE)
 	//{
-		loadFromSprite(params.texture.path, params.texture.spriteParams);
+		//loadFromSprite(params.texture.path, params.texture.spriteParams);
 
 	//}
 	//else
@@ -41,11 +58,13 @@ Projectile::Projectile(GunTypes p_type, SDL_Renderer* p_renderer) : Texture(p_re
 
 void Projectile::startProjectile(SDL_Point* shipPosition)
 {
-	// Todo: make widht/height const; replace 98 by shipWidth
+	// Todo: make widht/height const; replace 109 by shipWidth
+	// Todo: relate y on gun position
 	FlyingProjectile newProjectile = {
 		{ shipPosition->x + (109 - width) / 2, shipPosition->y - height },
-		0
-	};	
+		0,
+		false
+	};
 
 	releasedPjs.push_back(newProjectile);
 }
@@ -60,12 +79,21 @@ void Projectile::handleEvent(SDL_Event& e)
 
 void Projectile::onBeforeRender()
 {
-	std::vector<SDL_Rect>& shipClips = getClips(); // add to flying object as rendered clips
-
 	for (int i = 0; i < releasedPjs.size(); i++)
 	{
-		move(&releasedPjs[i]);
-		SDL_Rect* currentClip = &shipClips[releasedPjs[i].frame / shipClips.size()];
+		FlyingProjectile& pj = releasedPjs[i];
+
+		if (pj.isStarted)
+		{
+			move(&pj);
+		}
+
+		// Limit clips if exploaded
+		SDL_Rect* currentClip = 
+			pj.isStarted ? 
+			clips[pj.frame / clips.size()]:
+			explosionClips[pj.frame / explosionClips.size()];
+
 		render(releasedPjs[i].position.x, releasedPjs[i].position.y, currentClip);
 	}
 }
@@ -74,11 +102,22 @@ void Projectile::onAfterRender()
 {
 	for (int i = 0; i < releasedPjs.size(); i++)
 	{
-		++releasedPjs[i].frame;
-
-		if (releasedPjs[i].frame / 4 >= getClips().size()) // Todo: update
+		FlyingProjectile& pj = releasedPjs[i];
+		short clipLength = pj.isStarted ? clips.size() : explosionClips.size();
+		
+		if (++pj.frame / clipLength >= clipLength)
 		{
-			releasedPjs[i].frame = 0;
+			if (!pj.isStarted)
+			{
+				pj.isStarted = true;
+			}
+			pj.frame = 0;
+		}
+
+		// Remove missed projectiles
+		if (pj.position.y < 0 || pj.position.x < 0)
+		{
+			releasedPjs.erase(releasedPjs.begin() + i);
 		}
 	}
 }

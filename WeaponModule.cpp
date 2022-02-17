@@ -1,16 +1,5 @@
 #include "WeaponModule.h"
 
-const float ROCKET_COOLDOWN = 1000.0f;
-const float LAZER_COOLDOWN = 0;
-const TextureParams ROCKET_TEXTURE_PARAMS = { TEXTURE_SPRITE, "res/rocket.png" };
-const TextureParams LAZER_TEXTURE_PARAMS = { TEXTURE_SPRITE, "res/lazer.png" };
-
-struct GunParams 
-{
-	float cooldownMs;
-	TextureParams texture;
-};
-
 GunParams getGunParamsByType(GunTypes type);
 
 WeaponModule::WeaponModule(
@@ -57,14 +46,13 @@ void WeaponModule::handleEvent(SDL_Event& e)
 {
 	ammo.handleEvent(e);
 
-	if (e.type == SDL_KEYDOWN && e.key.repeat == 0)
+	const Uint8* currentKeyStates = SDL_GetKeyboardState(NULL);
+
+	// Todo: Fix issue with left+top+l pressed
+	if (currentKeyStates[SDL_SCANCODE_L])
 	{
-		switch (e.key.keysym.sym)
-		{
-		case SDLK_l:
-			fire();
-			break;
-		}
+		fire();
+		return;
 	}
 }
 void WeaponModule::onBeforeRender()
@@ -85,7 +73,7 @@ void WeaponModule::onAfterRender()
 
 WeaponModule::~WeaponModule()
 {
-
+	shipPosition = NULL;
 }
 
 GunParams getGunParamsByType(GunTypes type)
