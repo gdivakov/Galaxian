@@ -3,21 +3,16 @@
 #include <vector>
 
 #include "App.h"
-#include "Loop.h"
-#include "Object.h"
-#include "Audio.h"
 
 class Level {
 public: 
-	Level(SDL_Renderer* p_renderer);
+	typedef std::vector<Object*> ObjectPointers;
+	Level(App* system);
 	~Level();
 	void start();
-
-	friend void onBeforeRender(Level* level);
-	friend void onAfterRender(Level* level);
 private:
-	Loop gameLoop;
-	Audio audioPlayer;
+	App* system;
 	SDL_Renderer* renderer;
-	std::vector<Object*> objects;
+	ObjectPointers eventListeners;
+	ObjectPointers renderListeners;
 };

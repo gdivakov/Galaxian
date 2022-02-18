@@ -1,12 +1,13 @@
-#include "Loop.h"
 #include <iostream>
+
+#include "Loop.h"
 
 Loop::Loop(SDL_Renderer* p_renderer)
 {
 	renderer = p_renderer;
 }
 
-bool Loop::start(RenderHandler onBeforeRender, RenderHandler onAfterRender, Level* level)
+bool Loop::start()
 {
 	bool quit = false;
 	SDL_Event e;
@@ -21,18 +22,20 @@ bool Loop::start(RenderHandler onBeforeRender, RenderHandler onAfterRender, Leve
 				quit = true;
 			}
 
-			// Handle listeners
-			for (int i = 0; i < listeners.size(); i++)
+			// Handle event listeners
+			for (int i = 0; i < eventListeners.size(); i++)
 			{
-				listeners[i]->handleEvent(e);
+				eventListeners[i]->handleEvent(e);
 			}
 		}
 
 		SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
 		SDL_RenderClear(renderer);
-		onBeforeRender(level);
+
+		// Handle render listeners
+		handleBeforeRender();
 		SDL_RenderPresent(renderer);
-		onAfterRender(level);
+		handleAfterRender();
 	}
 	return true;
 }
@@ -40,12 +43,8 @@ bool Loop::start(RenderHandler onBeforeRender, RenderHandler onAfterRender, Leve
 Loop::~Loop()
 {}
 
-void Loop::addEventListener(Object* listenObject)
-{
-	listeners.push_back(listenObject);
-}
-
-void Loop::addEventListeners(std::vector<Object*>& listenObjects)
+// Events
+void Loop::addEventListeners(ObjectPointers& listenObjects)
 {
 	for (int i = 0; i < listenObjects.size(); i++)
 	{
@@ -53,5 +52,33 @@ void Loop::addEventListeners(std::vector<Object*>& listenObjects)
 	}
 }
 
-void Loop::removeListener()
+void Loop::removeEventListener(Object* ptr)
 {}
+
+// Render
+void Loop::addRenderListeners(ObjectPointers& objects)
+{
+	for (int i = 0; i < objects.size(); i++)
+	{
+		addRenderListener(objects[i]);
+	}
+}
+
+void Loop::removeRenderListener(Object* ptr)
+{}
+
+void Loop::handleBeforeRender()
+{
+	for (int i = 0; i < renderListeners.size(); i++)
+	{
+		renderListeners[i]->onBeforeRender();
+	}
+}
+
+void Loop::handleAfterRender()
+{
+	for (int i = 0; i < renderListeners.size(); i++)
+	{
+		renderListeners[i]->onAfterRender();
+	}
+}

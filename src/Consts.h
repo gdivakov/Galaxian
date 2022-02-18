@@ -1,8 +1,5 @@
 #pragma once
 
-const int SCREEN_WIDTH = 920; // Todo: Remove usage of this vars as we pass it localy
-const int SCREEN_HEIGHT = 620;// or remove localy
-
 struct SpriteParams
 {
 	int imageW;
@@ -10,7 +7,15 @@ struct SpriteParams
 	int length;
 };
 
-const SpriteParams DEFAULT_PLAYER_SHIP_SPRITE_PARAMS = { 109, 102, 3 };
+const enum GunTypes { ROCKET, LAZER };
+
+struct ShipParams {
+	SpriteParams sprite;
+	GunTypes gunType;
+	// ...other params
+};
+
+const SpriteParams DEFAULT_PLAYER_SHIP_SPRITE_PARAMS = { 102, 114, 10 };
 
 const enum TextureTypes { TEXTURE_SPRITE, TEXTURE_FILE };
 
@@ -21,4 +26,3 @@ struct TextureParams
 	SpriteParams spriteParams;
 };
 
-const enum GunTypes { ROCKET, LAZER };

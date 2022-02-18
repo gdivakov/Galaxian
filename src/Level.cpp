@@ -3,51 +3,41 @@
 
 #include "Level.h"
 #include "Ship.h"
-#include "Loop.h"
 #include "Background.h"
 #include "Consts.h"
 
-void onBeforeRender(Level* level);
-void onAfterRender(Level* level);
-
-Level::Level(SDL_Renderer* p_renderer): gameLoop(p_renderer)
+Level::Level(App* p_system)
 {
-	renderer = p_renderer;
+
+	renderer = p_system->getRenderer();
+	system = p_system;
 }
 
 Level::~Level()
 {
 	renderer = NULL;
+	system = NULL;
+	// Todo: Remove event/render listeners from event loop
 }
 
 void Level::start()
 {
+	// Prepare level objects
+	ShipParams playerShipParams = { DEFAULT_PLAYER_SHIP_SPRITE_PARAMS, ROCKET };
+	Audio* audioPlayer = system->getAudioPlayer();
+	Loop* gameLoop = system->getGameLoop();
+
 	Background backgroundLvl1(renderer, "res/space.png");
-	Ship playerShip(renderer, "res/shipA.png", DEFAULT_PLAYER_SHIP_SPRITE_PARAMS);
+	Ship playerShip(system, "res/shipA.png", playerShipParams);
 
-	audioPlayer.load("res/lvl1.mp3");
-	//audioPlayer.play(); 
+	// Prepare level audio
+	audioPlayer->load("res/lvl1.mp3");
+	//audioPlayer->play(); 
 
-	objects.push_back(&backgroundLvl1);
-	objects.push_back(&playerShip);
+	eventListeners = { &backgroundLvl1, &playerShip, audioPlayer };
+	renderListeners = { &backgroundLvl1, &playerShip };
 
-	// All level objects are listening by default
-	gameLoop.addEventListeners(objects); 
-	gameLoop.start(onBeforeRender, onAfterRender, this);
-}
-
-void onBeforeRender(Level* level)
-{
-	for (int i = 0; i < level->objects.size(); i++)
-	{
-		level->objects[i]->onBeforeRender();
-	}
-}
-
-void onAfterRender(Level* level)
-{
-	for (int i = 0; i < level->objects.size(); i++)
-	{
-		level->objects[i]->onAfterRender();
-	}
+	gameLoop->addEventListeners(eventListeners);
+	gameLoop->addRenderListeners(renderListeners);
+	gameLoop->start();
 }
