@@ -8,7 +8,7 @@ struct AmmoParams
 	TextureParams texture;
 };
 
-AmmoParams getAmmoParamsByGunType(GunTypes type);
+AmmoParams getAmmoParamsByGunType(GunType type);
 
 const int EXPLOSION_PROJECTILE_CLIP_LENGTH = 1;
 
@@ -18,7 +18,7 @@ const int LAZER_AMMO_SPEED = 1000;
 TextureParams ROCKET_AMMO_TEXTURE_PARAMS = { TEXTURE_SPRITE, "res/rocket3.png", { 30, 90, 3 } };
 TextureParams LAZER_AMMO_TEXTURE_PARAMS = { TEXTURE_SPRITE, "res/lazer_ammo.png" , { 27, 111, 3 } };
 
-Projectile::Projectile(GunTypes p_type, SDL_Renderer* p_renderer) : Texture(p_renderer)
+Projectile::Projectile(GunType p_type, SDL_Renderer* p_renderer) : Texture(p_renderer)
 {
 	AmmoParams params = getAmmoParamsByGunType(gunType);
 
@@ -56,12 +56,12 @@ Projectile::Projectile(GunTypes p_type, SDL_Renderer* p_renderer) : Texture(p_re
 	//}
 }
 
-void Projectile::startProjectile(SDL_Point* shipPosition)
+void Projectile::startProjectile(const SDL_Rect* shipRect)
 {
-	// Todo: make widht/height const; replace 109 by shipWidth
-	// Todo: relate y on gun position
+	// Todo: relate x and y on gun position
+	std::cout << shipRect->w << std::endl;
 	FlyingProjectile newProjectile = {
-		{ shipPosition->x + (109 - width) / 2, shipPosition->y - height },
+		{ shipRect->x + (shipRect->w - width) / 2, shipRect->y - height },
 		0,
 		false
 	};
@@ -122,7 +122,7 @@ void Projectile::onAfterRender()
 	}
 }
 
-AmmoParams getAmmoParamsByGunType(GunTypes type)
+AmmoParams getAmmoParamsByGunType(GunType type)
 {
 	switch (type)
 	{

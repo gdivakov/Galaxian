@@ -22,16 +22,17 @@ public:
 	~App();
 	void toggleWindowed();
 
-	bool getStatus();
-	std::string getErrMessage();
-	SDL_Renderer* getRenderer();
-	Loop* getGameLoop();
-	Audio* getAudioPlayer();
-	SDL_Window* getWindow();
-	Size* getWindowSize();
+	bool getStatus() const;
+	std::string getErrMessage() const;
+	SDL_Renderer* getRenderer() const;
+	Loop* getGameLoop() const;
+	Audio* getAudioPlayer() const;
+	const SDL_Window* getWindow() const;
+	const Size* getWindowSize() const;
+	void enableFullScreen();
 private: 
 	Loop* gameLoop;
-	Audio* audioPlayer; // Todo: move to App
+	Audio* audioPlayer;
 	SDL_Window* window;
 	SDL_Renderer* renderer;
 	bool status;

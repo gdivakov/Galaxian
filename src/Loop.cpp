@@ -44,7 +44,7 @@ Loop::~Loop()
 {}
 
 // Events
-void Loop::addEventListeners(ObjectPointers& listenObjects)
+void Loop::addEventListeners(const ObjectPointers& listenObjects)
 {
 	for (int i = 0; i < listenObjects.size(); i++)
 	{
@@ -52,11 +52,22 @@ void Loop::addEventListeners(ObjectPointers& listenObjects)
 	}
 }
 
-void Loop::removeEventListener(Object* ptr)
-{}
+void Loop::removeEventListener(const Object* ptr)
+{
+	auto removeIter = remove(eventListeners.begin(), eventListeners.end(), ptr);
+	eventListeners.erase(removeIter, eventListeners.end());
+}
+
+void Loop::removeEventListeners(const ObjectPointers& listenObjects) // Todo: use remove_if
+{
+	for (int i = 0; i < listenObjects.size(); i++)
+	{
+		removeEventListener(listenObjects[i]);
+	}
+};
 
 // Render
-void Loop::addRenderListeners(ObjectPointers& objects)
+void Loop::addRenderListeners(const ObjectPointers& objects)
 {
 	for (int i = 0; i < objects.size(); i++)
 	{
@@ -64,10 +75,22 @@ void Loop::addRenderListeners(ObjectPointers& objects)
 	}
 }
 
-void Loop::removeRenderListener(Object* ptr)
-{}
+void Loop::removeRenderListener(const Object* ptr)
+{
+	//std::cout << "to remove (render): " << ptr << std::endl;
+	auto removeIter = remove(renderListeners.begin(), renderListeners.end(), ptr);
+	renderListeners.erase(removeIter, renderListeners.end());
+}
 
-void Loop::handleBeforeRender()
+void Loop::removeRenderListeners(const ObjectPointers& objects)
+{
+	for (int i = 0; i < objects.size(); i++)
+	{
+		removeRenderListener(objects[i]);
+	}
+}
+
+void Loop::handleBeforeRender() const 
 {
 	for (int i = 0; i < renderListeners.size(); i++)
 	{
@@ -75,7 +98,7 @@ void Loop::handleBeforeRender()
 	}
 }
 
-void Loop::handleAfterRender()
+void Loop::handleAfterRender() const 
 {
 	for (int i = 0; i < renderListeners.size(); i++)
 	{

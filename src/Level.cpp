@@ -6,29 +6,33 @@
 #include "Background.h"
 #include "Consts.h"
 
-Level::Level(App* p_system)
-{
+ShipParams getInitPlayerParams(const Size* windowSize);
 
-	renderer = p_system->getRenderer();
-	system = p_system;
-}
+Level::Level(const App* p_system) : system(p_system), renderer(system->getRenderer())
+{}
 
 Level::~Level()
 {
+	Loop* gameLoop = system->getGameLoop();
+
+	// Deregister level objects from loop
+	gameLoop->removeEventListeners(eventListeners);
+	gameLoop->removeRenderListeners(renderListeners);
+
+
 	renderer = NULL;
 	system = NULL;
-	// Todo: Remove event/render listeners from event loop
 }
 
 void Level::start()
 {
 	// Prepare level objects
-	ShipParams playerShipParams = { DEFAULT_PLAYER_SHIP_SPRITE_PARAMS, ROCKET };
+	ShipParams playerParams = getInitPlayerParams(system->getWindowSize());
 	Audio* audioPlayer = system->getAudioPlayer();
 	Loop* gameLoop = system->getGameLoop();
 
 	Background backgroundLvl1(renderer, "res/space.png");
-	Ship playerShip(system, "res/shipA.png", playerShipParams);
+	Ship playerShip(system, "res/shipA.png", playerParams);
 
 	// Prepare level audio
 	audioPlayer->load("res/lvl1.mp3");
@@ -40,4 +44,25 @@ void Level::start()
 	gameLoop->addEventListeners(eventListeners);
 	gameLoop->addRenderListeners(renderListeners);
 	gameLoop->start();
+}
+
+ShipParams getInitPlayerParams(const Size* windowSize)
+{
+	Size shipSize = { DEFAULT_PLAYER_SHIP_SPRITE_PARAMS.imageW, DEFAULT_PLAYER_SHIP_SPRITE_PARAMS.imageH };
+
+	SDL_Rect shipRect = {
+			(windowSize->w - shipSize.w) / 2,
+			windowSize->h - shipSize.h,
+			shipSize.w,
+			shipSize.h,
+	};
+
+	ShipParams newParams = {
+		DEFAULT_PLAYER_SHIP_SPRITE_PARAMS,
+		ROCKET,
+		shipRect,
+		SHIP_A_VELOCITY,
+	};
+
+	return newParams;
 }

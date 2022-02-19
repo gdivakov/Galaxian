@@ -19,7 +19,7 @@ App::App(int screenWidth, int screenHeight)
 	audioPlayer = NULL;
 
 	status = true;
-	windowed = true;
+	windowed = false;
 
 	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) < 0)
 	{
@@ -89,6 +89,13 @@ App::App(int screenWidth, int screenHeight)
 	}
 
 	windowSize = { screenWidth, screenHeight };
+
+	SDL_SetRelativeMouseMode(SDL_TRUE);
+
+	if (!windowed)
+	{
+		enableFullScreen();
+	}
 }
 
 App::~App()
@@ -111,30 +118,38 @@ App::~App()
 	SDL_Quit();
 }
 
-SDL_Renderer* App::getRenderer()
+SDL_Renderer* App::getRenderer() const
 {
 	return renderer;
 }
 
-SDL_Window* App::getWindow()
+const SDL_Window* App::getWindow() const 
 {
 	return window;
 }
 
-Loop* App::getGameLoop()
+Loop* App::getGameLoop() const
 {
 	return gameLoop;
 }
 
-Audio* App::getAudioPlayer()
+Audio* App::getAudioPlayer() const
 {
 	return audioPlayer;
 }
 
+void App::enableFullScreen()
+{
+	int i = SDL_GetWindowDisplayIndex(window);
+	SDL_Rect j;
+	SDL_GetDisplayBounds(i, &j);
+	windowSize.w = j.w;
+	windowSize.h = j.h;
+	SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN_DESKTOP);
+}
+
 void App::toggleWindowed()
 {
-	//Grab the mouse so that we don't end up with unexpected movement when the dimensions/position of the window changes.
-	//SDL_SetRelativeMouseMode(SDL_TRUE);
 	windowed = !windowed;
 
 	if (windowed)
@@ -146,27 +161,22 @@ void App::toggleWindowed()
 	}
 	else
 	{
-		int i = SDL_GetWindowDisplayIndex(window);
-		SDL_Rect j;
-		SDL_GetDisplayBounds(i, &j);
-		windowSize.w = j.w;
-		windowSize.h = j.h;
-		SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN_DESKTOP);
+		enableFullScreen();
 	}
 	//recalculateResolution(); //This function sets appropriate font sizes/UI positions
 }
 
-Size* App::getWindowSize()
+const Size* App::getWindowSize() const
 {
 	return &windowSize;
 }
 
-bool App::getStatus()
+bool App::getStatus() const
 {
 	return status;
 }
 
-std::string App::getErrMessage()
+std::string App::getErrMessage() const
 {
 	return errMessage;
 }

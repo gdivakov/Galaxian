@@ -12,9 +12,9 @@ class WeaponModule : public Texture
 {
 public:
 	WeaponModule(
-		GunTypes initGunType, 
+		GunType initGunType, 
 		SDL_Renderer* renderer, 
-		SDL_Point* p_shipPosition
+		const SDL_Rect* p_shipRect
 	);
 	void fire();
 	void addGun();
@@ -27,10 +27,10 @@ public:
 private:
 	bool isOnCooldown;
 	float cooldownMs;
-	GunTypes selectedGun;
-	std::vector<GunTypes> availableGuns;
+	GunType selectedGun;
+	std::vector<GunType> availableGuns;
 	Timer cooldownTimer;
-	SDL_Point* shipPosition;
+	const SDL_Rect* shipRect;
 	Projectile ammo;
 };
 

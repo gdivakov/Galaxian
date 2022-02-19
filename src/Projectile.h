@@ -5,7 +5,7 @@
 #include "Consts.h"
 
 struct TextureParams;
-const enum GunTypes;
+const enum GunType;
 
 struct FlyingProjectile
 {
@@ -17,8 +17,8 @@ struct FlyingProjectile
 class Projectile : public Texture // Todo: maybe create class ShipComponent? 
 {
 public: 
-	Projectile(GunTypes p_type, SDL_Renderer* p_renderer);
-	void startProjectile(SDL_Point* shipPosition);
+	Projectile(GunType p_type, SDL_Renderer* p_renderer);
+	void startProjectile(const SDL_Rect* shipRect);
 	void move(FlyingProjectile* pj);
 
 	void virtual handleEvent(SDL_Event& e);
@@ -33,5 +33,5 @@ private:
 	FlyingProjectiles releasedPjs;
 	ClipPointers explosionClips;
 	ClipPointers clips;
-	GunTypes gunType;
+	GunType gunType;
 };

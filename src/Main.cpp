@@ -7,7 +7,7 @@
 
 int main(int argc, char* args[])
 {
-	App galaxian(920, 620); // Todo: to update
+	App galaxian(WINDOWED_WIDTH, WINDOWED_HEIGHT);
 	
 	if (!galaxian.getStatus())
 	{
@@ -15,8 +15,6 @@ int main(int argc, char* args[])
 
 		return 0;
 	}
-
-	galaxian.toggleWindowed();
 
 	Level level1(&galaxian);
 	level1.start();

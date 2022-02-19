@@ -1,14 +1,14 @@
 #include "WeaponModule.h"
 
-GunParams getGunParamsByType(GunTypes type);
+GunParams getGunParamsByType(GunType type);
 
 WeaponModule::WeaponModule(
-	GunTypes initGunType,
+	GunType initGunType,
 	SDL_Renderer* p_renderer,
-	SDL_Point* p_shipPosition
+	const SDL_Rect* p_shipRect
 ) : Texture(p_renderer), ammo(initGunType, p_renderer)
 {
-	shipPosition = p_shipPosition;
+	shipRect = p_shipRect;
 	isOnCooldown = false;
 
 	// Prepare gun
@@ -25,7 +25,7 @@ void WeaponModule::fire()
 	{
 		return;
 	}
-	ammo.startProjectile(shipPosition);
+	ammo.startProjectile(shipRect);
 
 	if (cooldownMs != 0) {
 		isOnCooldown = true;
@@ -73,10 +73,10 @@ void WeaponModule::onAfterRender()
 
 WeaponModule::~WeaponModule()
 {
-	shipPosition = NULL;
+	shipRect = NULL;
 }
 
-GunParams getGunParamsByType(GunTypes type)
+GunParams getGunParamsByType(GunType type)
 {
 	switch (type)
 	{
