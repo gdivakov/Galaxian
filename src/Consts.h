@@ -7,9 +7,11 @@ struct SpriteParams
 	int length;
 };
 
-const enum GunType { ROCKET, LAZER };
+const enum GunType { ROCKET, LAZER }; // Todo: rocket - rename to blaster
+const enum ShipType { SONIC_A, PIRATE_A }; // SONIC - player ship name
 
 struct ShipParams {
+	ShipType type;
 	SpriteParams sprite;
 	GunType gunType;
 	SDL_Rect rect;
@@ -17,8 +19,11 @@ struct ShipParams {
 	// ...other params
 };
 
-const SpriteParams DEFAULT_PLAYER_SHIP_SPRITE_PARAMS = { 102, 114, 10 };
-const int SHIP_A_VELOCITY = 6;
+const SpriteParams SONIC_A_SHIP = { 102, 114, 10 };
+const SpriteParams PIRATE_A_SHIP = { 65, 144, 10 };
+
+const int SONIC_A_VELOCITY = 6;
+const int PIRATE_A_VELOCITY = 5;
 
 const enum TextureTypes { TEXTURE_SPRITE, TEXTURE_FILE };
 

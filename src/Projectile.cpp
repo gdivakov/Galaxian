@@ -15,7 +15,7 @@ const int EXPLOSION_PROJECTILE_CLIP_LENGTH = 1;
 const int ROCKET_AMMO_SPEED = 8;
 const int LAZER_AMMO_SPEED = 1000;
 
-TextureParams ROCKET_AMMO_TEXTURE_PARAMS = { TEXTURE_SPRITE, "res/rocket3.png", { 30, 90, 3 } };
+TextureParams ROCKET_AMMO_TEXTURE_PARAMS = { TEXTURE_SPRITE, "res/rocket3.png", { 30, 50, 2 } };
 TextureParams LAZER_AMMO_TEXTURE_PARAMS = { TEXTURE_SPRITE, "res/lazer_ammo.png" , { 27, 111, 3 } };
 
 Projectile::Projectile(GunType p_type, SDL_Renderer* p_renderer) : Texture(p_renderer)
@@ -24,7 +24,6 @@ Projectile::Projectile(GunType p_type, SDL_Renderer* p_renderer) : Texture(p_ren
 
 	width = params.texture.spriteParams.imageW; // Todo: Only from sprites for now (add texture support)
 	height = params.texture.spriteParams.imageH;
-
 	vel = params.speed; // Todo: replace by velocity
 	gunType = p_type;
 

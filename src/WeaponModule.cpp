@@ -1,14 +1,14 @@
-#include "WeaponModule.h"
+#include "Ship.h"
 
 GunParams getGunParamsByType(GunType type);
 
 WeaponModule::WeaponModule(
 	GunType initGunType,
 	SDL_Renderer* p_renderer,
-	const SDL_Rect* p_shipRect
+	Ship* p_ship
 ) : Texture(p_renderer), ammo(initGunType, p_renderer)
 {
-	shipRect = p_shipRect;
+	ship = p_ship;
 	isOnCooldown = false;
 
 	// Prepare gun
@@ -17,6 +17,9 @@ WeaponModule::WeaponModule(
 
 	availableGuns.push_back(initGunType);
 	selectedGun = availableGuns[0];
+
+	Audio* audioPlayer = p_ship->getAudioPlayer();
+	fireSoundId = audioPlayer->loadSound("res/blast.mp3");
 }
 
 void WeaponModule::fire()
@@ -25,7 +28,12 @@ void WeaponModule::fire()
 	{
 		return;
 	}
-	ammo.startProjectile(shipRect);
+
+	std::cout << fireSoundId << std::endl;
+
+	ship->getAudioPlayer()->playSound(fireSoundId);
+	ammo.startProjectile(ship->getRect());
+
 
 	if (cooldownMs != 0) {
 		isOnCooldown = true;
@@ -73,7 +81,7 @@ void WeaponModule::onAfterRender()
 
 WeaponModule::~WeaponModule()
 {
-	shipRect = NULL;
+	ship = NULL;
 }
 
 GunParams getGunParamsByType(GunType type)

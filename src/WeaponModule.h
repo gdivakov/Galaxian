@@ -5,6 +5,7 @@
 #include "Projectile.h"
 #include "Consts.h"
 
+class Ship;
 class Projectile;
 class Texture;
 
@@ -14,7 +15,7 @@ public:
 	WeaponModule(
 		GunType initGunType, 
 		SDL_Renderer* renderer, 
-		const SDL_Rect* p_shipRect
+		Ship* p_ship
 	);
 	void fire();
 	void addGun();
@@ -27,10 +28,11 @@ public:
 private:
 	bool isOnCooldown;
 	float cooldownMs;
+	short fireSoundId;
 	GunType selectedGun;
 	std::vector<GunType> availableGuns;
 	Timer cooldownTimer;
-	const SDL_Rect* shipRect;
+	Ship* ship;
 	Projectile ammo;
 };
 

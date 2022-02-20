@@ -7,20 +7,31 @@ Ship::Ship(
     std::string path,
     ShipParams params
 ) : rect(params.rect),
+    system(p_system),
     Texture(p_system->getRenderer()),
-    gun(params.gunType, p_system->getRenderer(), &rect)
+    gun(params.gunType, p_system->getRenderer(), this),
+    type(params.type)
 {
     frame = 0;
     velX = velY = 0;
     maxVelocity = params.maxVelocity;
 
     loadFromSprite(path, params.sprite);
+}
 
-    system = p_system;
+SDL_Rect* Ship::getRect()
+{
+    return &rect;
 }
 
 void Ship::handleEvent(SDL_Event& e)
 {
+    if (type != SONIC_A)
+    {
+        // Controlling programmatically
+        return;
+    }
+
     if (e.type == SDL_KEYDOWN && e.key.repeat == 0)
     {
         switch (e.key.keysym.sym)
@@ -91,9 +102,11 @@ void Ship::onBeforeRender()
 void Ship::onAfterRender()
 {
     gun.onAfterRender();
+    
+    int clipLength = getClips().size();
 
     ++frame;
-    if (frame / DEFAULT_PLAYER_SHIP_SPRITE_PARAMS.length >= getClips().size())
+    if (frame / clipLength >= clipLength)
     {
     	frame = 0;
     }

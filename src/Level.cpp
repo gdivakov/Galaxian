@@ -6,7 +6,7 @@
 #include "Background.h"
 #include "Consts.h"
 
-ShipParams getInitPlayerParams(const Size* windowSize);
+ShipParams getShipParams(const Size* windowSize, const ShipType type);
 
 Level::Level(const App* p_system) : system(p_system), renderer(system->getRenderer())
 {}
@@ -19,7 +19,6 @@ Level::~Level()
 	gameLoop->removeEventListeners(eventListeners);
 	gameLoop->removeRenderListeners(renderListeners);
 
-
 	renderer = NULL;
 	system = NULL;
 }
@@ -27,42 +26,67 @@ Level::~Level()
 void Level::start()
 {
 	// Prepare level objects
-	ShipParams playerParams = getInitPlayerParams(system->getWindowSize());
+	ShipParams sonicParams = getShipParams(system->getWindowSize(), SONIC_A);
+	ShipParams pirateParams = getShipParams(system->getWindowSize(), PIRATE_A);
+
 	Audio* audioPlayer = system->getAudioPlayer();
 	Loop* gameLoop = system->getGameLoop();
 
 	Background backgroundLvl1(renderer, "res/space.png");
-	Ship playerShip(system, "res/shipA.png", playerParams);
+	Ship playerShip(system, "res/shipA.png", sonicParams);
+	Ship pirate(system, "res/pirateA.png", pirateParams);
 
 	// Prepare level audio
-	audioPlayer->load("res/lvl1.mp3");
-	//audioPlayer->play(); 
+	audioPlayer->loadMusic("res/lvl1.mp3");
+	//audioPlayer->playMusic(); 
 
 	eventListeners = { &backgroundLvl1, &playerShip, audioPlayer };
-	renderListeners = { &backgroundLvl1, &playerShip };
+	renderListeners = { &backgroundLvl1, &playerShip, &pirate };
 
 	gameLoop->addEventListeners(eventListeners);
 	gameLoop->addRenderListeners(renderListeners);
 	gameLoop->start();
 }
 
-ShipParams getInitPlayerParams(const Size* windowSize)
+ShipParams getShipParams(const Size* windowSize, const ShipType type)
 {
-	Size shipSize = { DEFAULT_PLAYER_SHIP_SPRITE_PARAMS.imageW, DEFAULT_PLAYER_SHIP_SPRITE_PARAMS.imageH };
+	SpriteParams spriteParams;
+	GunType gun;
+	int vel;
+	SDL_Point pos;
 
-	SDL_Rect shipRect = {
-			(windowSize->w - shipSize.w) / 2,
-			windowSize->h - shipSize.h,
+	switch (type)
+	{
+		case SONIC_A:
+			spriteParams = SONIC_A_SHIP;
+			vel = SONIC_A_VELOCITY;
+			gun = ROCKET;
+			pos = { (windowSize->w - spriteParams.imageW) / 2, windowSize->h - spriteParams.imageH };
+			break;
+		case PIRATE_A:
+			spriteParams = PIRATE_A_SHIP;
+			vel = PIRATE_A_VELOCITY;
+			gun = ROCKET; // Todo: change 
+			pos = { (windowSize->w - spriteParams.imageW) / 2, spriteParams.imageH };
+			break;
+	}
+
+	Size shipSize = { spriteParams.imageW, spriteParams.imageH };
+
+	SDL_Rect rect = {
+			pos.x, 
+			pos.y,
 			shipSize.w,
 			shipSize.h,
 	};
 
-	ShipParams newParams = {
-		DEFAULT_PLAYER_SHIP_SPRITE_PARAMS,
-		ROCKET,
-		shipRect,
-		SHIP_A_VELOCITY,
+	ShipParams params = {
+		type,
+		spriteParams,
+		gun,
+		rect,
+		vel,
 	};
 
-	return newParams;
+	return params;
 }

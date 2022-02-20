@@ -19,7 +19,7 @@ App::App(int screenWidth, int screenHeight)
 	audioPlayer = NULL;
 
 	status = true;
-	windowed = false;
+	windowed = true;
 
 	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) < 0)
 	{
@@ -90,7 +90,7 @@ App::App(int screenWidth, int screenHeight)
 
 	windowSize = { screenWidth, screenHeight };
 
-	SDL_SetRelativeMouseMode(SDL_TRUE);
+	//SDL_SetRelativeMouseMode(SDL_TRUE); // Todo: uncomment later
 
 	if (!windowed)
 	{
