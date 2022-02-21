@@ -29,8 +29,6 @@ void WeaponModule::fire()
 		return;
 	}
 
-	std::cout << fireSoundId << std::endl;
-
 	ship->getAudioPlayer()->playSound(fireSoundId);
 	ammo.startProjectile(ship->getRect());
 

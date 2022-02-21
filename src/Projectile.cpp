@@ -58,7 +58,6 @@ Projectile::Projectile(GunType p_type, SDL_Renderer* p_renderer) : Texture(p_ren
 void Projectile::startProjectile(const SDL_Rect* shipRect)
 {
 	// Todo: relate x and y on gun position
-	std::cout << shipRect->w << std::endl;
 	FlyingProjectile newProjectile = {
 		{ shipRect->x + (shipRect->w - width) / 2, shipRect->y - height },
 		0,
