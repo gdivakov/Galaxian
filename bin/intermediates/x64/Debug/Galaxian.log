@@ -1,3 +1,0 @@
-﻿  Projectile.cpp
-D:\projects\home\c++\Galaxian\src\Projectile.cpp(104,73): warning C4267: 'initializing': conversion from 'size_t' to 'short', possible loss of data
-  Galaxian.vcxproj -> D:\projects\home\c++\Galaxian\bin\x64\Debug\Galaxian.exe

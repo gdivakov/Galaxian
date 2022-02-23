@@ -3,6 +3,9 @@
 
 #include "Level.h"
 #include "Ship.h"
+
+#include "PlayerShip.h"
+#include "EnemyShip.h"
 #include "Background.h"
 #include "Consts.h"
 
@@ -33,14 +36,15 @@ void Level::start()
 	Loop* gameLoop = system->getGameLoop();
 
 	Background backgroundLvl1(renderer, "res/space.png");
-	Ship playerShip(system, "res/shipA.png", sonicParams);
-	Ship pirate(system, "res/pirateA.png", pirateParams);
+
+	PlayerShip playerShip(system, "res/shipA.png", sonicParams);
+	EnemyShip pirate(system, "res/pirateA.png", pirateParams, playerShip);
 
 	// Prepare level audio
 	audioPlayer->loadMusic("res/lvl1.mp3");
 	//audioPlayer->playMusic(); 
 
-	eventListeners = { &backgroundLvl1, &playerShip, audioPlayer };
+	eventListeners = { &backgroundLvl1, &playerShip, audioPlayer, &pirate };
 	renderListeners = { &backgroundLvl1, &playerShip, &pirate };
 
 	gameLoop->addEventListeners(eventListeners);
@@ -67,7 +71,7 @@ ShipParams getShipParams(const Size* windowSize, const ShipType type)
 			spriteParams = PIRATE_A_SHIP;
 			vel = PIRATE_A_VELOCITY;
 			gun = ROCKET; // Todo: change 
-			pos = { (windowSize->w - spriteParams.imageW) / 2, spriteParams.imageH };
+			pos = { (windowSize->w - spriteParams.imageW) / 4, spriteParams.imageH };
 			break;
 	}
 

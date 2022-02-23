@@ -15,13 +15,14 @@ public:
     Audio* getAudioPlayer() { return system->getAudioPlayer(); };
     virtual void onBeforeRender();
     virtual void onAfterRender();
-    virtual void handleEvent(SDL_Event& e);
+    virtual void handleEvent(SDL_Event& e) {};
 private:
+    const App* system;
+protected:
     int maxVelocity;
     SDL_Rect rect;
-    int velX, velY;
-    int frame;
-    const App* system;
     WeaponModule gun;
+    int velX, velY;
     ShipType type;
+    int frame;
 };

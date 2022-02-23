@@ -10,14 +10,14 @@ Background::Background(SDL_Renderer* p_renderer, std::string path) : Texture(p_r
 
 void Background::onBeforeRender()
 {
-	scrollingOffset += 2;
-	if (scrollingOffset > getHeight())
-	{
-		scrollingOffset = 0;
-	}
+	//scrollingOffset += 2;
+	//if (scrollingOffset > getHeight())
+	//{
+	//	scrollingOffset = 0;
+	//}
 
-	render(0, scrollingOffset);
-	render(0, scrollingOffset - getHeight());
+	//render(0, scrollingOffset);
+	//render(0, scrollingOffset - getHeight());
 }
 
 void Background::onAfterRender()

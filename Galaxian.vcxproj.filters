@@ -25,24 +25,27 @@
     <Filter Include="Source Files\Objects">
       <UniqueIdentifier>{abb97be3-0712-42eb-aec9-3ffd43e1711b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Objects\Ship">
+      <UniqueIdentifier>{7c1e3b5c-779f-41bd-9479-24c3a130bb1f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Objects\Ship">
+      <UniqueIdentifier>{23cba83a-3678-42de-9718-a23653c856e4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Services">
+      <UniqueIdentifier>{4c5898f4-87ab-49cf-9446-89bedf3f3f40}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Services">
+      <UniqueIdentifier>{606f720f-85c8-44c1-9edc-0e3f07ff13de}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Timer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Background.cpp">
       <Filter>Source Files\Objects</Filter>
     </ClCompile>
     <ClCompile Include="src\Projectile.cpp">
-      <Filter>Source Files\Objects</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Ship.cpp">
-      <Filter>Source Files\Objects</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Texture.cpp">
       <Filter>Source Files\Objects</Filter>
     </ClCompile>
     <ClCompile Include="src\WeaponModule.cpp">
@@ -57,24 +60,30 @@
     <ClCompile Include="src\Loop.cpp">
       <Filter>Source Files\System</Filter>
     </ClCompile>
+    <ClCompile Include="src\Texture.cpp">
+      <Filter>Source Files\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Ship.cpp">
+      <Filter>Source Files\Objects\Ship</Filter>
+    </ClCompile>
+    <ClCompile Include="src\EnemyShip.cpp">
+      <Filter>Source Files\Objects\Ship</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Vector2.cpp">
+      <Filter>Source Files\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Timer.cpp">
+      <Filter>Source Files\Services</Filter>
+    </ClCompile>
     <ClCompile Include="src\Level.cpp">
-      <Filter>Source Files\System</Filter>
+      <Filter>Source Files\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="src\PlayerShip.cpp">
+      <Filter>Source Files\Objects\Ship</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\Consts.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Object.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Timer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\Projectile.h">
-      <Filter>Header Files\Objects</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Ship.h">
       <Filter>Header Files\Objects</Filter>
     </ClInclude>
     <ClInclude Include="src\Texture.h">
@@ -92,11 +101,32 @@
     <ClInclude Include="src\Loop.h">
       <Filter>Header Files\System</Filter>
     </ClInclude>
-    <ClInclude Include="src\Level.h">
-      <Filter>Header Files\System</Filter>
-    </ClInclude>
     <ClInclude Include="src\WeaponModule.h">
       <Filter>Header Files\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Object.h">
+      <Filter>Header Files\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Ship.h">
+      <Filter>Header Files\Objects\Ship</Filter>
+    </ClInclude>
+    <ClInclude Include="src\EnemyShip.h">
+      <Filter>Header Files\Objects\Ship</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Vector2.h">
+      <Filter>Header Files\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Timer.h">
+      <Filter>Header Files\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Level.h">
+      <Filter>Header Files\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Consts.h">
+      <Filter>Header Files\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="src\PlayerShip.h">
+      <Filter>Header Files\Objects\Ship</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

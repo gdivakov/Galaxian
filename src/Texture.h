@@ -29,8 +29,10 @@ public:
 	void virtual handleEvent(SDL_Event& e);
 private: 
 	SDL_Texture* texture;
-	SDL_Renderer* renderer;
 	Clips spriteClips;
 	int width;
 	int height;
+protected:
+	SDL_Renderer* renderer;
+
 };
