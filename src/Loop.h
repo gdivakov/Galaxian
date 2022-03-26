@@ -10,6 +10,7 @@ public:
 	Loop(SDL_Renderer* p_renderer);
 	~Loop();
 	bool start();
+	bool stop();
 
 	void addEventListeners(const ObjectPointers& objects);
 	void addEventListener(Object* ptr) { eventListeners.push_back(ptr); };
@@ -24,6 +25,7 @@ public:
 	void handleBeforeRender() const;
 	void handleAfterRender() const;
 private:
+	bool quit;
 	SDL_Renderer* renderer;
 	ObjectPointers eventListeners;
 	ObjectPointers renderListeners;

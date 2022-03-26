@@ -2,7 +2,8 @@
 #include <iostream>
 
 #include "App.h"
-#include "Level.h"
+#include "Level1.h"
+#include "MainScreen.h"
 #include "Consts.h"
 
 int main(int argc, char* args[])
@@ -16,7 +17,12 @@ int main(int argc, char* args[])
 		return 0;
 	}
 
-	Level level1(&galaxian);
+	Loop* gameLoop = galaxian.getGameLoop();
+
+	MainScreen main(&galaxian);
+	Level1 level1(&galaxian);
+
+	main.start();
 	level1.start();
 
 	return 0;

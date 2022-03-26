@@ -19,12 +19,15 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Level.cpp" />
+    <ClCompile Include="src\BezierPath.cpp" />
+    <ClCompile Include="src\MainScreen.cpp" />
     <ClCompile Include="src\PlayerShip.cpp" />
     <ClCompile Include="src\EnemyShip.cpp" />
     <ClCompile Include="src\App.cpp" />
     <ClCompile Include="src\Audio.cpp" />
     <ClCompile Include="src\Background.cpp" />
-    <ClCompile Include="src\Level.cpp" />
+    <ClCompile Include="src\Level1.cpp" />
     <ClCompile Include="src\Loop.cpp" />
     <ClCompile Include="src\Main.cpp" />
     <ClCompile Include="src\Projectile.cpp" />
@@ -35,13 +38,16 @@
     <ClCompile Include="src\Vector2.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Level.h" />
+    <ClInclude Include="src\BezierPath.h" />
+    <ClInclude Include="src\MainScreen.h" />
     <ClInclude Include="src\PlayerShip.h" />
     <ClInclude Include="src\EnemyShip.h" />
     <ClInclude Include="src\App.h" />
     <ClInclude Include="src\Audio.h" />
     <ClInclude Include="src\Background.h" />
     <ClInclude Include="src\Consts.h" />
-    <ClInclude Include="src\Level.h" />
+    <ClInclude Include="src\Level1.h" />
     <ClInclude Include="src\Loop.h" />
     <ClInclude Include="src\Object.h" />
     <ClInclude Include="src\Projectile.h" />
@@ -56,10 +62,13 @@
     <None Include="Galaxian.aps" />
   </ItemGroup>
   <ItemGroup>
+    <Media Include="res\blast.mp3" />
     <Media Include="res\lvl1.mp3" />
     <Media Include="src\res\lvl1.mp3" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="res\main_screen_bg.png" />
+    <Image Include="res\pirateA.png" />
     <Image Include="res\rocket2.png" />
     <Image Include="res\rocket3.png" />
     <Image Include="res\shipA.png" />

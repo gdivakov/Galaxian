@@ -9,7 +9,7 @@ Loop::Loop(SDL_Renderer* p_renderer)
 
 bool Loop::start()
 {
-	bool quit = false;
+	quit = false;
 	SDL_Event e;
 
 	while (!quit)
@@ -38,6 +38,12 @@ bool Loop::start()
 		handleAfterRender();
 	}
 	return true;
+}
+
+bool Loop::stop()
+{
+	quit = true;
+	return quit;
 }
 
 Loop::~Loop()
