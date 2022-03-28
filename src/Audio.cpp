@@ -3,6 +3,8 @@
 Audio::Audio()
 {
 	mainTheme = NULL;
+	isMusicMuted = false;
+	isSoundsMuted = false;
 	key = 1; // 0 is reserved for error case
 }
 
@@ -50,11 +52,21 @@ short Audio::loadSound(std::string path) // Todo: set up correct volume level
 
 void Audio::playMusic()
 {
+	if (isMusicMuted) 
+	{
+		return;
+	}
+
 	Mix_PlayMusic(mainTheme, -1);
 }
 
 void Audio::playSound(short id)
 {
+	if (isSoundsMuted)
+	{
+		return;
+	}
+
 	if (!sounds[id])
 	{
 		std::cout << "Error while playing sound id: " << id << std::endl;
@@ -63,6 +75,18 @@ void Audio::playSound(short id)
 
 	Mix_PlayChannel(-1, sounds[id], 0);
 };
+
+void Audio::toggleMute(bool isMusic) // Todo: Mute should mute sound, not disable it
+{
+	if (isMusic)
+	{
+		isMusicMuted = !isMusicMuted;
+	}
+	else
+	{
+		isSoundsMuted = !isSoundsMuted;
+	}
+}
 
 void Audio::handleEvent(SDL_Event& e)
 {}

@@ -3,6 +3,9 @@
 #include <math.h>
 #include <vector>
 
+const int WINDOWED_WIDTH = 920;
+const int WINDOWED_HEIGHT = 620;
+
 struct SpriteParams
 {
 	int imageW;

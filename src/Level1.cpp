@@ -12,7 +12,7 @@
 ShipParams getShipParams(const Size* windowSize, const ShipType type);
 std::vector<BezierCurve> getEnemyPathCurves();
 
-void Level1::start()
+void Level1::load()
 {
 	ShipParams sonicParams = getShipParams(system->getWindowSize(), SONIC_A);
 	ShipParams pirateParams = getShipParams(system->getWindowSize(), PIRATE_A);
@@ -20,25 +20,20 @@ void Level1::start()
 	Audio* audioPlayer = system->getAudioPlayer();
 	Loop* gameLoop = system->getGameLoop();
 
-	Background backgroundLvl1(renderer, "res/space.png");
+	Background* backgroundLvl1 = new Background(renderer, "res/space.png");
 
-	PlayerShip playerShip(system, "res/shipA.png", sonicParams);
-	EnemyShip pirate(system, "res/pirateA.png", pirateParams, playerShip);
+	PlayerShip* playerShip = new PlayerShip(system, "res/shipA.png", sonicParams);
+	EnemyShip* pirate = new EnemyShip(system, "res/pirateA.png", pirateParams, playerShip);
 
 	// Prepare level audio
 	audioPlayer->loadMusic("res/lvl1.mp3");
-	//audioPlayer->playMusic(); 
+	audioPlayer->playMusic(); 
 
-	eventListeners = { &backgroundLvl1, &playerShip, audioPlayer, &pirate };
-	renderListeners = { &backgroundLvl1, &playerShip, &pirate };
+	eventListeners = { backgroundLvl1, playerShip, audioPlayer, pirate };
+	renderListeners = { backgroundLvl1, playerShip, pirate };
+	objsToFree = { backgroundLvl1, playerShip, pirate };
 
-	// Add level objects
-	gameLoop->addEventListeners(eventListeners);
-	gameLoop->addRenderListeners(renderListeners);
-	gameLoop->start();
-	// Deregister level objects from loop
-	gameLoop->removeEventListeners(eventListeners);
-	gameLoop->removeRenderListeners(renderListeners);
+	registerListeners();
 }
 
 ShipParams getShipParams(const Size* windowSize, const ShipType type)

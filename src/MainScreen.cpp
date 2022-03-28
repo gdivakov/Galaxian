@@ -1,26 +1,25 @@
 #include "MainScreen.h"
 #include "Background.h"
+#include "ControlPanel.h"
 
-MainScreen::MainScreen(const App* p_system) : Level(p_system)
+void MainScreen::load()
 {
-	isActive = true;
+	Background* bgMain = new Background(renderer, "res/main_screen_bg.png", STATIC);
+	ControlPanel* panel = new ControlPanel(renderer, system, this);
+
+	eventListeners = { panel };
+	renderListeners = { bgMain, panel };
+	objsToFree = { panel, bgMain };
+
+	registerListeners();
 }
 
-void MainScreen::start()
+void MainScreen::startGame()
 {
-	Background bgMain(renderer, "res/main_screen_bg.png", STATIC, system);
-	ControlPanel panel(renderer);
+	controller->start(LEVEL_1);
+}
 
-	eventListeners = { &bgMain };
-	renderListeners = { &bgMain };
-
-	Loop* gameLoop = system->getGameLoop();
-
-	// Add level objects
-	gameLoop->addEventListeners(eventListeners);
-	gameLoop->addRenderListeners(renderListeners);
-	gameLoop->start();
-	// Remove level objects
-	gameLoop->removeEventListeners(eventListeners);
-	gameLoop->removeRenderListeners(renderListeners);
+void MainScreen::quit()
+{
+	controller->stop();
 }

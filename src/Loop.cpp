@@ -4,6 +4,7 @@
 
 Loop::Loop(SDL_Renderer* p_renderer)
 {
+	quit = false;
 	renderer = p_renderer;
 }
 
@@ -11,6 +12,9 @@ bool Loop::start()
 {
 	quit = false;
 	SDL_Event e;
+
+	std::cout << eventListeners.size() << std::endl;
+	std::cout << renderListeners.size() << std::endl;
 
 	while (!quit)
 	{
@@ -47,7 +51,9 @@ bool Loop::stop()
 }
 
 Loop::~Loop()
-{}
+{
+	renderer = NULL;
+}
 
 // Events
 void Loop::addEventListeners(const ObjectPointers& listenObjects)

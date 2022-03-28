@@ -7,11 +7,11 @@ EnemyShip::EnemyShip(
 	const App* p_system, 
 	std::string p_path, 
 	ShipParams& params, 
-	PlayerShip& player
+	PlayerShip* player
 ) :
 	Ship(p_system, p_path, params)
 {
-	playerRect = player.getRect();
+	playerRect = player->getRect();
 	rotation = 0;
 	currentWaypoint = 0;
 	inView = false;

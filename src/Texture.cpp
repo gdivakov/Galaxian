@@ -21,6 +21,7 @@ Texture::Texture(SDL_Renderer* p_renderer)
 Texture::~Texture()
 {
 	free();
+	renderer = NULL;
 }
 
 bool Texture::loadFromFile(std::string path, RGB* colorKeyRGB)
@@ -65,6 +66,48 @@ bool Texture::loadFromFile(std::string path, RGB* colorKeyRGB)
 	texture = preparedTexture;
 
 	SDL_FreeSurface(loadedSurface);
+
+	return texture != NULL;
+}
+
+bool Texture::loadFromRenderedText(TTF_Font* font, std::string textureText, SDL_Color textColor)
+{
+	free();
+
+	SDL_Texture* preparedTexture = NULL;
+	SDL_Surface* textSurface = TTF_RenderText_Solid(font, textureText.c_str(), textColor);
+
+	if (textSurface == NULL)
+	{
+		std::cout <<
+			"Unable to render text surface!" <<
+			std::endl << 
+			"Error: " <<
+			TTF_GetError() <<
+			std::endl;
+
+		return false;
+	}
+	
+	preparedTexture = SDL_CreateTextureFromSurface(renderer, textSurface);
+
+	if (preparedTexture == NULL)
+	{
+		std::cout <<
+			"Unable to create texture from rendered text!" <<
+			std::endl <<
+			"Error: " <<
+			SDL_GetError() <<
+			std::endl;
+
+		return false;
+	}
+	
+	width = textSurface->w;
+	height = textSurface->h;
+	texture = preparedTexture;
+
+	SDL_FreeSurface(textSurface);
 
 	return texture != NULL;
 }
@@ -130,7 +173,6 @@ void Texture::free()
 
 	SDL_DestroyTexture(texture);
 	texture = NULL;
-	renderer = NULL;
 	width = 0;
 	height = 0;
 }

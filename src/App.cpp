@@ -1,6 +1,7 @@
 #include <iostream>
 #include <SDL_image.h>
 #include <SDL_mixer.h>
+#include <SDL_ttf.h>
 
 #include "App.h"
 
@@ -63,6 +64,13 @@ App::App(int screenWidth, int screenHeight)
 		return;
 	}
 
+	if (TTF_Init() == -1)
+	{
+		status = false;
+		errMessage = "SDL_ttf could not initialize! SDL_ttf Error: " + string(TTF_GetError());
+		return;
+	}
+
 	if (Mix_OpenAudio(SOUND_FREQUENCY, MIX_DEFAULT_FORMAT, 2, 2048) < 0)
 	{
 		status = false;
@@ -115,6 +123,7 @@ App::~App()
 	//Quit SDL subsystems
 	Mix_Quit();
 	IMG_Quit();
+	TTF_Quit();
 	SDL_Quit();
 }
 

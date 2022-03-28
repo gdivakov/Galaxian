@@ -5,15 +5,13 @@
 
 #include "Audio.h"
 #include "Loop.h"
+#include "Consts.h"
 
 struct Size 
 {
 	int w;
 	int h;
 };
-
-const int WINDOWED_WIDTH = 920;
-const int WINDOWED_HEIGHT = 620;
 
 class App // Todo: rename to system?
 {

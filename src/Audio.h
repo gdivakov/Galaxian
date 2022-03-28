@@ -15,6 +15,9 @@ public:
 	short loadSound(std::string path);
 	void playMusic();
 	void playSound(short key);
+	bool isMusicMuted;
+	bool isSoundsMuted;
+	void toggleMute(bool isMusic = true);
 
 	virtual void handleEvent(SDL_Event& e);
 private:

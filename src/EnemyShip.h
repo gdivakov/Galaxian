@@ -17,7 +17,7 @@ class EnemyShip : public Ship
     int currentWaypoint;
     const float EPSILON = 5.0f;
 public:
-    EnemyShip(const App* p_system, std::string p_path, ShipParams& params, PlayerShip& player);
+    EnemyShip(const App* p_system, std::string p_path, ShipParams& params, PlayerShip* player);
     virtual void onBeforeRender();
     virtual void onAfterRender();
     //void checkDirections();

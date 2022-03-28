@@ -43,6 +43,12 @@
     <Filter Include="Source Files\Levels">
       <UniqueIdentifier>{91eb2574-69ba-4975-b723-e9067ec62430}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Levels\MainScreen">
+      <UniqueIdentifier>{557167fb-c736-4861-9079-10e22998a6f4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Levels\MainScreen">
+      <UniqueIdentifier>{23956d42-7239-4da9-a73c-b6552ee65366}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Main.cpp">
@@ -87,14 +93,20 @@
     <ClCompile Include="src\BezierPath.cpp">
       <Filter>Source Files\Services</Filter>
     </ClCompile>
-    <ClCompile Include="src\MainScreen.cpp">
-      <Filter>Source Files\Levels</Filter>
-    </ClCompile>
     <ClCompile Include="src\Level1.cpp">
       <Filter>Source Files\Levels</Filter>
     </ClCompile>
-    <ClCompile Include="src\Level.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="src\MainScreen.cpp">
+      <Filter>Source Files\Levels\MainScreen</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ControlPanel.cpp">
+      <Filter>Source Files\Levels\MainScreen</Filter>
+    </ClCompile>
+    <ClCompile Include="src\LevelBase.cpp">
+      <Filter>Source Files\Levels</Filter>
+    </ClCompile>
+    <ClCompile Include="src\LevelManager.cpp">
+      <Filter>Source Files\Levels</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -134,9 +146,6 @@
     <ClInclude Include="src\Timer.h">
       <Filter>Header Files\Services</Filter>
     </ClInclude>
-    <ClInclude Include="src\Consts.h">
-      <Filter>Header Files\Services</Filter>
-    </ClInclude>
     <ClInclude Include="src\PlayerShip.h">
       <Filter>Header Files\Objects\Ship</Filter>
     </ClInclude>
@@ -147,9 +156,21 @@
       <Filter>Header Files\Levels</Filter>
     </ClInclude>
     <ClInclude Include="src\MainScreen.h">
+      <Filter>Header Files\Levels\MainScreen</Filter>
+    </ClInclude>
+    <ClInclude Include="src\LevelBase.h">
       <Filter>Header Files\Levels</Filter>
     </ClInclude>
-    <ClInclude Include="src\Level.h">
+    <ClInclude Include="src\ControlPanel.h">
+      <Filter>Header Files\Levels\MainScreen</Filter>
+    </ClInclude>
+    <ClInclude Include="src\LevelManager.h">
+      <Filter>Header Files\Levels</Filter>
+    </ClInclude>
+    <ClInclude Include="src\PanelConsts.h">
+      <Filter>Header Files\Levels\MainScreen</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Consts.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -199,5 +220,9 @@
     <Image Include="res\pirateA.png">
       <Filter>Resource Files</Filter>
     </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="res\lazy.ttf" />
+    <Font Include="res\Staatliches-Regular.ttf" />
   </ItemGroup>
 </Project>

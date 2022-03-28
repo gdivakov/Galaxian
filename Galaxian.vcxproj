@@ -19,7 +19,9 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Level.cpp" />
+    <ClCompile Include="src\LevelManager.cpp" />
+    <ClCompile Include="src\ControlPanel.cpp" />
+    <ClCompile Include="src\LevelBase.cpp" />
     <ClCompile Include="src\BezierPath.cpp" />
     <ClCompile Include="src\MainScreen.cpp" />
     <ClCompile Include="src\PlayerShip.cpp" />
@@ -38,7 +40,11 @@
     <ClCompile Include="src\Vector2.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\Level.h" />
+    <ClInclude Include="src\Consts.h" />
+    <ClInclude Include="src\PanelConsts.h" />
+    <ClInclude Include="src\LevelManager.h" />
+    <ClInclude Include="src\ControlPanel.h" />
+    <ClInclude Include="src\LevelBase.h" />
     <ClInclude Include="src\BezierPath.h" />
     <ClInclude Include="src\MainScreen.h" />
     <ClInclude Include="src\PlayerShip.h" />
@@ -46,7 +52,6 @@
     <ClInclude Include="src\App.h" />
     <ClInclude Include="src\Audio.h" />
     <ClInclude Include="src\Background.h" />
-    <ClInclude Include="src\Consts.h" />
     <ClInclude Include="src\Level1.h" />
     <ClInclude Include="src\Loop.h" />
     <ClInclude Include="src\Object.h" />
@@ -77,6 +82,10 @@
     <Image Include="src\res\rocket3.png" />
     <Image Include="src\res\shipA.png" />
     <Image Include="src\res\space.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="res\lazy.ttf" />
+    <Font Include="res\Staatliches-Regular.ttf" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
