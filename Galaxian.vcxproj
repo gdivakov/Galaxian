@@ -87,7 +87,6 @@
     <Image Include="src\res\space.png" />
   </ItemGroup>
   <ItemGroup>
-    <Font Include="res\lazy.ttf" />
     <Font Include="res\Staatliches-Regular.ttf" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

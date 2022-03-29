@@ -231,7 +231,8 @@
     </Image>
   </ItemGroup>
   <ItemGroup>
-    <Font Include="res\lazy.ttf" />
-    <Font Include="res\Staatliches-Regular.ttf" />
+    <Font Include="res\Staatliches-Regular.ttf">
+      <Filter>Resource Files</Filter>
+    </Font>
   </ItemGroup>
 </Project>
