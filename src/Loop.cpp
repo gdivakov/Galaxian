@@ -13,9 +13,6 @@ bool Loop::start()
 	quit = false;
 	SDL_Event e;
 
-	std::cout << eventListeners.size() << std::endl;
-	std::cout << renderListeners.size() << std::endl;
-
 	while (!quit)
 	{
 		// Event loop

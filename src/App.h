@@ -13,13 +13,12 @@ struct Size
 	int h;
 };
 
-class App // Todo: rename to system?
+class App
 {
 public: 
 	App(int screenWidth, int screenHeight);
 	~App();
 	void toggleWindowed();
-
 	bool getStatus() const;
 	std::string getErrMessage() const;
 	SDL_Renderer* getRenderer() const;

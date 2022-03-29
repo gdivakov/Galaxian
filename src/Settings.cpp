@@ -9,6 +9,7 @@ Settings::Settings(const App* p_system, bool& p_isOpened)
     selectedSettingsIdx = 0;
     isSettingsConfirmSelected = false;
     settingsConfirmButton = NULL;
+    config = readSettingsConfig();
 
     loadOptions();
 }
@@ -36,7 +37,7 @@ void Settings::loadOptions()
         valueTextTexture->loadFromRenderedText(
             font,
             type == SWITCHABLE ?
-            STATUSES[getOptionValue(i, type)] :
+            STATUSES[config[i]] :
             SUPPORTED_LANGUAGES[ENGLISH],
             selectedSettingsIdx == i ? selectedOptionColor : textColor
         );
@@ -45,7 +46,7 @@ void Settings::loadOptions()
         {
             optionsTextTexture,
             valueTextTexture,
-            type == getOptionValue(i, type),
+            config[i],
             type,
             type == LANGUAGE || i == FULLSCREEN_IDX, // isDisabled option (not supported now)
         };
@@ -168,7 +169,7 @@ void Settings::updateSelectedOption(int nextIdx)
     selectedSettingsIdx = nextIdx;
 }
 
-void Settings::updateValue() // Todo: save on disk
+void Settings::updateValue()
 {
     int nextValue;
     std::string nextTextValue;
@@ -181,8 +182,7 @@ void Settings::updateValue() // Todo: save on disk
 
     if (updatedOption.type == LANGUAGE)
     {
-        int nextLanguageIdx = updatedOption.value + 1 >= SUPPORTED_LANGUAGES.size() ? 0 : updatedOption.value + 1;
-        nextValue = SupportedLanguages(nextLanguageIdx);
+        nextValue = updatedOption.value + 1 >= SUPPORTED_LANGUAGES.size() ? 0 : updatedOption.value + 1;
         nextTextValue = SUPPORTED_LANGUAGES[nextValue];
     }
     else {
@@ -190,17 +190,22 @@ void Settings::updateValue() // Todo: save on disk
         nextValue = isDisabled ? ENABLED : DISABLED;
         nextTextValue = STATUSES[nextValue];
 
+        bool isMuted;
         switch (selectedSettingsIdx)
         {
         case MUSIC_IDX:
-            system->getAudioPlayer()->toggleMute();
+            isMuted = system->getAudioPlayer()->isMusicMuted;
+            system->getAudioPlayer()->setMuted(!isMuted);
             break;
         case SOUNDS_IDX:
-            system->getAudioPlayer()->toggleMute(false);
+            isMuted = system->getAudioPlayer()->isSoundsMuted;
+
+            system->getAudioPlayer()->setMuted(!isMuted, false);
             break;
         }
     }
 
+    config[selectedSettingsIdx] = nextValue;
     settingsOptions[selectedSettingsIdx].value = nextValue;
     settingsOptions[selectedSettingsIdx].displayedValue->loadFromRenderedText(
         font,
@@ -242,29 +247,6 @@ void Settings::renderConfirm()
     settingsConfirmButton->render(offsetWidth, offsetHeight);
 }
 
-int Settings::getOptionValue(int idx, OptionType type)
-{
-    int nextValue = 0;
-
-    switch (type)
-    {
-    case SWITCHABLE:
-        if (idx == MUSIC_IDX)
-        {
-            nextValue = !system->getAudioPlayer()->isMusicMuted;
-        }
-
-        if (idx == SOUNDS_IDX)
-        {
-            nextValue = !system->getAudioPlayer()->isSoundsMuted;
-        }
-        break;
-    case LANGUAGE:
-        break;
-    }
-    return nextValue;
-}
-
 void Settings::handleEvent(SDL_Event& e)
 {
     if (!isOpened || e.type != SDL_KEYDOWN)
@@ -279,7 +261,7 @@ void Settings::handleEvent(SDL_Event& e)
     {
         if (isSettingsConfirmSelected)
         {
-            // Close settings
+            writeSettingsConfig(config);
             updateSelectedOption(0);
 
             isOpened = false;

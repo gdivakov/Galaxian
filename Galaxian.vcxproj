@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="DiskManager.cpp" />
     <ClCompile Include="src\Settings.cpp" />
     <ClCompile Include="src\LevelManager.cpp" />
     <ClCompile Include="src\ControlPanel.cpp" />
@@ -41,6 +42,7 @@
     <ClCompile Include="src\Vector2.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="DiskManager.h" />
     <ClInclude Include="src\SettingsConsts.h" />
     <ClInclude Include="src\Settings.h" />
     <ClInclude Include="src\Consts.h" />

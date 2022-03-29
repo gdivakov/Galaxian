@@ -4,6 +4,7 @@
 #include <SDL_ttf.h>
 
 #include "App.h"
+#include "SettingsConsts.h"
 
 const int SOUND_FREQUENCY = 44100;
 const char* APP_NAME = "Galaxian";
@@ -14,13 +15,15 @@ App::App(int screenWidth, int screenHeight)
 	using std::endl;
 	using std::string;
 
+	std::vector<int> settingsConfig = readSettingsConfig();
+
 	window = NULL;
 	renderer = NULL;
 	gameLoop = NULL;
 	audioPlayer = NULL;
 
 	status = true;
-	windowed = true;
+	windowed = !settingsConfig[FULLSCREEN_IDX];
 
 	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) < 0)
 	{
@@ -96,9 +99,12 @@ App::App(int screenWidth, int screenHeight)
 		return;
 	}
 
+	audioPlayer->setMuted(!settingsConfig[MUSIC_IDX]);
+	audioPlayer->setMuted(!settingsConfig[SOUNDS_IDX], false);
+
 	windowSize = { screenWidth, screenHeight };
 
-	SDL_SetRelativeMouseMode(SDL_TRUE); // Todo: uncomment later
+	SDL_SetRelativeMouseMode(SDL_TRUE);
 
 	if (!windowed)
 	{

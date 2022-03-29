@@ -111,6 +111,9 @@
     <ClCompile Include="src\Settings.cpp">
       <Filter>Source Files\Levels\MainScreen</Filter>
     </ClCompile>
+    <ClCompile Include="DiskManager.cpp">
+      <Filter>Source Files\Services</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Projectile.h">
@@ -181,6 +184,9 @@
     </ClInclude>
     <ClInclude Include="src\SettingsConsts.h">
       <Filter>Header Files\Levels\MainScreen</Filter>
+    </ClInclude>
+    <ClInclude Include="DiskManager.h">
+      <Filter>Header Files\Services</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

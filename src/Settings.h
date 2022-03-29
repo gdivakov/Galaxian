@@ -18,6 +18,7 @@ class Settings
 	bool isSettingsConfirmSelected;
 	Texture* settingsConfirmButton;
 	bool& isOpened;
+	std::vector<int> config;
 public: 
 	Settings(const App* p_system, bool& p_isOpened);
 	~Settings();
@@ -26,7 +27,6 @@ public:
 	void updateSelectedOption(int nextIdx);
 	void updateValue();
 	void renderConfirm();
-	int getOptionValue(int idx, OptionType type);
 
 	virtual void handleRender();
 	virtual void handleEvent(SDL_Event& e);

@@ -76,15 +76,16 @@ void Audio::playSound(short id)
 	Mix_PlayChannel(-1, sounds[id], 0);
 };
 
-void Audio::toggleMute(bool isMusic) // Todo: Mute should mute sound, not disable it
+// Todo: Mute should mute sound, not disable it
+void Audio::setMuted(bool isMuted, bool isMusic)
 {
 	if (isMusic)
 	{
-		isMusicMuted = !isMusicMuted;
+		isMusicMuted = isMuted;
 	}
 	else
 	{
-		isSoundsMuted = !isSoundsMuted;
+		isSoundsMuted = isMuted;
 	}
 }
 
