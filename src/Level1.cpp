@@ -17,15 +17,12 @@ void Level1::load()
 	ShipParams sonicParams = getShipParams(system->getWindowSize(), SONIC_A);
 	ShipParams pirateParams = getShipParams(system->getWindowSize(), PIRATE_A);
 
-	Audio* audioPlayer = system->getAudioPlayer();
-	Loop* gameLoop = system->getGameLoop();
-
 	Background* backgroundLvl1 = new Background(renderer, "res/space.png");
-
 	PlayerShip* playerShip = new PlayerShip(system, "res/shipA.png", sonicParams);
 	EnemyShip* pirate = new EnemyShip(system, "res/pirateA.png", pirateParams, playerShip);
 
 	// Prepare level audio
+	Audio* audioPlayer = system->getAudioPlayer();
 	audioPlayer->loadMusic("res/lvl1.mp3");
 	audioPlayer->playMusic(); 
 

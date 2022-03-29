@@ -4,15 +4,13 @@
 #include "Texture.h"
 #include "App.h"
 
-const enum Type { STATIC, DYNAMIC };
-
 class Background : public Texture
 {
 private:
 	int scrollingOffset;
-	Type mode;
+	bool isDynamic;
 public: 
-	Background(SDL_Renderer* p_renderer, std::string path, Type p_mode = DYNAMIC);
+	Background(SDL_Renderer* p_renderer, std::string path, bool p_isDynamic = true);
 	virtual void onBeforeRender();
 	virtual void onAfterRender();
 	virtual void handleEvent(SDL_Event& e);

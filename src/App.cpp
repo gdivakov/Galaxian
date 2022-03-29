@@ -98,7 +98,7 @@ App::App(int screenWidth, int screenHeight)
 
 	windowSize = { screenWidth, screenHeight };
 
-	//SDL_SetRelativeMouseMode(SDL_TRUE); // Todo: uncomment later
+	SDL_SetRelativeMouseMode(SDL_TRUE); // Todo: uncomment later
 
 	if (!windowed)
 	{

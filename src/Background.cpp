@@ -2,9 +2,9 @@
 #include "Texture.h"
 #include <iostream>
 
-Background::Background(SDL_Renderer* p_renderer, std::string path, Type p_mode) : Texture(p_renderer) // Todo: set diff modes (static and scrolled)
+Background::Background(SDL_Renderer* p_renderer, std::string path, bool p_isDynamic) : Texture(p_renderer) // Todo: set diff modes (static and scrolled)
 {
-	mode = p_mode;
+	isDynamic = p_isDynamic;
 	loadFromFile(path);
 
 	scrollingOffset = 0;
@@ -12,7 +12,7 @@ Background::Background(SDL_Renderer* p_renderer, std::string path, Type p_mode) 
 
 void Background::onBeforeRender()
 {
-	if (mode != DYNAMIC)
+	if (!isDynamic)
 	{
 		render(0, 0);
 		return;

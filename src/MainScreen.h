@@ -15,5 +15,6 @@ public:
 		LevelBase(p_system), controller(p_controller) {};
 	virtual void load();
 	void startGame();
+	//void openSettings();
 	void quit();
 }; 

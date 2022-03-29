@@ -2,6 +2,7 @@
 #include "Vector2.h";
 #include <math.h>
 #include <vector>
+#include <SDL.h>
 
 const int WINDOWED_WIDTH = 920;
 const int WINDOWED_HEIGHT = 620;
@@ -64,3 +65,7 @@ struct TextureParams
 };
 
 const float RAD_TO_DEG = 180.0f / M_PI;
+
+const SDL_Color textColor = { 0, 0, 0 };
+const SDL_Color selectedOptionColor = { 1, 98, 177 };
+const SDL_Color selectedDisabledOptionColor = { 153, 153, 153 };
