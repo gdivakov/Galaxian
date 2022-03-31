@@ -5,55 +5,55 @@
 Ship::Ship(
     const App* p_system,
     std::string path,
-    ShipParams params
-) : rect(params.rect),
-    system(p_system),
+    ShipParams params,
+    LevelBase* p_level
+) : system(p_system),
     Texture(p_system->getRenderer()),
-    gun(params.gunType, p_system->getRenderer(), this),
-    type(params.type)
+    //type(params.type),
+    level(p_level)
 {
+    gun = new WeaponModule(params.gunType, p_system, this);
     frame = 0;
-    velX = velY = 0;
-    maxVelocity = params.maxVelocity;
+    vel = Vector2();
+    maxSpeed = params.maxSpeed;
 
     loadFromSprite(path, params.sprite);
+
+    size = { getWidth(), getHeight() };
+    collider.r = getHeight()/2; // Todo: change here
+
+    //shiftColliders();
 }
 
-SDL_Rect* Ship::getRect()
-{
-    return &rect;
-}
+//bool checkCollision(Ship* p_collidedShip)
+//{
+//    
+//}
+
+//SDL_Rect* Ship::getRect()
+//{
+//    return &rect;
+//}
 
 void Ship::move()
 {
-    rect.x += velX;
+    pos += vel;
 
-    if ((rect.x < 0) || (rect.x + rect.w > system->getWindowSize()->w))
+    // Check boundaries
+    if ((pos.x < 0) || (pos.x + size.w > system->getWindowSize()->w))
     {
-        rect.x -= velX;
+        pos.x -= vel.x;
     }
 
-    rect.y += velY;
-
-    if ((rect.y < 0) || (rect.y + rect.h > system->getWindowSize()->h))
+    if ((pos.y < 0) || (pos.y + size.h > system->getWindowSize()->h))
     {
-        rect.y -= velY;
+        pos.y -= vel.y;
     }
-}
-
-void Ship::onBeforeRender()
-{
-    move();
-    std::vector<SDL_Rect>& shipClips = getClips();
-    SDL_Rect* currentClip = &shipClips[frame / shipClips.size()];
-    render(rect.x, rect.y, currentClip);
-
-    gun.onBeforeRender();
 }
 
 void Ship::onAfterRender()
 {
-    gun.onAfterRender();
+    gun->onAfterRender();
     
     int clipLength = getClips().size();
 
@@ -62,4 +62,12 @@ void Ship::onAfterRender()
     {
     	frame = 0;
     }
+}
+
+Ship::~Ship()
+{
+    delete gun;
+    gun = NULL;
+    system = NULL;
+    level = NULL;
 }

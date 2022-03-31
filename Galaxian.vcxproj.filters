@@ -49,6 +49,18 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Source Files\Levels\Level1">
+      <UniqueIdentifier>{3c91db06-5333-40a9-bfbe-d94cee8adca7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Levels\General">
+      <UniqueIdentifier>{1aa2101d-64de-4af6-97ad-9443df59e4d6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Levels\General">
+      <UniqueIdentifier>{aca3f46b-d87c-414d-9093-a8879e38d087}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Levels\Level1">
+      <UniqueIdentifier>{c80fba55-ed63-4afe-8d37-f5a79fb8718f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Main.cpp">
@@ -93,26 +105,29 @@
     <ClCompile Include="src\BezierPath.cpp">
       <Filter>Source Files\Services</Filter>
     </ClCompile>
-    <ClCompile Include="src\Level1.cpp">
-      <Filter>Source Files\Levels</Filter>
-    </ClCompile>
     <ClCompile Include="src\MainScreen.cpp">
       <Filter>Source Files\Levels\MainScreen</Filter>
     </ClCompile>
     <ClCompile Include="src\ControlPanel.cpp">
       <Filter>Source Files\Levels\MainScreen</Filter>
     </ClCompile>
-    <ClCompile Include="src\LevelBase.cpp">
-      <Filter>Source Files\Levels</Filter>
-    </ClCompile>
-    <ClCompile Include="src\LevelManager.cpp">
-      <Filter>Source Files\Levels</Filter>
-    </ClCompile>
     <ClCompile Include="src\Settings.cpp">
       <Filter>Source Files\Levels\MainScreen</Filter>
     </ClCompile>
-    <ClCompile Include="DiskManager.cpp">
-      <Filter>Source Files\Services</Filter>
+    <ClCompile Include="src\Level1.cpp">
+      <Filter>Source Files\Levels\Level1</Filter>
+    </ClCompile>
+    <ClCompile Include="src\PauseView.cpp">
+      <Filter>Source Files\Levels\General</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Hood.cpp">
+      <Filter>Source Files\Levels\General</Filter>
+    </ClCompile>
+    <ClCompile Include="src\LevelBase.cpp">
+      <Filter>Source Files\Levels\General</Filter>
+    </ClCompile>
+    <ClCompile Include="src\LevelManager.cpp">
+      <Filter>Source Files\Levels\General</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -158,20 +173,11 @@
     <ClInclude Include="src\BezierPath.h">
       <Filter>Header Files\Services</Filter>
     </ClInclude>
-    <ClInclude Include="src\Level1.h">
-      <Filter>Header Files\Levels</Filter>
-    </ClInclude>
     <ClInclude Include="src\MainScreen.h">
       <Filter>Header Files\Levels\MainScreen</Filter>
     </ClInclude>
-    <ClInclude Include="src\LevelBase.h">
-      <Filter>Header Files\Levels</Filter>
-    </ClInclude>
     <ClInclude Include="src\ControlPanel.h">
       <Filter>Header Files\Levels\MainScreen</Filter>
-    </ClInclude>
-    <ClInclude Include="src\LevelManager.h">
-      <Filter>Header Files\Levels</Filter>
     </ClInclude>
     <ClInclude Include="src\PanelConsts.h">
       <Filter>Header Files\Levels\MainScreen</Filter>
@@ -185,13 +191,28 @@
     <ClInclude Include="src\SettingsConsts.h">
       <Filter>Header Files\Levels\MainScreen</Filter>
     </ClInclude>
-    <ClInclude Include="DiskManager.h">
-      <Filter>Header Files\Services</Filter>
+    <ClInclude Include="src\Level1.h">
+      <Filter>Header Files\Levels\Level1</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Hood.h">
+      <Filter>Header Files\Levels\General</Filter>
+    </ClInclude>
+    <ClInclude Include="src\LevelBase.h">
+      <Filter>Header Files\Levels\General</Filter>
+    </ClInclude>
+    <ClInclude Include="src\LevelManager.h">
+      <Filter>Header Files\Levels\General</Filter>
+    </ClInclude>
+    <ClInclude Include="src\PauseView.h">
+      <Filter>Header Files\Levels\General</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Galaxian.aps" />
     <None Include=".gitignore" />
+    <None Include="res\store\settings.bin">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Media Include="res\lvl1.mp3">

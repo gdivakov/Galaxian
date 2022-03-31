@@ -13,12 +13,13 @@ class Settings
 	SDL_Renderer* renderer;
 	const App* system;
 	TTF_Font* font;
-	std::vector<SettingsOption> settingsOptions;
-	int selectedSettingsIdx;
-	bool isSettingsConfirmSelected;
-	Texture* settingsConfirmButton;
+	std::vector<SettingsOption> options;
+	int selectedIdx;
+	bool isConfirmSelected;
+	Texture* confirmButton;
 	bool& isOpened;
 	std::vector<int> config;
+	void close();
 public: 
 	Settings(const App* p_system, bool& p_isOpened);
 	~Settings();

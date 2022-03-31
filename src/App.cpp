@@ -99,8 +99,8 @@ App::App(int screenWidth, int screenHeight)
 		return;
 	}
 
-	audioPlayer->setMuted(!settingsConfig[MUSIC_IDX]);
-	audioPlayer->setMuted(!settingsConfig[SOUNDS_IDX], false);
+	//audioPlayer->setMuted(!settingsConfig[MUSIC_IDX]);
+	//audioPlayer->setMuted(!settingsConfig[SOUNDS_IDX], false);
 
 	windowSize = { screenWidth, screenHeight };
 

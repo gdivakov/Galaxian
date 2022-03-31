@@ -14,8 +14,8 @@ Texture::Texture(SDL_Renderer* p_renderer)
 {
 	renderer = p_renderer;
 	texture = NULL;
-	width = 0;
-	height = 0;
+	size.w = 0;
+	size.h = 0;
 }
 
 Texture::~Texture()
@@ -61,8 +61,8 @@ bool Texture::loadFromFile(std::string path, RGB* colorKeyRGB)
 		return false;
 	}
 
-	width = loadedSurface->w;
-	height = loadedSurface->h;
+	size.w = loadedSurface->w;
+	size.h = loadedSurface->h;
 	texture = preparedTexture;
 
 	SDL_FreeSurface(loadedSurface);
@@ -103,8 +103,8 @@ bool Texture::loadFromRenderedText(TTF_Font* font, std::string textureText, SDL_
 		return false;
 	}
 	
-	width = textSurface->w;
-	height = textSurface->h;
+	size.w = textSurface->w;
+	size.h = textSurface->h;
 	texture = preparedTexture;
 
 	SDL_FreeSurface(textSurface);
@@ -113,15 +113,14 @@ bool Texture::loadFromRenderedText(TTF_Font* font, std::string textureText, SDL_
 }
 
 void Texture::render(
-	int x, 
-	int y, 
+	Vector2 pos,
 	SDL_Rect* clip, 
 	double angle, 
 	SDL_Point* center, 
 	SDL_RendererFlip flip
 )
 {
-	SDL_Rect renderQuad = { x, y, width, height };
+	SDL_Rect renderQuad = { pos.x, pos.y, size.w, size.h };
 
 	if (clip != NULL)
 	{
@@ -135,12 +134,12 @@ void Texture::render(
 
 int Texture::getWidth()
 {
-	return width;
+	return size.w;
 }
 
 int Texture::getHeight()
 {
-	return height;
+	return size.h;
 }
 
 bool Texture::loadFromSprite(std::string path, SpriteParams params, RGB* colorKeyRGB)
@@ -149,6 +148,9 @@ bool Texture::loadFromSprite(std::string path, SpriteParams params, RGB* colorKe
 	{
 		return false;
 	}
+
+	size.w = params.imageW;
+	size.h = params.imageH;
 
 	for (int i = 0; i < params.length; i++)
 	{
@@ -173,8 +175,8 @@ void Texture::free()
 
 	SDL_DestroyTexture(texture);
 	texture = NULL;
-	width = 0;
-	height = 0;
+	size.w = 0;
+	size.h = 0;
 }
 
 void Texture::handleEvent(SDL_Event& e)

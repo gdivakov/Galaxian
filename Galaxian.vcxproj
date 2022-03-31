@@ -19,7 +19,8 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="DiskManager.cpp" />
+    <ClCompile Include="src\PauseView.cpp" />
+    <ClCompile Include="src\Hood.cpp" />
     <ClCompile Include="src\Settings.cpp" />
     <ClCompile Include="src\LevelManager.cpp" />
     <ClCompile Include="src\ControlPanel.cpp" />
@@ -42,7 +43,8 @@
     <ClCompile Include="src\Vector2.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="DiskManager.h" />
+    <ClInclude Include="src\PauseView.h" />
+    <ClInclude Include="src\Hood.h" />
     <ClInclude Include="src\SettingsConsts.h" />
     <ClInclude Include="src\Settings.h" />
     <ClInclude Include="src\Consts.h" />
@@ -70,6 +72,7 @@
   <ItemGroup>
     <None Include=".gitignore" />
     <None Include="Galaxian.aps" />
+    <None Include="res\store\settings.bin" />
   </ItemGroup>
   <ItemGroup>
     <Media Include="res\blast.mp3" />

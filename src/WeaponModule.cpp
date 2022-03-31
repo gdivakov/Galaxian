@@ -4,22 +4,20 @@ GunParams getGunParamsByType(GunType type);
 
 WeaponModule::WeaponModule(
 	GunType initGunType,
-	SDL_Renderer* p_renderer,
+	const App* p_system,
 	Ship* p_ship
-) : Texture(p_renderer), ammo(initGunType, p_renderer)
+) : Texture(p_system->getRenderer()), system(p_system)
 {
+	ammo = new Projectile(initGunType, system->getRenderer(), p_ship);
 	ship = p_ship;
 	isOnCooldown = false;
 
 	// Prepare gun
 	GunParams gunParams = getGunParamsByType(initGunType);
 	cooldownMs = gunParams.cooldownMs;
-
 	availableGuns.push_back(initGunType);
 	selectedGun = availableGuns[0];
-
-	Audio* audioPlayer = p_ship->getAudioPlayer();
-	fireSoundId = audioPlayer->loadSound("res/blast.mp3");
+	fireSoundId = system->getAudioPlayer()->loadSound("res/blast.mp3");
 }
 
 void WeaponModule::fire()
@@ -29,8 +27,8 @@ void WeaponModule::fire()
 		return;
 	}
 
-	ship->getAudioPlayer()->playSound(fireSoundId);
-	ammo.startProjectile(ship->getRect());
+	system->getAudioPlayer()->playSound(fireSoundId);
+	ammo->startProjectile(ship->getRect());
 
 
 	if (cooldownMs != 0) {
@@ -50,7 +48,7 @@ void WeaponModule::removeGun()
 
 void WeaponModule::handleEvent(SDL_Event& e)
 {
-	ammo.handleEvent(e);
+	ammo->handleEvent(e);
 
 	const Uint8* currentKeyStates = SDL_GetKeyboardState(NULL);
 
@@ -63,7 +61,7 @@ void WeaponModule::handleEvent(SDL_Event& e)
 }
 void WeaponModule::onBeforeRender()
 {
-	ammo.onBeforeRender();
+	ammo->onBeforeRender();
 
 	if (isOnCooldown && cooldownTimer.getTicks() > cooldownMs)
 	{
@@ -74,12 +72,14 @@ void WeaponModule::onBeforeRender()
 
 void WeaponModule::onAfterRender()
 {
-	ammo.onAfterRender();
+	ammo->onAfterRender();
 }
 
 WeaponModule::~WeaponModule()
 {
 	ship = NULL;
+	delete ammo;
+	ammo = NULL;
 }
 
 GunParams getGunParamsByType(GunType type)

@@ -27,3 +27,8 @@ void LevelBase::deregisterListeners()
 
 	objsToFree.clear();
 }
+
+void LevelBase::quit()
+{
+	controller->stop();
+}

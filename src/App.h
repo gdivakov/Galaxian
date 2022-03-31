@@ -7,12 +7,6 @@
 #include "Loop.h"
 #include "Consts.h"
 
-struct Size 
-{
-	int w;
-	int h;
-};
-
 class App
 {
 public: 

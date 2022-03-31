@@ -1,4 +1,5 @@
 #include "Settings.h"
+#include "Vector2.h"
 
 Settings::Settings(const App* p_system, bool& p_isOpened)
     :system(p_system), 
@@ -6,9 +7,9 @@ Settings::Settings(const App* p_system, bool& p_isOpened)
     isOpened(p_isOpened)
 {
     font = TTF_OpenFont("res/Staatliches-Regular.ttf", 35);
-    selectedSettingsIdx = 0;
-    isSettingsConfirmSelected = false;
-    settingsConfirmButton = NULL;
+    selectedIdx = 0;
+    isConfirmSelected = false;
+    confirmButton = NULL;
     config = readSettingsConfig();
 
     loadOptions();
@@ -39,7 +40,7 @@ void Settings::loadOptions()
             type == SWITCHABLE ?
             STATUSES[config[i]] :
             SUPPORTED_LANGUAGES[ENGLISH],
-            selectedSettingsIdx == i ? selectedOptionColor : textColor
+            selectedIdx == i ? selectedOptionColor : textColor
         );
 
         SettingsOption option =
@@ -51,15 +52,15 @@ void Settings::loadOptions()
             type == LANGUAGE || i == FULLSCREEN_IDX, // isDisabled option (not supported now)
         };
 
-        settingsOptions.push_back(option);
+        options.push_back(option);
     }
 
     // Load confirm button 
-    settingsConfirmButton = new Texture(renderer);
-    settingsConfirmButton->loadFromRenderedText(
+    confirmButton = new Texture(renderer);
+    confirmButton->loadFromRenderedText(
         font,
         CONFIRM_BUTTON_TEXT,
-        isSettingsConfirmSelected ? selectedOptionColor : textColor
+        isConfirmSelected ? selectedOptionColor : textColor
     );
 }
 
@@ -84,14 +85,14 @@ void Settings::render()
 
     for (int i = 0, offset = margin / 3; i < NAMES.size(); i++, offset += margin)
     {
-        Texture* option = settingsOptions[i].option;
-        Texture* displayedValue = settingsOptions[i].displayedValue;
+        Texture* option = options[i].option;
+        Texture* displayedValue = options[i].displayedValue;
 
         int offsetHeight = rect.y + offset;
         int offsetWidth = rect.x + margin / 2;
 
         // Hightlight selected option
-        if (selectedSettingsIdx == i && !isSettingsConfirmSelected)
+        if (selectedIdx == i && !isConfirmSelected)
         {
             SDL_Point selectedOptionPos = { rect.x + rect.w - displayedValue->getWidth() - margin / 2, offsetHeight };
 
@@ -106,33 +107,33 @@ void Settings::render()
             SDL_RenderFillRect(renderer, &rect);
         }
 
-        option->render(offsetWidth, offsetHeight);
-        displayedValue->render(rect.x + rect.w - displayedValue->getWidth() - margin / 2, offsetHeight);
+        option->render(Vector2(offsetWidth, offsetHeight));
+        displayedValue->render(Vector2(rect.x + rect.w - displayedValue->getWidth() - margin / 2, offsetHeight));
     }
 }
 
 void Settings::updateSelectedOption(int nextIdx)
 {
     // Hover out confirm button
-    if (nextIdx != settingsOptions.size() && isSettingsConfirmSelected)
+    if (nextIdx != options.size() && isConfirmSelected)
     {
-        settingsConfirmButton->loadFromRenderedText(
+        confirmButton->loadFromRenderedText(
             font,
             CONFIRM_BUTTON_TEXT,
             textColor
         );
 
-        isSettingsConfirmSelected = false;
+        isConfirmSelected = false;
     }
     else {
         // Hover out settings option
-        SettingsOption selectedOption = settingsOptions[selectedSettingsIdx];
+        SettingsOption selectedOption = options[selectedIdx];
 
         std::string optionText = selectedOption.type == SWITCHABLE ?
             STATUSES[selectedOption.value] :
             SUPPORTED_LANGUAGES[selectedOption.value];
 
-        settingsOptions[selectedSettingsIdx].displayedValue->loadFromRenderedText(
+        options[selectedIdx].displayedValue->loadFromRenderedText(
             font,
             optionText,
             textColor
@@ -140,40 +141,40 @@ void Settings::updateSelectedOption(int nextIdx)
     }
 
     // Hover in confirm button selection
-    if (nextIdx == settingsOptions.size())
+    if (nextIdx == options.size())
     {
-        settingsConfirmButton->loadFromRenderedText(
+        confirmButton->loadFromRenderedText(
             font,
             CONFIRM_BUTTON_TEXT,
             selectedOptionColor
         );
 
-        isSettingsConfirmSelected = true;
+        isConfirmSelected = true;
     }
     else {
         // Hover out settings option
-        SettingsOption nextOption = settingsOptions[nextIdx];
+        SettingsOption nextOption = options[nextIdx];
 
         std::string optionText = nextOption.type == SWITCHABLE ?
             STATUSES[nextOption.value] :
             SUPPORTED_LANGUAGES[nextOption.value];
 
         // Hover in settings option
-        settingsOptions[nextIdx].displayedValue->loadFromRenderedText(
+        options[nextIdx].displayedValue->loadFromRenderedText(
             font,
             optionText,
             nextOption.isDisabled ? selectedDisabledOptionColor : selectedOptionColor
         );
     }
 
-    selectedSettingsIdx = nextIdx;
+    selectedIdx = nextIdx;
 }
 
 void Settings::updateValue()
 {
     int nextValue;
     std::string nextTextValue;
-    SettingsOption updatedOption = settingsOptions[selectedSettingsIdx];
+    SettingsOption updatedOption = options[selectedIdx];
 
     if (updatedOption.isDisabled)
     {
@@ -186,12 +187,12 @@ void Settings::updateValue()
         nextTextValue = SUPPORTED_LANGUAGES[nextValue];
     }
     else {
-        bool isDisabled = settingsOptions[selectedSettingsIdx].value == DISABLED;
+        bool isDisabled = options[selectedIdx].value == DISABLED;
         nextValue = isDisabled ? ENABLED : DISABLED;
         nextTextValue = STATUSES[nextValue];
 
         bool isMuted;
-        switch (selectedSettingsIdx)
+        switch (selectedIdx)
         {
         case MUSIC_IDX:
             isMuted = system->getAudioPlayer()->isMusicMuted;
@@ -205,9 +206,9 @@ void Settings::updateValue()
         }
     }
 
-    config[selectedSettingsIdx] = nextValue;
-    settingsOptions[selectedSettingsIdx].value = nextValue;
-    settingsOptions[selectedSettingsIdx].displayedValue->loadFromRenderedText(
+    config[selectedIdx] = nextValue;
+    options[selectedIdx].value = nextValue;
+    options[selectedIdx].displayedValue->loadFromRenderedText(
         font,
         nextTextValue,
         selectedOptionColor
@@ -223,13 +224,13 @@ void Settings::renderConfirm()
         WINDOWED_HEIGHT - WINDOWED_HEIGHT / 7
     };
 
-    int buttonWidth = settingsConfirmButton->getWidth();
-    int buttonHeight = settingsConfirmButton->getHeight();
+    int buttonWidth = confirmButton->getWidth();
+    int buttonHeight = confirmButton->getHeight();
     int offsetWidth = rect.x + (rect.w - buttonWidth) / 2;
     int offsetHeight = rect.y + rect.h - buttonHeight - 16;
 
     // Hightlight selected option
-    if (isSettingsConfirmSelected)
+    if (isConfirmSelected)
     {
         SDL_Point selectedOptionPos = { offsetWidth, offsetHeight };
 
@@ -244,7 +245,7 @@ void Settings::renderConfirm()
         SDL_RenderFillRect(renderer, &selectedRect);
     }
 
-    settingsConfirmButton->render(offsetWidth, offsetHeight);
+    confirmButton->render(Vector2(offsetWidth, offsetHeight));
 }
 
 void Settings::handleEvent(SDL_Event& e)
@@ -255,16 +256,12 @@ void Settings::handleEvent(SDL_Event& e)
     }
 
     char keyDown = e.key.keysym.scancode;
-    int nextSelectedSettingsIdx;
 
     if (keyDown == SDL_SCANCODE_RETURN)
     {
-        if (isSettingsConfirmSelected)
+        if (isConfirmSelected)
         {
-            writeSettingsConfig(config);
-            updateSelectedOption(0);
-
-            isOpened = false;
+            close();
         }
         else {
             updateValue();
@@ -277,35 +274,43 @@ void Settings::handleEvent(SDL_Event& e)
     {
     case SDLK_UP:
     case SDLK_w:
-        if (selectedSettingsIdx - 1 >= 0)
+        if (selectedIdx - 1 >= 0)
         {
-            nextSelectedSettingsIdx = selectedSettingsIdx - 1;
-            updateSelectedOption(nextSelectedSettingsIdx);
+            updateSelectedOption(selectedIdx - 1);
         }
         break;
     case SDLK_DOWN:
     case SDLK_s:
-        if (selectedSettingsIdx + 1 <= settingsOptions.size())
+        if (selectedIdx + 1 <= options.size())
         {
-            nextSelectedSettingsIdx = selectedSettingsIdx + 1;
-            updateSelectedOption(nextSelectedSettingsIdx);
+            updateSelectedOption(selectedIdx + 1);
         }
         break;
+    case SDLK_ESCAPE:
+        close();
     }
+}
+
+void Settings::close()
+{
+    writeSettingsConfig(config);
+    updateSelectedOption(0);
+
+    isOpened = false;
 }
 
 Settings::~Settings()
 {
-    delete settingsConfirmButton;
+    delete confirmButton;
 
-    for (int i = 0; i < settingsOptions.size(); i++)
+    for (int i = 0; i < options.size(); i++)
     {
-        delete settingsOptions[i].option;
-        delete settingsOptions[i].displayedValue;
+        delete options[i].option;
+        delete options[i].displayedValue;
     }
 
     TTF_CloseFont(font);
-    settingsOptions.clear();
+    options.clear();
     font = NULL;
-    settingsConfirmButton = NULL;
+    confirmButton = NULL;
 }

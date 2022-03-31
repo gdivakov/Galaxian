@@ -1,6 +1,7 @@
 #include <iostream>
 
 #include "Projectile.h"
+#include "Vector2.h"
 
 struct AmmoParams
 {
@@ -18,14 +19,15 @@ const int LAZER_AMMO_SPEED = 1000;
 TextureParams ROCKET_AMMO_TEXTURE_PARAMS = { TEXTURE_SPRITE, "res/rocket3.png", { 30, 50, 2 } };
 TextureParams LAZER_AMMO_TEXTURE_PARAMS = { TEXTURE_SPRITE, "res/lazer_ammo.png" , { 27, 111, 3 } };
 
-Projectile::Projectile(GunType p_type, SDL_Renderer* p_renderer) : Texture(p_renderer)
+Projectile::Projectile(GunType p_type, SDL_Renderer* p_renderer, Ship* p_ship) : Texture(p_renderer)
 {
 	AmmoParams params = getAmmoParamsByGunType(gunType);
 
-	width = params.texture.spriteParams.imageW; // Todo: Only from sprites for now (add texture support)
-	height = params.texture.spriteParams.imageH;
-	vel = params.speed; // Todo: replace by velocity
+	size.w = params.texture.spriteParams.imageW; // Todo: Only from sprites for now (add texture support)
+	size.h = params.texture.spriteParams.imageH;
+	speed = params.speed; // Todo: replace by velocity
 	gunType = p_type;
+	ship = p_ship;
 
 	loadFromSprite(params.texture.path, params.texture.spriteParams);
 
@@ -55,11 +57,11 @@ Projectile::Projectile(GunType p_type, SDL_Renderer* p_renderer) : Texture(p_ren
 	//}
 }
 
-void Projectile::startProjectile(const SDL_Rect* shipRect)
+void Projectile::startProjectile(const ShipRect shipRect)
 {
 	// Todo: relate x and y on gun position
 	FlyingProjectile newProjectile = {
-		{ shipRect->x + (shipRect->w - width) / 2, shipRect->y - height },
+		{ shipRect.pos.x + (shipRect.size.w - size.w) / 2, shipRect.pos.y - size.h },
 		0,
 		false
 	};
@@ -69,7 +71,7 @@ void Projectile::startProjectile(const SDL_Rect* shipRect)
 
 void Projectile::move(FlyingProjectile* pj)
 {
-	pj->position.y -= vel;
+	pj->position.y -= speed;
 }
 
 void Projectile::handleEvent(SDL_Event& e)
@@ -81,9 +83,9 @@ void Projectile::onBeforeRender()
 	{
 		FlyingProjectile& pj = releasedPjs[i];
 
-		if (pj.isStarted)
+		if (pj.isStarted && !ship->level->isPaused)
 		{
-			move(&pj);
+			move(&pj); 
 		}
 
 		// Limit clips if exploaded
@@ -92,7 +94,7 @@ void Projectile::onBeforeRender()
 			clips[pj.frame / clips.size()]:
 			explosionClips[pj.frame / explosionClips.size()];
 
-		render(releasedPjs[i].position.x, releasedPjs[i].position.y, currentClip);
+		render(Vector2(releasedPjs[i].position.x, releasedPjs[i].position.y), currentClip);
 	}
 }
 

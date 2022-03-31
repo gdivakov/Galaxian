@@ -7,6 +7,8 @@
 #include <vector>
 
 #include "Object.h"
+#include "Vector2.h"
+#include "Consts.h"
 
 struct RGB;
 struct SpriteParams;
@@ -21,19 +23,19 @@ public:
 	bool loadFromFile(std::string path, RGB* colorKeyRGB = NULL);
 	bool loadFromSprite(std::string, SpriteParams params, RGB* colorKeyRGB = NULL);
 	bool loadFromRenderedText(TTF_Font* font, std::string textureText, SDL_Color textColor);
-	void render(int x, int y, SDL_Rect* clip = NULL, double angle = 0.0, SDL_Point* center = NULL, SDL_RendererFlip flip = SDL_FLIP_NONE);
+	void render(Vector2 pos, SDL_Rect* clip = NULL, double angle = 0.0, SDL_Point* center = NULL, SDL_RendererFlip flip = SDL_FLIP_NONE);
 	void free();
 
 	int getWidth();
-	int getHeight();
+	int getHeight(); // Todo: replace these functs by size using
+	Size size;
+
 	Clips& getClips();
 
 	void virtual handleEvent(SDL_Event& e);
 private: 
 	SDL_Texture* texture;
 	Clips spriteClips;
-	int width;
-	int height;
 protected:
 	SDL_Renderer* renderer;
 

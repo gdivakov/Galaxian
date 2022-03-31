@@ -4,7 +4,7 @@
 
 void MainScreen::load()
 {
-	Background* bgMain = new Background(renderer, "res/main_screen_bg.png", false);
+	Background* bgMain = new Background(renderer, "res/main_screen_bg.png", this, false);
 	ControlPanel* panel = new ControlPanel(renderer, system, this);
 
 	eventListeners = { panel };
@@ -17,9 +17,4 @@ void MainScreen::load()
 void MainScreen::startGame()
 {
 	controller->start(LEVEL_1);
-}
-
-void MainScreen::quit()
-{
-	controller->stop();
 }

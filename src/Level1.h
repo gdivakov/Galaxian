@@ -11,7 +11,7 @@ private:
 	LevelManager* controller;
 public: 
 	Level1(const App* p_system, LevelManager* p_controller) :
-		LevelBase(p_system), controller(p_controller) {};
+		LevelBase(p_system, p_controller) {};
 
 	virtual void load();
 };

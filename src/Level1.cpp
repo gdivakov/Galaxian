@@ -8,6 +8,7 @@
 #include "EnemyShip.h"
 #include "Background.h"
 #include "Consts.h"
+#include "Hood.h"
 
 ShipParams getShipParams(const Size* windowSize, const ShipType type);
 std::vector<BezierCurve> getEnemyPathCurves();
@@ -21,62 +22,53 @@ std::vector<BezierCurve> getEnemyPathCurves();
 // 6. 2 players game support 
 // 7. Fullscreen mode
 // 8. Russian language
-// 9. File saving progress and settings
+// ---> 9. File saving progress and settings
 // 10. More [ player ships, enemies, weapons, buffs, bosses, enemies behaviour logic ]
 // 11. Score at the end of the level with achieved weapon
+// ---> 12. Ship collision box
 
 void Level1::load() 
 {
 	ShipParams sonicParams = getShipParams(system->getWindowSize(), SONIC_A);
 	ShipParams pirateParams = getShipParams(system->getWindowSize(), PIRATE_A);
 
-	Background* backgroundLvl1 = new Background(renderer, "res/space.png");
-	PlayerShip* playerShip = new PlayerShip(system, "res/shipA.png", sonicParams);
-	EnemyShip* pirate = new EnemyShip(system, "res/pirateA.png", pirateParams, playerShip);
+	Background* backgroundLvl1 = new Background(renderer, "res/space.png", this);
+	Hood* hood = new Hood(renderer, this, system);
+
+	PlayerShip* playerShip = new PlayerShip(system, this, "res/shipA.png", sonicParams);
+
+	EnemyShip* pirate = new EnemyShip(
+		system, 
+		this, 
+		"res/pirateA.png", 
+		pirateParams, 
+		playerShip, 
+		getEnemyPathCurves()
+	);
 
 	// Prepare level audio
 	Audio* audioPlayer = system->getAudioPlayer();
 	audioPlayer->loadMusic("res/lvl1.mp3");
 	audioPlayer->playMusic(); 
 
-	eventListeners = { backgroundLvl1, playerShip, audioPlayer, pirate };
-	renderListeners = { backgroundLvl1, playerShip, pirate };
-	objsToFree = { backgroundLvl1, playerShip, pirate };
+	eventListeners = { backgroundLvl1, playerShip, audioPlayer, pirate, hood };
+	renderListeners = { backgroundLvl1, playerShip, pirate, hood };
+	objsToFree = { backgroundLvl1, playerShip, pirate, hood };
 
 	registerListeners();
 }
 
 ShipParams getShipParams(const Size* windowSize, const ShipType type)
 {
-	SpriteParams spriteParams;
-	SDL_Point pos;
-	ShipParams params;
-
 	switch (type)
 	{
 		case SONIC_A:
-			spriteParams = SONIC_A_SHIP;
-			params.maxVelocity = SONIC_A_VELOCITY;
-			params.gunType = ROCKET;
-			pos = { (windowSize->w - spriteParams.imageW) / 2, windowSize->h - spriteParams.imageH };
-			break;
+			return { SONIC_A_SHIP, ROCKET, SONIC_A_SPEED };
 		case PIRATE_A:
-			spriteParams = PIRATE_A_SHIP;
-			params.maxVelocity = PIRATE_A_VELOCITY;
-			params.gunType = ROCKET; // Todo: change 
-			pos = { (windowSize->w - spriteParams.imageW) / 4, spriteParams.imageH };
-			params.pathCurves = getEnemyPathCurves(); // to do: edit this => create function to set up all level enemies
-			break;
+			return { PIRATE_A_SHIP, ROCKET, PIRATE_A_SPEED };
 	}
-
-	Size shipSize = { spriteParams.imageW, spriteParams.imageH };
-
-	params.type = type;
-	params.sprite = spriteParams;
-	params.rect = { pos.x, pos.y, shipSize.w, shipSize.h };
-
-	return params;
 }
+
 
 std::vector<BezierCurve> getEnemyPathCurves()
 {

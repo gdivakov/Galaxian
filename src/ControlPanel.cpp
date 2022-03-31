@@ -1,4 +1,5 @@
 #include "ControlPanel.h"
+#include "Vector2.h"
 
 ControlPanel::ControlPanel(SDL_Renderer* p_renderer, const App* p_system, MainScreen* p_mainScreenPt)
 {
@@ -50,12 +51,14 @@ void ControlPanel::renderOptions()
             SDL_RenderFillRect(renderer, &rect);
         }
 
-        option->render(offsetWidth, offsetHeight + offset);
+        option->render(Vector2(offsetWidth, offsetHeight + offset));
     }
 
     tooltip->render(
-        (WINDOWED_WIDTH - tooltip->getWidth())/2, 
-        WINDOWED_HEIGHT - tooltip->getHeight() - 16
+        Vector2(
+            (WINDOWED_WIDTH - tooltip->getWidth())/2, 
+            WINDOWED_HEIGHT - tooltip->getHeight() - 16
+        )
     );
 }
 

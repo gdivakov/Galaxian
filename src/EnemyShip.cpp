@@ -5,13 +5,15 @@ double degreesToRadians(double degrees); // todo: set in consts.h
 
 EnemyShip::EnemyShip(
 	const App* p_system, 
+	LevelBase* p_level,
 	std::string p_path, 
 	ShipParams& params, 
-	PlayerShip* player
+	PlayerShip* p_player,
+	std::vector<BezierCurve> pathCurves
 ) :
-	Ship(p_system, p_path, params)
+	Ship(p_system, p_path, params, p_level),
+	player(p_player)
 {
-	playerRect = player->getRect();
 	rotation = 0;
 	currentWaypoint = 0;
 	inView = false;
@@ -20,33 +22,25 @@ EnemyShip::EnemyShip(
 
 	const int WAYPOINT_NUMBER = 3; // Todo: edit here
 
-	for (int i = 0; i < params.pathCurves.size(); i++)
+	for (int i = 0; i < pathCurves.size(); i++)
 	{
-		bezierPath->addCurve(params.pathCurves[i], WAYPOINT_NUMBER);
+		bezierPath->addCurve(pathCurves[i], WAYPOINT_NUMBER);
 	}
 
 	bezierPath->setPath(&path);
 
 	delete bezierPath;
 	
-	rect.x = path[0].x;
-	rect.y = path[0].y;
+	pos = path[0];
 
-	Vector2 top(rect.x + rect.w / 2, rect.y);
-	Vector2 center(rect.x + rect.w / 2, rect.y + rect.h / 2);
+	Vector2 top(pos.x + size.w / 2, pos.y);
+	Vector2 center = Vector2(pos.x, pos.y) + Vector2(size.w / 2, size.h / 2);
 
 	dir = top - center;
 }
 
-EnemyShip::~EnemyShip()
-{
-	playerRect = NULL;
-}
-
 void EnemyShip::followPath()
 {
-	Vector2 pos = Vector2(rect.x, rect.y);
-
 	if (currentWaypoint < path.size() && Vector2::getDistance(path[currentWaypoint], pos) < EPSILON)
 	{
 		currentWaypoint++;
@@ -55,12 +49,9 @@ void EnemyShip::followPath()
 	{
 		Vector2 moveDir = path[currentWaypoint] - pos;
 		Vector2 normMoveDir = moveDir / Vector2::getDistance(path[currentWaypoint], pos);
-		pos = pos + normMoveDir * maxVelocity/2;
+		pos = pos + normMoveDir * maxSpeed/2;
 
 		rotate(atan2(moveDir.y, moveDir.x) * RAD_TO_DEG + 90.0f);
-
-		rect.x = pos.x;
-		rect.y = pos.y;
 	}
 	else {
 		// finish path
@@ -69,23 +60,35 @@ void EnemyShip::followPath()
 
 void EnemyShip::onBeforeRender()
 {
-	gun.onBeforeRender();
+	gun->onBeforeRender();
 
-	followPath();
-	move();
+	if (!level->isPaused)
+	{
+		followPath();
+		move();
+	}
 
 	std::vector<SDL_Rect>& shipClips = getClips();
 	SDL_Rect* currentClip = &shipClips[frame / shipClips.size()];
-	Vector2 dirToRender = dir + Vector2(rect.x, rect.y);
+	Vector2 dirToRender = dir + Vector2(pos.x, pos.y);
 
-	render(rect.x - rect.w/2, rect.y - rect.h/2, currentClip, rotation, NULL);
+	render(pos - Vector2(size.w / 2, size.h / 2), currentClip, rotation, NULL);
 	
 	SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
 	//SDL_RenderDrawLine(renderer, rect.x, rect.y, dirToRender.x, dirToRender.y); // Direction line
 
 	if (inView)
 	{
-		SDL_RenderDrawLine(renderer, dirToRender.x, dirToRender.y, playerRect->x + playerRect->w/2, playerRect->y + playerRect->h / 2);
+
+		ShipRect playerRect = player->getRect();
+
+		SDL_RenderDrawLine(
+			renderer, 
+			dirToRender.x, 
+			dirToRender.y, 
+			playerRect.pos.x + playerRect.size.w/2, 
+			playerRect.pos.y + playerRect.size.h/2
+		);
 	}
 
 	//displayPath();
@@ -115,23 +118,15 @@ void EnemyShip::rotate(int r)
 	}
 }
 
-void EnemyShip::onAfterRender()
-{
-	gun.onAfterRender();
-
-	int clipLength = getClips().size();
-
-	++frame;
-	if (frame / clipLength >= clipLength)
-	{
-		frame = 0;
-	}
-}
-
 void EnemyShip::handleEvent(SDL_Event& e)
 {
+
+	if (level->isPaused)
+	{
+		return;
+	}
+
 	int rotateVal = 10;
-	Vector2 pos;
 
 	if (e.type == SDL_KEYDOWN)
 	{
@@ -162,15 +157,17 @@ double degreesToRadians(double degrees)
 
 void EnemyShip::isInView()
 {
+	ShipRect playerRect = player->getRect();
+
 	const float acceptableShift = 0.1;
 
-	Vector2 pos(rect.x + rect.w/2, rect.y + rect.h/2);
-	Vector2 enemyTop(rect.x + rect.w / 2, rect.y);
-	Vector2 enemyNorm = dir / Vector2::getDistance(enemyTop, pos);
+	Vector2 enemyCenter(pos.x + size.w/2, pos.y + size.h/2);
+	Vector2 enemyTop(enemyCenter.x + size.w / 2, enemyCenter.y);
+	Vector2 enemyNorm = dir / Vector2::getDistance(enemyTop, enemyCenter);
 
-	Vector2 playerCenter(playerRect->x + playerRect->w / 2, playerRect->y + playerRect->h / 2);
-	Vector2 playerDir = playerCenter - pos;
-	Vector2 playerNorm = playerDir / Vector2::getDistance(playerCenter, pos);
+	Vector2 playerCenter(playerRect.pos.x + playerRect.size.w / 2, playerRect.pos.y + playerRect.size.h / 2);
+	Vector2 playerDir = playerCenter - enemyCenter;
+	Vector2 playerNorm = playerDir / Vector2::getDistance(playerCenter, enemyCenter);
 
 	float coef = enemyNorm.x * playerNorm.x + enemyNorm.y * playerNorm.y;
 
@@ -215,6 +212,8 @@ void EnemyShip::updateDirection(float rotateVal, bool clockwise)
 
 //void EnemyShip::checkDirections()
 //{ 
+//	ShipRect playerRect = player->getRect();
+// 
 //	const float acceptableShift = 0.1;
 //
 //	Vector2 pos(rect.x + rect.w / 2, rect.y + rect.h / 2);

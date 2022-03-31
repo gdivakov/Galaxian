@@ -6,6 +6,8 @@
 
 const enum LEVELS { MAIN_MENU, LEVEL_1 };
 
+class LevelBase;
+
 class LevelManager
 {
 public:

@@ -4,17 +4,19 @@
 #include "Timer.h"
 #include "Projectile.h"
 #include "Consts.h"
+#include "Ship.h"
+#include "App.h"
 
 class Ship;
 class Projectile;
-class Texture;
 
+// Todo: refactor
 class WeaponModule : public Texture
 {
 public:
 	WeaponModule(
 		GunType initGunType, 
-		SDL_Renderer* renderer, 
+		const App* p_system,
 		Ship* p_ship
 	);
 	void fire();
@@ -33,7 +35,8 @@ private:
 	std::vector<GunType> availableGuns;
 	Timer cooldownTimer;
 	Ship* ship;
-	Projectile ammo;
+	Projectile* ammo;
+	const App* system;
 };
 
 const float ROCKET_COOLDOWN = 100.0f;

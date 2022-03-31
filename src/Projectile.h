@@ -3,7 +3,10 @@
 
 #include "Texture.h"
 #include "Consts.h"
+#include "Ship.h"
 
+class Ship;
+struct ShipRect;
 struct TextureParams;
 const enum GunType;
 
@@ -14,11 +17,12 @@ struct FlyingProjectile
 	bool isStarted;
 };
 
-class Projectile : public Texture // Todo: maybe create class ShipComponent? 
+// Todo: Refactor
+class Projectile : public Texture
 {
 public: 
-	Projectile(GunType p_type, SDL_Renderer* p_renderer);
-	void startProjectile(const SDL_Rect* shipRect);
+	Projectile(GunType p_type, SDL_Renderer* p_renderer, Ship* p_ship);
+	void startProjectile(const ShipRect shipRect);
 	void move(FlyingProjectile* pj);
 
 	void virtual handleEvent(SDL_Event& e);
@@ -28,10 +32,11 @@ private:
 	typedef std::vector<SDL_Rect*> ClipPointers;
 	typedef std::vector<FlyingProjectile> FlyingProjectiles;
 
-	int width, height;
-	int vel;
+	Size size;
+	int speed;
 	FlyingProjectiles releasedPjs;
 	ClipPointers explosionClips;
 	ClipPointers clips;
 	GunType gunType;
+	Ship* ship;
 };

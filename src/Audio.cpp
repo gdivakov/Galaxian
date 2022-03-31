@@ -1,11 +1,21 @@
 #include "Audio.h"
+#include "SettingsConsts.h"
+
+const int MUSIC_VOLUME = MIX_MAX_VOLUME / 10;
+const int SOUNDS_VOLUME = MIX_MAX_VOLUME / 20;
 
 Audio::Audio()
 {
+	std::vector<int> settingsConfig = readSettingsConfig();
+
+	isMusicMuted = !settingsConfig[MUSIC_IDX];
+	isSoundsMuted = !settingsConfig[SOUNDS_IDX];
+
 	mainTheme = NULL;
-	isMusicMuted = false;
-	isSoundsMuted = false;
 	key = 1; // 0 is reserved for error case
+
+	Mix_VolumeMusic(!isMusicMuted ? MUSIC_VOLUME : 0);
+	Mix_Volume(-1, !isSoundsMuted ? SOUNDS_VOLUME : 0);
 }
 
 Audio::~Audio()
@@ -34,7 +44,7 @@ bool Audio::loadMusic(std::string path)
 	return mainTheme != NULL;
 }
 
-short Audio::loadSound(std::string path) // Todo: set up correct volume level
+short Audio::loadSound(std::string path)
 {
 	short id = key;
 	key++;
@@ -52,21 +62,11 @@ short Audio::loadSound(std::string path) // Todo: set up correct volume level
 
 void Audio::playMusic()
 {
-	if (isMusicMuted) 
-	{
-		return;
-	}
-
 	Mix_PlayMusic(mainTheme, -1);
 }
 
 void Audio::playSound(short id)
 {
-	if (isSoundsMuted)
-	{
-		return;
-	}
-
 	if (!sounds[id])
 	{
 		std::cout << "Error while playing sound id: " << id << std::endl;
@@ -76,16 +76,30 @@ void Audio::playSound(short id)
 	Mix_PlayChannel(-1, sounds[id], 0);
 };
 
-// Todo: Mute should mute sound, not disable it
 void Audio::setMuted(bool isMuted, bool isMusic)
 {
 	if (isMusic)
 	{
 		isMusicMuted = isMuted;
+		Mix_VolumeMusic(isMuted ? 0 : MUSIC_VOLUME);
 	}
 	else
 	{
 		isSoundsMuted = isMuted;
+		Mix_Volume(-1, isMuted ? 0 : SOUNDS_VOLUME);
+	}
+}
+
+void Audio::togglePaused(bool p_isPaused)
+{
+	isPaused = p_isPaused;
+
+	if (isPaused)
+	{
+		Mix_PauseMusic();
+	}
+	else {
+		Mix_ResumeMusic();
 	}
 }
 

@@ -40,20 +40,23 @@ const struct BezierCurve {
 };
 
 struct ShipParams {
-	ShipType type;
 	SpriteParams sprite;
 	GunType gunType;
-	SDL_Rect rect;
-	int maxVelocity;
-	std::vector<BezierCurve> pathCurves;
-	// ...other params
+	int maxSpeed;
 };
+
+//struct EnemyShipParams {
+//	SpriteParams sprite;
+//	GunType gunType;
+//	int maxSpeed;
+//	std::vector<BezierCurve> pathCurves;
+//};
 
 const SpriteParams SONIC_A_SHIP = { 102, 114, 10 };
 const SpriteParams PIRATE_A_SHIP = { 65, 144, 10 };
 
-const int SONIC_A_VELOCITY = 6;
-const int PIRATE_A_VELOCITY = 5;
+const int SONIC_A_SPEED = 6;
+const int PIRATE_A_SPEED = 5;
 
 const enum TextureTypes { TEXTURE_SPRITE, TEXTURE_FILE };
 
@@ -69,3 +72,15 @@ const float RAD_TO_DEG = 180.0f / M_PI;
 const SDL_Color textColor = { 0, 0, 0 };
 const SDL_Color selectedOptionColor = { 1, 98, 177 };
 const SDL_Color selectedDisabledOptionColor = { 153, 153, 153 };
+
+struct Circle
+{
+	int x, y;
+	int r;
+};
+
+struct Size
+{
+	int w;
+	int h;
+};

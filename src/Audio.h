@@ -16,6 +16,7 @@ public:
 	void playMusic();
 	void playSound(short key);
 	void setMuted(bool isMuted, bool isMusic = true);
+	void togglePaused(bool p_isPaused = false);
 	virtual void handleEvent(SDL_Event& e);
 	bool isMusicMuted;
 	bool isSoundsMuted;
@@ -24,4 +25,5 @@ private:
 	short key;
 	Mix_Music* mainTheme;
 	SoundMap sounds;
+	bool isPaused;
 };
