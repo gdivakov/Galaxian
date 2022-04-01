@@ -35,12 +35,18 @@ void Level1::load()
 	Background* backgroundLvl1 = new Background(renderer, "res/space.png", this);
 	Hood* hood = new Hood(renderer, this, system);
 
-	PlayerShip* playerShip = new PlayerShip(system, this, "res/shipA.png", sonicParams);
+	PlayerShip* playerShip = new PlayerShip(
+		system, 
+		this, 
+		sonicParams
+	);
+
+	//playerShip.loadCollider();
+	//playerShip.removeCollider();
 
 	EnemyShip* pirate = new EnemyShip(
 		system, 
 		this, 
-		"res/pirateA.png", 
 		pirateParams, 
 		playerShip, 
 		getEnemyPathCurves()
@@ -58,17 +64,19 @@ void Level1::load()
 	registerListeners();
 }
 
+std::vector<SDL_Rect> SONIC_A_COLLIDERS = { { 0, 0, 29, 31 }, { 0, 0, 102, 51 } };
+std::vector<SDL_Rect> PIRATE_A_COLLIDERS = { { 0, 0, 17, 43 }, { 0, 0, 65, 57 } };
+
 ShipParams getShipParams(const Size* windowSize, const ShipType type)
 {
 	switch (type)
 	{
 		case SONIC_A:
-			return { SONIC_A_SHIP, ROCKET, SONIC_A_SPEED };
+			return { SONIC_A_SHIP, ROCKET, SONIC_A_SPEED, SONIC_A_COLLIDERS };
 		case PIRATE_A:
-			return { PIRATE_A_SHIP, ROCKET, PIRATE_A_SPEED };
+			return { PIRATE_A_SHIP, ROCKET, PIRATE_A_SPEED, PIRATE_A_COLLIDERS };
 	}
 }
-
 
 std::vector<BezierCurve> getEnemyPathCurves()
 {

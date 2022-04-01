@@ -1,11 +1,11 @@
 #include "PlayerShip.h"
+#include "Consts.h"
 
 PlayerShip::PlayerShip(
     const App* p_system, 
     LevelBase* p_level, 
-    std::string path, 
     ShipParams params) :
-	Ship(p_system, path, params, p_level) 
+	Ship(p_system, params, p_level) 
 {
     pos = Vector2((WINDOWED_WIDTH - getWidth())/2, WINDOWED_HEIGHT - getHeight() - 20);
 }
@@ -69,5 +69,13 @@ void PlayerShip::onBeforeRender()
 
     std::vector<SDL_Rect>& shipClips = getClips();
     SDL_Rect* currentClip = &shipClips[frame / shipClips.size()];
-    render(pos, currentClip);
+    Vector2 center(size.w/2, size.h/2);
+    render(pos - center, currentClip);
+
+    for (int i = 0; i < colliders.size(); i++)
+    {
+        SDL_RenderDrawRect(renderer, &colliders[i]);
+    }
+
+    DrawCircle(renderer, wrapperCollider.pos.x, wrapperCollider.pos.y, wrapperCollider.r);
 }

@@ -6,30 +6,28 @@
 struct AmmoParams
 {
 	int speed;
-	TextureParams texture;
+	SpriteParams texture;
 };
 
 AmmoParams getAmmoParamsByGunType(GunType type);
 
 const int EXPLOSION_PROJECTILE_CLIP_LENGTH = 1;
-
 const int ROCKET_AMMO_SPEED = 8;
 const int LAZER_AMMO_SPEED = 1000;
 
-TextureParams ROCKET_AMMO_TEXTURE_PARAMS = { TEXTURE_SPRITE, "res/rocket3.png", { 30, 50, 2 } };
-TextureParams LAZER_AMMO_TEXTURE_PARAMS = { TEXTURE_SPRITE, "res/lazer_ammo.png" , { 27, 111, 3 } };
+SpriteParams ROCKET_AMMO_TEXTURE_PARAMS = { "res/rocket3.png", 30, 50, 2 };
+SpriteParams LAZER_AMMO_TEXTURE_PARAMS = { "res/lazer_ammo.png", 27, 111, 3 };
 
 Projectile::Projectile(GunType p_type, SDL_Renderer* p_renderer, Ship* p_ship) : Texture(p_renderer)
 {
 	AmmoParams params = getAmmoParamsByGunType(gunType);
 
-	size.w = params.texture.spriteParams.imageW; // Todo: Only from sprites for now (add texture support)
-	size.h = params.texture.spriteParams.imageH;
-	speed = params.speed; // Todo: replace by velocity
+	size = { params.texture.imageW, params.texture.imageH };
+	speed = params.speed;
 	gunType = p_type;
 	ship = p_ship;
 
-	loadFromSprite(params.texture.path, params.texture.spriteParams);
+	loadFromSprite(params.texture.path, params.texture);
 
 	// Set up explosion and common clips
 	Clips& pjClips = getClips();
@@ -45,23 +43,15 @@ Projectile::Projectile(GunType p_type, SDL_Renderer* p_renderer, Ship* p_ship) :
 			clips.push_back(&pjClips[i]);
 		}
 	}
-
-	//if (params.texture.type == TEXTURE_SPRITE)
-	//{
-		//loadFromSprite(params.texture.path, params.texture.spriteParams);
-
-	//}
-	//else
-	//{
-	//	loadFromFile(params.texture.path);
-	//}
 }
 
-void Projectile::startProjectile(const ShipRect shipRect)
+void Projectile::startProjectile()
 {
+
+	ShipRect shipRect = ship->getRect();
 	// Todo: relate x and y on gun position
 	FlyingProjectile newProjectile = {
-		{ shipRect.pos.x + (shipRect.size.w - size.w) / 2, shipRect.pos.y - size.h },
+		{ shipRect.pos.x - size.w / 2, shipRect.pos.y - shipRect.size.h/2 - size.h },
 		0,
 		false
 	};

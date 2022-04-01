@@ -7,7 +7,7 @@
 
 class Ship;
 struct ShipRect;
-struct TextureParams;
+struct SpriteParams;
 const enum GunType;
 
 struct FlyingProjectile
@@ -22,7 +22,7 @@ class Projectile : public Texture
 {
 public: 
 	Projectile(GunType p_type, SDL_Renderer* p_renderer, Ship* p_ship);
-	void startProjectile(const ShipRect shipRect);
+	void startProjectile();
 	void move(FlyingProjectile* pj);
 
 	void virtual handleEvent(SDL_Event& e);

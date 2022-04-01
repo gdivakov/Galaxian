@@ -1,17 +1,18 @@
-﻿#include "EnemyShip.h"
-#include <math.h>
+﻿#include <math.h>
+
+#include "Consts.h"
+#include "EnemyShip.h"
 
 double degreesToRadians(double degrees); // todo: set in consts.h
 
 EnemyShip::EnemyShip(
 	const App* p_system, 
 	LevelBase* p_level,
-	std::string p_path, 
 	ShipParams& params, 
 	PlayerShip* p_player,
 	std::vector<BezierCurve> pathCurves
 ) :
-	Ship(p_system, p_path, params, p_level),
+	Ship(p_system, params, p_level, p_player),
 	player(p_player)
 {
 	rotation = 0;
@@ -86,12 +87,19 @@ void EnemyShip::onBeforeRender()
 			renderer, 
 			dirToRender.x, 
 			dirToRender.y, 
-			playerRect.pos.x + playerRect.size.w/2, 
-			playerRect.pos.y + playerRect.size.h/2
+			playerRect.pos.x, 
+			playerRect.pos.y
 		);
 	}
 
 	//displayPath();
+
+	for (int i = 0; i < colliders.size(); i++)
+	{
+		SDL_RenderDrawRect(renderer, &colliders[i]);
+	}
+
+	DrawCircle(renderer, wrapperCollider.pos.x, wrapperCollider.pos.y, wrapperCollider.r);
 }
 
 void EnemyShip::rotate(int r)

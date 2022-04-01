@@ -14,6 +14,7 @@ public:
 	Vector2 operator*(float v) { return Vector2(this->x * v, this->y * v); };
 	Vector2 operator/(float v) { return Vector2(this->x / v, this->y / v); };
 	static float getDistance(Vector2& vec1, Vector2& vec2);
+	static float getDistanceSquared(Vector2& vec1, Vector2& vec2);
 	void log();
 	friend Vector2 operator*(float n, Vector2& v) { return v * n; }
 };

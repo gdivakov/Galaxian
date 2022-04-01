@@ -22,7 +22,6 @@ public:
     EnemyShip(
         const App* p_system, 
         LevelBase* p_level, 
-        std::string p_path, 
         ShipParams& params, 
         PlayerShip* p_player,
         std::vector<BezierCurve> pathCurves
