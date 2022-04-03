@@ -2,6 +2,9 @@
 #include <vector>
 #include "Ship.h"
 
+Colliders& addVector(Colliders& colliders, Vector2& v);
+void rotateColliders(Colliders& colliders, int angle);
+
 Ship::Ship(
     const App* p_system,
     ShipParams params,
@@ -12,17 +15,19 @@ Ship::Ship(
     level(p_level),
     colliders(params.colliders)
 {
-    gun = new WeaponModule(params.gunType, p_system, this);
     frame = 0;
+    rotation = 0;
     vel = Vector2();
     maxSpeed = params.maxSpeed;
     collidedShip = p_collidedShip;
+
+    gun = new WeaponModule(params.gunType, p_system, this);
 
     loadFromSprite(params.sprite.path, params.sprite);
 
     size = { getWidth(), getHeight() };
     wrapperCollider.r = size.h > size.w ? size.h/2 : size.w/2;
-    
+
     shiftColliders();
 }
 
@@ -46,36 +51,7 @@ bool Ship::checkCollision()
         return false;
     }
 
-    std::vector<SDL_Rect>& a = colliders;
-    std::vector<SDL_Rect>& b = collidedShip->colliders;
-
-    int leftA, leftB, rightA, rightB, topA, topB, bottomA, bottomB;
-
-    for (int Abox = 0; Abox < a.size(); Abox++)
-    {
-        leftA = a[Abox].x;
-        rightA = a[Abox].x + a[Abox].w;
-        topA = a[Abox].y;
-        bottomA = a[Abox].y + a[Abox].h;
-        
-        for (int Bbox = 0; Bbox < b.size(); Bbox++)
-        {
-            leftB = b[Bbox].x;
-            rightB = b[Bbox].x + b[Bbox].w;
-            topB = b[Bbox].y;
-            bottomB = b[Bbox].y + b[Bbox].h;
-
-            //If no sides from A are outside of B
-            if (((bottomA <= topB) || (topA >= bottomB) || (rightA <= leftB) || (leftA >= rightB)) == false)
-            {
-                //A collision is detected
-                std::cout << "Collided" << std::endl;
-                return true;
-            }
-        }
-    }
-
-    return false;
+    //Colliders preparedColliders = getColliders(WORLD, enemy);
 }
 
 void Ship::move()
@@ -84,13 +60,13 @@ void Ship::move()
     shiftColliders();
 
     // Check boundaries
-    if ((pos.x < 0) || (pos.x + size.w/2 > system->getWindowSize()->w))
+    if ((pos.x - size.w/2 < 0) || (pos.x + size.w / 2 > system->getWindowSize()->w))
     {
         pos.x -= vel.x;
         shiftColliders();
     }
 
-    if ((pos.y < 0) || (pos.y + size.h/2 > system->getWindowSize()->h))
+    if ((pos.y - size.h/2 < 0) || (pos.y + size.h / 2 > system->getWindowSize()->h))
     {
         pos.y -= vel.y;
         shiftColliders();
@@ -98,7 +74,6 @@ void Ship::move()
 
     if (collidedShip != NULL && checkWrapperCollision())
     {
-        shiftColliders();
         checkCollision();
     }
 }
@@ -106,15 +81,43 @@ void Ship::move()
 void Ship::shiftColliders()
 {
     wrapperCollider.pos = pos;
+}
 
-    int offsetHeight = 0;
+void Ship::showColliders()
+{
+    // Display wrapper collider
+    DrawCircle(renderer, wrapperCollider.pos.x, wrapperCollider.pos.y, wrapperCollider.r);
 
-    for (int i = 0; i < colliders.size(); i++)
+    // Display inner colliders
+    Colliders preparedColliders = getColliders(WORLD);
+
+    for (int i = 0; i < preparedColliders.size(); i++)
     {
-        colliders[i].x = pos.x - size.w/2 + (size.w - colliders[i].w) / 2;
-        colliders[i].y = pos.y - size.h/2 + offsetHeight;
+        SDL_RenderDrawLine(renderer, preparedColliders[i].a.x, preparedColliders[i].a.y, preparedColliders[i].b.x, preparedColliders[i].b.y);
+        SDL_RenderDrawLine(renderer, preparedColliders[i].b.x, preparedColliders[i].b.y, preparedColliders[i].c.x, preparedColliders[i].c.y);
+        SDL_RenderDrawLine(renderer, preparedColliders[i].c.x, preparedColliders[i].c.y, preparedColliders[i].d.x, preparedColliders[i].d.y);
+        SDL_RenderDrawLine(renderer, preparedColliders[i].d.x, preparedColliders[i].d.y, preparedColliders[i].a.x, preparedColliders[i].a.y);
+    }
+}
 
-        offsetHeight += colliders[i].h;
+Colliders Ship::getColliders(Space space, Ship* enemy)
+{
+    Colliders preparedColliders = colliders;
+    rotateColliders(preparedColliders, rotation);
+
+    if (enemy == NULL)
+    {
+        return space == LOCAL ? colliders : addVector(preparedColliders, pos);
+    }
+
+    if (enemy) // Return position relative to the enemy ship
+    {
+        Vector2 parentToShip = pos - enemy->pos;
+        Vector2 parentToShipRotated = Vector2::getRotatedVector(parentToShip, enemy->rotation);
+        rotateColliders(preparedColliders, enemy->rotation);
+        addVector(preparedColliders, parentToShipRotated);
+
+        return space == LOCAL ? preparedColliders : addVector(preparedColliders, enemy->pos);
     }
 }
 
@@ -137,4 +140,28 @@ Ship::~Ship()
     gun = NULL;
     system = NULL;
     level = NULL;
+}
+
+void rotateColliders(Colliders& colliders, int angle)
+{
+    for (int i = 0; i < colliders.size(); i++)
+    {
+        colliders[i].a = Vector2::getRotatedVector(colliders[i].a, angle);
+        colliders[i].b = Vector2::getRotatedVector(colliders[i].b, angle);
+        colliders[i].c = Vector2::getRotatedVector(colliders[i].c, angle);
+        colliders[i].d = Vector2::getRotatedVector(colliders[i].d, angle);
+    }
+}
+
+Colliders& addVector(Colliders& colliders, Vector2& v)
+{
+    for (int i = 0; i < colliders.size(); i++)
+    {
+        colliders[i].a += v;
+        colliders[i].b += v;
+        colliders[i].c += v;
+        colliders[i].d += v;
+    }
+
+    return colliders;
 }

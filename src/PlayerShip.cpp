@@ -7,7 +7,8 @@ PlayerShip::PlayerShip(
     ShipParams params) :
 	Ship(p_system, params, p_level) 
 {
-    pos = Vector2((WINDOWED_WIDTH - getWidth())/2, WINDOWED_HEIGHT - getHeight() - 20);
+    pos = Vector2((WINDOWED_WIDTH)/2, WINDOWED_HEIGHT - getHeight() - 20);
+    rotation = 0;
 }
 
 void PlayerShip::handleEvent(SDL_Event& e)
@@ -15,6 +16,22 @@ void PlayerShip::handleEvent(SDL_Event& e)
     if (level->isPaused)
     {
         return;
+    }
+    int rotateVal = 10;
+
+    if (e.type == SDL_KEYDOWN) 
+    {
+        switch (e.key.keysym.sym)
+        {
+        case SDLK_g:
+            rotate(rotation - rotateVal);
+
+            break;
+        case SDLK_h:
+            rotate(rotation + rotateVal);
+
+            break;
+        }
     }
 
     if (e.type == SDL_KEYDOWN && e.key.repeat == 0)
@@ -69,13 +86,24 @@ void PlayerShip::onBeforeRender()
 
     std::vector<SDL_Rect>& shipClips = getClips();
     SDL_Rect* currentClip = &shipClips[frame / shipClips.size()];
-    Vector2 center(size.w/2, size.h/2);
-    render(pos - center, currentClip);
 
-    for (int i = 0; i < colliders.size(); i++)
+    render(pos - Vector2(size.w / 2, size.h / 2), currentClip, rotation, NULL);
+
+    std::cout << rotation << std::endl;
+    showColliders();
+}
+
+void PlayerShip::rotate(int r)
+{
+    rotation = r;
+
+    if (rotation > 360.0f)
     {
-        SDL_RenderDrawRect(renderer, &colliders[i]);
+        rotation -= 360.0f;
     }
 
-    DrawCircle(renderer, wrapperCollider.pos.x, wrapperCollider.pos.y, wrapperCollider.r);
+    if (rotation < 0.0f)
+    {
+        rotation += 360.0f;
+    }
 }

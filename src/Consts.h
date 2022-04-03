@@ -7,16 +7,9 @@
 const int WINDOWED_WIDTH = 920;
 const int WINDOWED_HEIGHT = 620;
 
-struct SpriteParams
-{
-	std::string path;
-	int imageW;
-	int imageH;
-	int length;
-};
-
 const enum GunType { ROCKET, LAZER }; // Todo: rocket - rename to blaster
 const enum ShipType { SONIC_A, PIRATE_A }; // SONIC - player ship name
+const enum Space { WORLD, LOCAL };
 
 const struct BezierCurve {
 	Vector2 p0;
@@ -40,11 +33,12 @@ const struct BezierCurve {
 	}
 };
 
-struct ShipParams {
-	SpriteParams sprite;
-	GunType gunType;
-	int maxSpeed;
-	std::vector<SDL_Rect>& colliders;
+struct SpriteParams
+{
+	std::string path;
+	int imageW;
+	int imageH;
+	int length;
 };
 
 const SpriteParams SONIC_A_SHIP = { "res/shipA.png", 102, 114, 10 };
@@ -53,10 +47,21 @@ const SpriteParams PIRATE_A_SHIP = { "res/pirateA.png", 65, 144, 10 };
 const int SONIC_A_SPEED = 6;
 const int PIRATE_A_SPEED = 5;
 const float RAD_TO_DEG = 180.0f / M_PI;
+const float DEG_TO_RAD = M_PI / 180;
 
 const SDL_Color textColor = { 0, 0, 0 };
 const SDL_Color selectedOptionColor = { 1, 98, 177 };
 const SDL_Color selectedDisabledOptionColor = { 153, 153, 153 };
+
+struct RectColliderPoint
+{
+	Vector2 a; // Top Left
+	Vector2 b; // Top Right
+	Vector2 c; // Bottom Right
+	Vector2 d; // Bottom Left
+};
+
+typedef std::vector<RectColliderPoint> Colliders;
 
 struct Circle
 {
@@ -68,6 +73,18 @@ struct Size
 {
 	int w;
 	int h;
+};
+
+struct ShipRect {
+	Vector2 pos;
+	Size size;
+};
+
+struct ShipParams {
+	SpriteParams sprite;
+	GunType gunType;
+	int maxSpeed;
+	std::vector<RectColliderPoint>& colliders;
 };
 
 static void DrawCircle(SDL_Renderer* renderer, int32_t centreX, int32_t centreY, int32_t radius)

@@ -13,6 +13,41 @@
 ShipParams getShipParams(const Size* windowSize, const ShipType type);
 std::vector<BezierCurve> getEnemyPathCurves();
 
+//std::vector<SDL_Rect> SONIC_A_COLLIDERS = { { 0, 0, 29, 31 }, { 0, 0, 102, 51 } };
+//std::vector<SDL_Rect> PIRATE_A_COLLIDERS = { { 0, 0, 17, 43 }, { 0, 0, 65, 57 } };
+
+std::vector<RectColliderPoint> SONIC_A_COLLIDERS_DEFAULT =
+{
+	{
+		Vector2(-15, -15-40),
+		Vector2(15, -15-40),
+		Vector2(15, 15-40),
+		Vector2(-15, 15-40),
+	},
+	{
+		Vector2(-50, -25),
+		Vector2(50, -25),
+		Vector2(50, 25),
+		Vector2(-50, 25),
+	}
+};
+
+std::vector<RectColliderPoint> PIRATE_A_COLLIDERS_DEFAULT =
+{
+	{
+		Vector2(-9, -21-50),
+		Vector2(9, -21-50),
+		Vector2(9, 21-50),
+		Vector2(-9, 21-50),
+	},
+	{
+		Vector2(-32, -28),
+		Vector2(32, -28),
+		Vector2(32, 28),
+		Vector2(-32, 28),
+	}
+};
+
 // Todo: 
 // 1. Select ship before the game; ship should has params as [ health, armour, speed, weapon, buffs ]
 // 2. Show dialog with the task description at the begining
@@ -64,17 +99,14 @@ void Level1::load()
 	registerListeners();
 }
 
-std::vector<SDL_Rect> SONIC_A_COLLIDERS = { { 0, 0, 29, 31 }, { 0, 0, 102, 51 } };
-std::vector<SDL_Rect> PIRATE_A_COLLIDERS = { { 0, 0, 17, 43 }, { 0, 0, 65, 57 } };
-
 ShipParams getShipParams(const Size* windowSize, const ShipType type)
 {
 	switch (type)
 	{
 		case SONIC_A:
-			return { SONIC_A_SHIP, ROCKET, SONIC_A_SPEED, SONIC_A_COLLIDERS };
+			return { SONIC_A_SHIP, ROCKET, SONIC_A_SPEED, SONIC_A_COLLIDERS_DEFAULT };
 		case PIRATE_A:
-			return { PIRATE_A_SHIP, ROCKET, PIRATE_A_SPEED, PIRATE_A_COLLIDERS };
+			return { PIRATE_A_SHIP, ROCKET, PIRATE_A_SPEED, PIRATE_A_COLLIDERS_DEFAULT };
 	}
 }
 

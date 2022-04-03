@@ -1,5 +1,7 @@
 #include <math.h>
+
 #include "Vector2.h"
+#include "Consts.h"
 
 Vector2::Vector2(float p_x, float p_y)
 {
@@ -33,6 +35,27 @@ Vector2 Vector2::operator+=(Vector2 v)
 	Vector2 nextVector(this->x + v.x, this->y + v.y);
 	this->x = nextVector.x;
 	this->y = nextVector.y;
+
+	return nextVector;
+}
+
+Vector2 Vector2::operator-=(Vector2 v)
+{
+	Vector2 nextVector(this->x - v.x, this->y - v.y);
+	this->x = nextVector.x;
+	this->y = nextVector.y;
+
+	return nextVector;
+}
+
+Vector2 Vector2::getRotatedVector(Vector2& v, int angle)
+{
+	float rotationRad = angle * DEG_TO_RAD;
+
+	Vector2 nextVector(
+		v.x * cos(rotationRad) - v.y * sin(rotationRad),
+		v.x * sin(rotationRad) + v.y * cos(rotationRad)
+	);
 
 	return nextVector;
 }

@@ -3,8 +3,6 @@
 #include "Consts.h"
 #include "EnemyShip.h"
 
-double degreesToRadians(double degrees); // todo: set in consts.h
-
 EnemyShip::EnemyShip(
 	const App* p_system, 
 	LevelBase* p_level,
@@ -15,13 +13,11 @@ EnemyShip::EnemyShip(
 	Ship(p_system, params, p_level, p_player),
 	player(p_player)
 {
-	rotation = 0;
 	currentWaypoint = 0;
 	inView = false;
+	const int WAYPOINT_NUMBER = 3; // Todo: edit here
 
 	BezierPath* bezierPath = new BezierPath();
-
-	const int WAYPOINT_NUMBER = 3; // Todo: edit here
 
 	for (int i = 0; i < pathCurves.size(); i++)
 	{
@@ -34,8 +30,8 @@ EnemyShip::EnemyShip(
 	
 	pos = path[0];
 
-	Vector2 top(pos.x + size.w / 2, pos.y);
-	Vector2 center = Vector2(pos.x, pos.y) + Vector2(size.w / 2, size.h / 2);
+	Vector2 top(pos.x, pos.y);
+	Vector2 center = pos + Vector2(0, size.h / 2);
 
 	dir = top - center;
 }
@@ -71,48 +67,44 @@ void EnemyShip::onBeforeRender()
 
 	std::vector<SDL_Rect>& shipClips = getClips();
 	SDL_Rect* currentClip = &shipClips[frame / shipClips.size()];
-	Vector2 dirToRender = dir + Vector2(pos.x, pos.y);
+	Vector2 dirToRender = Vector2::getRotatedVector(dir, rotation) + pos;
 
 	render(pos - Vector2(size.w / 2, size.h / 2), currentClip, rotation, NULL);
 	
 	SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
-	//SDL_RenderDrawLine(renderer, rect.x, rect.y, dirToRender.x, dirToRender.y); // Direction line
 
-	if (inView)
+	//showColliders();
+	SDL_RenderDrawLine(renderer, pos.x, pos.y, dirToRender.x, dirToRender.y);
+	
+	//if (inView)
+	//{
+
+	//	ShipRect playerRect = player->getRect();
+
+	//	SDL_RenderDrawLine(
+	//		renderer,
+	//		dirToRender.x,
+	//		dirToRender.y,
+	//		playerRect.pos.x,
+	//		playerRect.pos.y
+	//	);
+	//}
+
+	Colliders preparedColliders2 = getColliders(WORLD, collidedShip);
+
+	for (int i = 0; i < preparedColliders2.size(); i++)
 	{
-
-		ShipRect playerRect = player->getRect();
-
-		SDL_RenderDrawLine(
-			renderer, 
-			dirToRender.x, 
-			dirToRender.y, 
-			playerRect.pos.x, 
-			playerRect.pos.y
-		);
+		SDL_RenderDrawLine(renderer, preparedColliders2[i].a.x, preparedColliders2[i].a.y, preparedColliders2[i].b.x, preparedColliders2[i].b.y);
+		SDL_RenderDrawLine(renderer, preparedColliders2[i].b.x, preparedColliders2[i].b.y, preparedColliders2[i].c.x, preparedColliders2[i].c.y);
+		SDL_RenderDrawLine(renderer, preparedColliders2[i].c.x, preparedColliders2[i].c.y, preparedColliders2[i].d.x, preparedColliders2[i].d.y);
+		SDL_RenderDrawLine(renderer, preparedColliders2[i].d.x, preparedColliders2[i].d.y, preparedColliders2[i].a.x, preparedColliders2[i].a.y);
 	}
 
 	//displayPath();
-
-	for (int i = 0; i < colliders.size(); i++)
-	{
-		SDL_RenderDrawRect(renderer, &colliders[i]);
-	}
-
-	DrawCircle(renderer, wrapperCollider.pos.x, wrapperCollider.pos.y, wrapperCollider.r);
 }
 
 void EnemyShip::rotate(int r)
 {
-	if (r - rotation > 0) {
-		// clockwise
-		updateDirection(r - rotation);
-	}
-	else
-	{
-		updateDirection(abs(r - rotation), false);
-	}
-
 	rotation = r;
 
 	if (rotation > 360.0f)
@@ -158,11 +150,6 @@ void EnemyShip::handleEvent(SDL_Event& e)
 	}
 }
 
-double degreesToRadians(double degrees)
-{
-	return degrees * M_PI / 180;
-}
-
 void EnemyShip::isInView()
 {
 	ShipRect playerRect = player->getRect();
@@ -198,24 +185,6 @@ void EnemyShip::displayPath()
 		);
 		pathIdx++;
 	} while (pathIdx + 1 < path.size());
-}
-
-void EnemyShip::updateDirection(float rotateVal, bool clockwise)
-{
-	if (clockwise)
-	{
-		dir = Vector2(
-			dir.x * cos(degreesToRadians(rotateVal)) - dir.y * sin(degreesToRadians(rotateVal)),
-			dir.x * sin(degreesToRadians(rotateVal)) + dir.y * cos(degreesToRadians(rotateVal))
-		);
-	}
-	else
-	{
-		dir = Vector2(
-			dir.x * cos(degreesToRadians(rotateVal)) + dir.y * sin(degreesToRadians(rotateVal)),
-			dir.x * -sin(degreesToRadians(rotateVal)) + dir.y * cos(degreesToRadians(rotateVal))
-		);
-	}
 }
 
 //void EnemyShip::checkDirections()
