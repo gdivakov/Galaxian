@@ -30,7 +30,7 @@ void Vector2::log()
 	std::cout << "x: " << this->x << ", " << "y: " << this->y << std::endl;
 }
 
-Vector2 Vector2::operator+=(Vector2 v)
+Vector2 Vector2::operator+=(Vector2& v)
 {
 	Vector2 nextVector(this->x + v.x, this->y + v.y);
 	this->x = nextVector.x;
@@ -39,7 +39,7 @@ Vector2 Vector2::operator+=(Vector2 v)
 	return nextVector;
 }
 
-Vector2 Vector2::operator-=(Vector2 v)
+Vector2 Vector2::operator-=(Vector2& v)
 {
 	Vector2 nextVector(this->x - v.x, this->y - v.y);
 	this->x = nextVector.x;

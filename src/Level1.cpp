@@ -70,22 +70,23 @@ void Level1::load()
 	Background* backgroundLvl1 = new Background(renderer, "res/space.png", this);
 	Hood* hood = new Hood(renderer, this, system);
 
+	EnemyShip* pirate = new EnemyShip(
+		system,
+		this,
+		pirateParams,
+		//playerShip,
+		getEnemyPathCurves()
+	);
+
 	PlayerShip* playerShip = new PlayerShip(
 		system, 
 		this, 
-		sonicParams
+		sonicParams,
+		pirate
 	);
 
 	//playerShip.loadCollider();
 	//playerShip.removeCollider();
-
-	EnemyShip* pirate = new EnemyShip(
-		system, 
-		this, 
-		pirateParams, 
-		playerShip, 
-		getEnemyPathCurves()
-	);
 
 	// Prepare level audio
 	Audio* audioPlayer = system->getAudioPlayer();

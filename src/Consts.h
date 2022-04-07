@@ -1,5 +1,5 @@
 ﻿#pragma once
-#include "Vector2.h";
+#include "Vector2.h"
 #include <math.h>
 #include <vector>
 #include <SDL.h>
@@ -124,3 +124,8 @@ static void DrawCircle(SDL_Renderer* renderer, int32_t centreX, int32_t centreY,
 		}
 	}
 }
+
+struct Extrems {
+	int min;
+	int max;
+};

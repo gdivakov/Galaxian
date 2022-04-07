@@ -7,11 +7,13 @@ EnemyShip::EnemyShip(
 	const App* p_system, 
 	LevelBase* p_level,
 	ShipParams& params, 
-	PlayerShip* p_player,
+	//PlayerShip* p_player,
 	std::vector<BezierCurve> pathCurves
 ) :
-	Ship(p_system, params, p_level, p_player),
-	player(p_player)
+	Ship(p_system, params, p_level
+		//p_player
+	)
+	//player(p_player)
 {
 	currentWaypoint = 0;
 	inView = false;
@@ -73,32 +75,8 @@ void EnemyShip::onBeforeRender()
 	
 	SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
 
-	//showColliders();
-	SDL_RenderDrawLine(renderer, pos.x, pos.y, dirToRender.x, dirToRender.y);
-	
-	//if (inView)
-	//{
-
-	//	ShipRect playerRect = player->getRect();
-
-	//	SDL_RenderDrawLine(
-	//		renderer,
-	//		dirToRender.x,
-	//		dirToRender.y,
-	//		playerRect.pos.x,
-	//		playerRect.pos.y
-	//	);
-	//}
-
-	Colliders preparedColliders2 = getColliders(WORLD, collidedShip);
-
-	for (int i = 0; i < preparedColliders2.size(); i++)
-	{
-		SDL_RenderDrawLine(renderer, preparedColliders2[i].a.x, preparedColliders2[i].a.y, preparedColliders2[i].b.x, preparedColliders2[i].b.y);
-		SDL_RenderDrawLine(renderer, preparedColliders2[i].b.x, preparedColliders2[i].b.y, preparedColliders2[i].c.x, preparedColliders2[i].c.y);
-		SDL_RenderDrawLine(renderer, preparedColliders2[i].c.x, preparedColliders2[i].c.y, preparedColliders2[i].d.x, preparedColliders2[i].d.y);
-		SDL_RenderDrawLine(renderer, preparedColliders2[i].d.x, preparedColliders2[i].d.y, preparedColliders2[i].a.x, preparedColliders2[i].a.y);
-	}
+	showColliders();
+	//SDL_RenderDrawLine(renderer, pos.x, pos.y, dirToRender.x, dirToRender.y);
 
 	//displayPath();
 }
@@ -134,40 +112,36 @@ void EnemyShip::handleEvent(SDL_Event& e)
 		{
 		case SDLK_q:
 			rotate(rotation - rotateVal);
-
 			//checkDirections();
-			isInView();
-
+			//isInView();
 			break;
 		case SDLK_e:
 			rotate(rotation + rotateVal);
-
 			//checkDirections();
-			isInView();
-
+			//isInView()
 			break;
 		}
 	}
 }
 
-void EnemyShip::isInView()
-{
-	ShipRect playerRect = player->getRect();
-
-	const float acceptableShift = 0.1;
-
-	Vector2 enemyCenter(pos.x + size.w/2, pos.y + size.h/2);
-	Vector2 enemyTop(enemyCenter.x + size.w / 2, enemyCenter.y);
-	Vector2 enemyNorm = dir / Vector2::getDistance(enemyTop, enemyCenter);
-
-	Vector2 playerCenter(playerRect.pos.x + playerRect.size.w / 2, playerRect.pos.y + playerRect.size.h / 2);
-	Vector2 playerDir = playerCenter - enemyCenter;
-	Vector2 playerNorm = playerDir / Vector2::getDistance(playerCenter, enemyCenter);
-
-	float coef = enemyNorm.x * playerNorm.x + enemyNorm.y * playerNorm.y;
-
-	inView = coef >= 1 - acceptableShift;
-}
+//void EnemyShip::isInView()
+//{
+//	ShipRect playerRect = player->getRect();
+//
+//	const float acceptableShift = 0.1;
+//
+//	Vector2 enemyCenter(pos.x + size.w/2, pos.y + size.h/2);
+//	Vector2 enemyTop(enemyCenter.x + size.w / 2, enemyCenter.y);
+//	Vector2 enemyNorm = dir / Vector2::getDistance(enemyTop, enemyCenter);
+//
+//	Vector2 playerCenter(playerRect.pos.x + playerRect.size.w / 2, playerRect.pos.y + playerRect.size.h / 2);
+//	Vector2 playerDir = playerCenter - enemyCenter;
+//	Vector2 playerNorm = playerDir / Vector2::getDistance(playerCenter, enemyCenter);
+//
+//	float coef = enemyNorm.x * playerNorm.x + enemyNorm.y * playerNorm.y;
+//
+//	inView = coef >= 1 - acceptableShift;
+//}
 
 void EnemyShip::displayPath()
 {
@@ -209,4 +183,18 @@ void EnemyShip::displayPath()
 //	{
 //		std::cout << "same dir" << std::endl;
 //	}
+//}
+
+//if (inView)
+//{
+
+//	ShipRect playerRect = player->getRect();
+
+//	SDL_RenderDrawLine(
+//		renderer,
+//		dirToRender.x,
+//		dirToRender.y,
+//		playerRect.pos.x,
+//		playerRect.pos.y
+//	);
 //}

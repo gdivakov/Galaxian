@@ -4,11 +4,13 @@
 PlayerShip::PlayerShip(
     const App* p_system, 
     LevelBase* p_level, 
-    ShipParams params) :
-	Ship(p_system, params, p_level) 
+    ShipParams params,
+    Ship* p_enemy
+):
+	Ship(p_system, params, p_level, p_enemy) 
 {
     pos = Vector2((WINDOWED_WIDTH)/2, WINDOWED_HEIGHT - getHeight() - 20);
-    rotation = 0;
+    rotation = 10;
 }
 
 void PlayerShip::handleEvent(SDL_Event& e)
@@ -72,7 +74,6 @@ void PlayerShip::handleEvent(SDL_Event& e)
     }
 
     gun->handleEvent(e);
-
 }
 
 void PlayerShip::onBeforeRender()
@@ -89,7 +90,6 @@ void PlayerShip::onBeforeRender()
 
     render(pos - Vector2(size.w / 2, size.h / 2), currentClip, rotation, NULL);
 
-    std::cout << rotation << std::endl;
     showColliders();
 }
 

@@ -37,4 +37,6 @@ protected:
     int rotation;
     void showColliders();
     Colliders getColliders(Space space, Ship* parent = NULL);
+    Colliders enemyNextColliders;
+    Colliders nextColliders;
 };

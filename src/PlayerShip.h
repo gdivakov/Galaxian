@@ -10,7 +10,8 @@ public:
     PlayerShip(
         const App* p_system, 
         LevelBase* p_level, 
-        ShipParams params
+        ShipParams params,
+        Ship* p_enemy
     );
     virtual void handleEvent(SDL_Event& e);
     virtual void onBeforeRender();

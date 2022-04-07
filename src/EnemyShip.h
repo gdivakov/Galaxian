@@ -27,7 +27,7 @@ public:
         const App* p_system, 
         LevelBase* p_level, 
         ShipParams& params, 
-        PlayerShip* p_player,
+        //PlayerShip* p_player,
         std::vector<BezierCurve> pathCurves
     );
     virtual void onBeforeRender();
