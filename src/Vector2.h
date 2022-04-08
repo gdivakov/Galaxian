@@ -7,6 +7,7 @@ class Vector2
 public: 
 	float x;
 	float y;
+	void roundV() { this->x = round(x); this->y = round(y); };
 	Vector2(float x = 0, float y = 0);
 	Vector2 roundVector() { this->x = round(this->x); this->y = round(this->y); return *this; };
 	Vector2 operator+(Vector2 v) { return Vector2(this->x + v.x, this->y + v.y); };

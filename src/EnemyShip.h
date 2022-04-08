@@ -1,5 +1,4 @@
 #pragma once
-
 #include <iostream>
 #include <vector>
 #include "PlayerShip.h"
@@ -8,18 +7,17 @@
 #include "BezierPath.h"
 #include "LevelBase.h"
 #include "Consts.h"
+#include "ShipConsts.h"
 
-// Todo: replace rect by a vector2
 class EnemyShip : public Ship
 {
-    Vector2 dir;
+private:
     bool inView;
     std::vector<Vector2> path;
     int currentWaypoint;
     const float EPSILON = 5.0f;
     PlayerShip* player;
-    void isInView();
-    void rotate(int r);
+    //void isInView();
     void followPath();
     void displayPath();
 public:
@@ -27,7 +25,6 @@ public:
         const App* p_system, 
         LevelBase* p_level, 
         ShipParams& params, 
-        //PlayerShip* p_player,
         std::vector<BezierCurve> pathCurves
     );
     virtual void onBeforeRender();

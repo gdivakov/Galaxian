@@ -10,10 +10,8 @@ public:
     PlayerShip(
         const App* p_system, 
         LevelBase* p_level, 
-        ShipParams params,
-        Ship* p_enemy
+        ShipParams params
     );
     virtual void handleEvent(SDL_Event& e);
     virtual void onBeforeRender();
-    void rotate(int r);
 };

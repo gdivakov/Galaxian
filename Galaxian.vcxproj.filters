@@ -61,6 +61,12 @@
     <Filter Include="Header Files\Levels\Level1">
       <UniqueIdentifier>{c80fba55-ed63-4afe-8d37-f5a79fb8718f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\consts">
+      <UniqueIdentifier>{13370600-9580-4abf-a91b-1b764cbd17d2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\consts">
+      <UniqueIdentifier>{e0504894-4e31-49ec-b701-025487668431}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Main.cpp">
@@ -129,6 +135,12 @@
     <ClCompile Include="src\LevelManager.cpp">
       <Filter>Source Files\Levels\General</Filter>
     </ClCompile>
+    <ClCompile Include="src\ShipConsts.cpp">
+      <Filter>Source Files\consts</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Collidable.cpp">
+      <Filter>Source Files\Objects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Projectile.h">
@@ -182,9 +194,6 @@
     <ClInclude Include="src\PanelConsts.h">
       <Filter>Header Files\Levels\MainScreen</Filter>
     </ClInclude>
-    <ClInclude Include="src\Consts.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\Settings.h">
       <Filter>Header Files\Levels\MainScreen</Filter>
     </ClInclude>
@@ -205,6 +214,15 @@
     </ClInclude>
     <ClInclude Include="src\PauseView.h">
       <Filter>Header Files\Levels\General</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Consts.h">
+      <Filter>Header Files\consts</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ShipConsts.h">
+      <Filter>Header Files\consts</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Collidable.h">
+      <Filter>Header Files\Objects</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -8,45 +8,11 @@
 #include "EnemyShip.h"
 #include "Background.h"
 #include "Consts.h"
+#include "ShipConsts.h"
 #include "Hood.h"
 
 ShipParams getShipParams(const Size* windowSize, const ShipType type);
 std::vector<BezierCurve> getEnemyPathCurves();
-
-//std::vector<SDL_Rect> SONIC_A_COLLIDERS = { { 0, 0, 29, 31 }, { 0, 0, 102, 51 } };
-//std::vector<SDL_Rect> PIRATE_A_COLLIDERS = { { 0, 0, 17, 43 }, { 0, 0, 65, 57 } };
-
-std::vector<RectColliderPoint> SONIC_A_COLLIDERS_DEFAULT =
-{
-	{
-		Vector2(-15, -15-40),
-		Vector2(15, -15-40),
-		Vector2(15, 15-40),
-		Vector2(-15, 15-40),
-	},
-	{
-		Vector2(-50, -25),
-		Vector2(50, -25),
-		Vector2(50, 25),
-		Vector2(-50, 25),
-	}
-};
-
-std::vector<RectColliderPoint> PIRATE_A_COLLIDERS_DEFAULT =
-{
-	{
-		Vector2(-9, -21-50),
-		Vector2(9, -21-50),
-		Vector2(9, 21-50),
-		Vector2(-9, 21-50),
-	},
-	{
-		Vector2(-32, -28),
-		Vector2(32, -28),
-		Vector2(32, 28),
-		Vector2(-32, 28),
-	}
-};
 
 // Todo: 
 // 1. Select ship before the game; ship should has params as [ health, armour, speed, weapon, buffs ]
@@ -57,7 +23,7 @@ std::vector<RectColliderPoint> PIRATE_A_COLLIDERS_DEFAULT =
 // 6. 2 players game support 
 // 7. Fullscreen mode
 // 8. Russian language
-// ---> 9. File saving progress and settings
+// --> 9. File saving progress and settings
 // 10. More [ player ships, enemies, weapons, buffs, bosses, enemies behaviour logic ]
 // 11. Score at the end of the level with achieved weapon
 // ---> 12. Ship collision box
@@ -81,12 +47,11 @@ void Level1::load()
 	PlayerShip* playerShip = new PlayerShip(
 		system, 
 		this, 
-		sonicParams,
-		pirate
+		sonicParams
 	);
 
-	//playerShip.loadCollider();
-	//playerShip.removeCollider();
+	playerShip->registerEnemyCollider(pirate);
+	//playerShip->deregisterEnemyCollider(pirate);
 
 	// Prepare level audio
 	Audio* audioPlayer = system->getAudioPlayer();

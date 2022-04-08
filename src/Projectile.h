@@ -2,20 +2,13 @@
 #include <SDL.h>
 
 #include "Texture.h"
-#include "Consts.h"
+#include "ShipConsts.h"
 #include "Ship.h"
 
 class Ship;
 struct ShipRect;
 struct SpriteParams;
 const enum GunType;
-
-struct FlyingProjectile
-{
-	SDL_Point position;
-	short frame;
-	bool isStarted;
-};
 
 // Todo: Refactor
 class Projectile : public Texture

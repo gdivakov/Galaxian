@@ -1,6 +1,6 @@
 #pragma once
 #include <vector>
-#include "Consts.h"
+#include "ShipConsts.h"
 
 class BezierPath
 {

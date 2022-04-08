@@ -1,19 +1,5 @@
 #include "Ship.h"
-
-const float ROCKET_COOLDOWN = 100.0f;
-const float LAZER_COOLDOWN = 0;
-const std::string ROCKET_TEXTURE_PATH = "res/rocket.png";
-const std::string LAZER_TEXTURE_PATH = "res/lazer.png";
-const std::string BLAST_SOUND_PATH = "res/blast.mp3";
-
-struct GunParams
-{
-	float cooldownMs;
-	std::string texturePath;
-	std::string soundPath;
-};
-
-GunParams getGunParamsByType(GunType type);
+#include "ShipConsts.h"
 
 WeaponModule::WeaponModule(
 	GunType initGunType,
@@ -97,17 +83,3 @@ WeaponModule::~WeaponModule()
 	system = NULL;
 }
 
-GunParams getGunParamsByType(GunType type)
-{
-	switch (type)
-	{
-	case ROCKET:
-		return { ROCKET_COOLDOWN, ROCKET_TEXTURE_PATH, BLAST_SOUND_PATH };
-		break;
-	case LAZER:
-		return { LAZER_COOLDOWN, LAZER_TEXTURE_PATH, BLAST_SOUND_PATH };
-		break;
-	default:
-		return { ROCKET_COOLDOWN, ROCKET_TEXTURE_PATH, BLAST_SOUND_PATH };
-	}
-}

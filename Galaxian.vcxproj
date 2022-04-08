@@ -19,6 +19,8 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Collidable.cpp" />
+    <ClCompile Include="src\ShipConsts.cpp" />
     <ClCompile Include="src\PauseView.cpp" />
     <ClCompile Include="src\Hood.cpp" />
     <ClCompile Include="src\Settings.cpp" />
@@ -43,6 +45,8 @@
     <ClCompile Include="src\Vector2.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Collidable.h" />
+    <ClInclude Include="src\ShipConsts.h" />
     <ClInclude Include="src\PauseView.h" />
     <ClInclude Include="src\Hood.h" />
     <ClInclude Include="src\SettingsConsts.h" />

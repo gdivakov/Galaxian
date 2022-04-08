@@ -3,12 +3,7 @@
 
 #include "Texture.h"
 #include "Consts.h"
-
-struct RGB {
-	Uint8 r;
-	Uint8 g;
-	Uint8 b;
-};
+#include "ShipConsts.h"
 
 Texture::Texture(SDL_Renderer* p_renderer)
 {

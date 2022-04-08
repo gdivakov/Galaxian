@@ -3,20 +3,7 @@
 #include "Projectile.h"
 #include "Vector2.h"
 
-struct AmmoParams
-{
-	int speed;
-	SpriteParams texture;
-};
-
-AmmoParams getAmmoParamsByGunType(GunType type);
-
-const int EXPLOSION_PROJECTILE_CLIP_LENGTH = 1;
-const int ROCKET_AMMO_SPEED = 8;
-const int LAZER_AMMO_SPEED = 1000;
-
-SpriteParams ROCKET_AMMO_TEXTURE_PARAMS = { "res/rocket3.png", 30, 50, 2 };
-SpriteParams LAZER_AMMO_TEXTURE_PARAMS = { "res/lazer_ammo.png", 27, 111, 3 };
+const int SPEED_DIVIDER = 50;
 
 Projectile::Projectile(GunType p_type, SDL_Renderer* p_renderer, Ship* p_ship) : Texture(p_renderer)
 {
@@ -47,21 +34,20 @@ Projectile::Projectile(GunType p_type, SDL_Renderer* p_renderer, Ship* p_ship) :
 
 void Projectile::startProjectile()
 {
-
+	// Todo: relate x and y on gun position & rotation
 	ShipRect shipRect = ship->getRect();
-	// Todo: relate x and y on gun position
-	FlyingProjectile newProjectile = {
-		{ shipRect.pos.x - size.w / 2, shipRect.pos.y - shipRect.size.h/2 - size.h },
-		0,
-		false
-	};
+	Vector2 nextPos = ship->getDirection(LOCAL, false);
 
-	releasedPjs.push_back(newProjectile);
+	nextPos = nextPos - Vector2(0, size.h / 2);
+	nextPos = Vector2::getRotatedVector(nextPos, ship->getRotation()) + shipRect.pos;
+
+	releasedPjs.push_back({ nextPos, ship->getDirection(LOCAL), ship->getRotation(), 0, false });
 }
 
 void Projectile::move(FlyingProjectile* pj)
 {
-	pj->position.y -= speed;
+	//pj->position.y -= speed;
+	pj->position = pj-> position + pj->direction * speed/SPEED_DIVIDER;
 }
 
 void Projectile::handleEvent(SDL_Event& e)
@@ -84,7 +70,8 @@ void Projectile::onBeforeRender()
 			clips[pj.frame / clips.size()]:
 			explosionClips[pj.frame / explosionClips.size()];
 
-		render(Vector2(releasedPjs[i].position.x, releasedPjs[i].position.y), currentClip);
+		Vector2 nextPos = releasedPjs[i].position - Vector2(size.w / 2, size.h / 2);
+		render(nextPos, currentClip, releasedPjs[i].rotation);
 	}
 }
 
@@ -109,20 +96,5 @@ void Projectile::onAfterRender()
 		{
 			releasedPjs.erase(releasedPjs.begin() + i);
 		}
-	}
-}
-
-AmmoParams getAmmoParamsByGunType(GunType type)
-{
-	switch (type)
-	{
-	case ROCKET:
-		return { ROCKET_AMMO_SPEED, ROCKET_AMMO_TEXTURE_PARAMS };
-		break;
-	case LAZER:
-		return { LAZER_AMMO_SPEED, LAZER_AMMO_TEXTURE_PARAMS };
-		break;
-	default:
-		return { ROCKET_AMMO_SPEED, ROCKET_AMMO_TEXTURE_PARAMS };
 	}
 }

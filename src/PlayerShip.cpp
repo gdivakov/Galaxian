@@ -4,10 +4,9 @@
 PlayerShip::PlayerShip(
     const App* p_system, 
     LevelBase* p_level, 
-    ShipParams params,
-    Ship* p_enemy
+    ShipParams params
 ):
-	Ship(p_system, params, p_level, p_enemy) 
+	Ship(p_system, params, p_level) 
 {
     pos = Vector2((WINDOWED_WIDTH)/2, WINDOWED_HEIGHT - getHeight() - 20);
     rotation = 10;
@@ -88,22 +87,10 @@ void PlayerShip::onBeforeRender()
     std::vector<SDL_Rect>& shipClips = getClips();
     SDL_Rect* currentClip = &shipClips[frame / shipClips.size()];
 
+    Vector2 dir = getDirection();
+
     render(pos - Vector2(size.w / 2, size.h / 2), currentClip, rotation, NULL);
+    SDL_RenderDrawLine(renderer, pos.x, pos.y, dir.x, dir.y);
 
     showColliders();
-}
-
-void PlayerShip::rotate(int r)
-{
-    rotation = r;
-
-    if (rotation > 360.0f)
-    {
-        rotation -= 360.0f;
-    }
-
-    if (rotation < 0.0f)
-    {
-        rotation += 360.0f;
-    }
 }

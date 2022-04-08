@@ -1,19 +1,14 @@
 ﻿#include <math.h>
 
-#include "Consts.h"
 #include "EnemyShip.h"
 
 EnemyShip::EnemyShip(
 	const App* p_system, 
 	LevelBase* p_level,
 	ShipParams& params, 
-	//PlayerShip* p_player,
 	std::vector<BezierCurve> pathCurves
 ) :
-	Ship(p_system, params, p_level
-		//p_player
-	)
-	//player(p_player)
+	Ship(p_system, params, p_level)
 {
 	currentWaypoint = 0;
 	inView = false;
@@ -31,11 +26,6 @@ EnemyShip::EnemyShip(
 	delete bezierPath;
 	
 	pos = path[0];
-
-	Vector2 top(pos.x, pos.y);
-	Vector2 center = pos + Vector2(0, size.h / 2);
-
-	dir = top - center;
 }
 
 void EnemyShip::followPath()
@@ -81,21 +71,6 @@ void EnemyShip::onBeforeRender()
 	//displayPath();
 }
 
-void EnemyShip::rotate(int r)
-{
-	rotation = r;
-
-	if (rotation > 360.0f)
-	{
-		rotation -= 360.0f;
-	}
-
-	if (rotation < 0.0f)
-	{
-		rotation += 360.0f;
-	}
-}
-
 void EnemyShip::handleEvent(SDL_Event& e)
 {
 
@@ -124,6 +99,24 @@ void EnemyShip::handleEvent(SDL_Event& e)
 	}
 }
 
+void EnemyShip::displayPath()
+{
+	int pathIdx = 0;
+
+	SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
+
+	do {
+		SDL_RenderDrawLine(
+			renderer,
+			path[pathIdx].x,
+			path[pathIdx].y,
+			path[pathIdx + 1].x,
+			path[pathIdx + 1].y
+		);
+		pathIdx++;
+	} while (pathIdx + 1 < path.size());
+}
+
 //void EnemyShip::isInView()
 //{
 //	ShipRect playerRect = player->getRect();
@@ -142,24 +135,6 @@ void EnemyShip::handleEvent(SDL_Event& e)
 //
 //	inView = coef >= 1 - acceptableShift;
 //}
-
-void EnemyShip::displayPath()
-{
-	int pathIdx = 0;
-
-	SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
-
-	do {
-		SDL_RenderDrawLine(
-			renderer,
-			path[pathIdx].x,
-			path[pathIdx].y,
-			path[pathIdx + 1].x,
-			path[pathIdx + 1].y
-		);
-		pathIdx++;
-	} while (pathIdx + 1 < path.size());
-}
 
 //void EnemyShip::checkDirections()
 //{ 
