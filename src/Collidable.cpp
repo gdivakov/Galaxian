@@ -4,6 +4,7 @@ Collidable::Collidable(SDL_Renderer* p_renderer, Colliders p_colliders, int wrap
 : colliders(p_colliders), collidableRenderer(p_renderer)
 {
     collidableRotation = 0;
+    isCollided = false;
     wrapperCollider.r = wrapperRadius;
 };
 
@@ -22,14 +23,23 @@ void Collidable::showColliders()
     }
 }
 
+Collidable::~Collidable()
+{
+    //deregisterCollidable from enemyCollidable array where collidable is "self"
+}
+
 bool Collidable::checkCollision()
 {
-    std::vector<Collidable*> possibleColliders;
-    bool isCollided = false;
-
-    for (int i = 0; i < enemyColliders.size(); i++)
+    if (isCollided)
     {
-        Collidable* coll = enemyColliders[i];
+        return isCollided;
+    }
+
+    std::vector<Collidable*> possibleColliders;
+
+    for (int i = 0; i < enemyCollidables.size(); i++)
+    {
+        Collidable* coll = enemyCollidables[i];
 
         int distanceSquared = Vector2::getDistanceSquared(coll->wrapperCollider.pos, wrapperCollider.pos);
         int radiusesSquared = pow(wrapperCollider.r + coll->wrapperCollider.r, 2);
@@ -52,7 +62,7 @@ bool Collidable::checkCollision()
         if (checkRectCollision(possibleColliders[i]))
         {
             isCollided = true;
-            possibleColliders[i]->handleCollided();
+            //possibleColliders[i]->handleCollided();
         }
     }
 
@@ -61,8 +71,8 @@ bool Collidable::checkCollision()
 
 bool Collidable::checkRectCollision(Collidable* enemyCollider)
 {
-    Colliders preparedColliders = Colliders(colliders);
-    Colliders enemyColliders = Colliders(enemyCollider->getColliders());
+    Colliders preparedColliders = colliders;
+    Colliders enemyColliders = enemyCollider->getColliders();
     Vector2 enemyToShip = wrapperCollider.pos - enemyCollider->wrapperCollider.pos;
 
     rotateColliders(enemyColliders, enemyCollider->collidableRotation);
@@ -70,13 +80,12 @@ bool Collidable::checkRectCollision(Collidable* enemyCollider)
 
     addVectorToCollider(preparedColliders, enemyToShip);
 
-
     for (int i = 0; i < enemyColliders.size(); i++)
     {
         for (int k = 0; k < preparedColliders.size(); k++)
         {
             // SAT alghoritm 
-            if (checkOverlapSAT(preparedColliders[i], enemyColliders[k]))
+            if (checkOverlapSAT(preparedColliders[k], enemyColliders[i]))
             {
                 return true;
             }
@@ -86,10 +95,16 @@ bool Collidable::checkRectCollision(Collidable* enemyCollider)
     return false;
 }
 
-void Collidable::deregisterEnemyCollider(Collidable* enemyCollider) {
-    auto removeIter = remove(enemyColliders.begin(), enemyColliders.end(), enemyCollider);
-    enemyColliders.erase(removeIter, enemyColliders.end());
-}
+void Collidable::registerEnemyCollidable(Collidable* enemyCollider)
+{ 
+    enemyCollidables.push_back(enemyCollider);
+};
+
+//void Collidable::deregisterEnemyCollidable(Collidable* collidable) 
+//{
+//    auto removeIter = remove(enemyCollidables.begin(), enemyCollidables.end(), collidable);
+//    enemyCollidables.erase(removeIter, enemyCollidables.end());
+//}
 
 //Colliders Collidable::getColliders(Space space)
 //{

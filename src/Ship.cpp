@@ -16,12 +16,11 @@ Ship::Ship(const App* p_system, ShipParams params, LevelBase* p_level)
     rotation = 0;
     vel = Vector2();
     maxSpeed = params.maxSpeed;
+    explosion = params.explosion;
 
     gun = new WeaponModule(params.gunType, p_system, this);
 
-    loadFromSprite(params.sprite.path, params.sprite);
-
-    size = { getWidth(), getHeight() };
+    loadFromSprite(params.sprite);
     
     Vector2 top(pos.x, pos.y);
     Vector2 center = pos + Vector2(0, size.h / 2);
@@ -33,6 +32,11 @@ Ship::Ship(const App* p_system, ShipParams params, LevelBase* p_level)
 
 void Ship::move()
 {
+    if (isCollided)
+    {
+        return;
+    }
+
     Vector2 prevPos = pos;
     pos += vel;
     shiftColliders();
@@ -52,8 +56,8 @@ void Ship::move()
 
     if (checkCollision())
     {
-        pos = prevPos;
         shiftColliders();
+        handleCollided();
     }
 }
 
@@ -70,6 +74,13 @@ void Ship::onAfterRender()
     int clipLength = getClips().size();
 
     ++frame;
+
+    if (isCollided && frame / clipLength >= clipLength)
+    {
+        // Remove ship
+        level->removeObject(this);
+    }
+
     if (frame / clipLength >= clipLength)
     {
     	frame = 0;
@@ -104,7 +115,6 @@ Vector2 Ship::getDirection(Space space, bool isRotated)
 
     return space == LOCAL ? preparedDir : preparedDir + pos;
 }
-
 
 Ship::~Ship()
 {

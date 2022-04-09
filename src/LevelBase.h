@@ -24,6 +24,7 @@ public:
 	void registerListeners();
 	void deregisterListeners();
 	bool togglePaused() { isPaused = !isPaused; return isPaused; };
+	void removeObject(Object* object);
 protected:
 	const App* system;
 	SDL_Renderer* renderer;

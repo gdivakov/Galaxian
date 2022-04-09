@@ -5,7 +5,9 @@
 
 const int SPEED_DIVIDER = 50;
 
-Projectile::Projectile(GunType p_type, SDL_Renderer* p_renderer, Ship* p_ship) : Texture(p_renderer)
+Projectile::Projectile(GunType p_type, SDL_Renderer* p_renderer, Ship* p_ship) 
+	: 
+	Texture(p_renderer)
 {
 	AmmoParams params = getAmmoParamsByGunType(gunType);
 
@@ -14,7 +16,7 @@ Projectile::Projectile(GunType p_type, SDL_Renderer* p_renderer, Ship* p_ship) :
 	gunType = p_type;
 	ship = p_ship;
 
-	loadFromSprite(params.texture.path, params.texture);
+	loadFromSprite(params.texture);
 
 	// Set up explosion and common clips
 	Clips& pjClips = getClips();
@@ -41,37 +43,59 @@ void Projectile::startProjectile()
 	nextPos = nextPos - Vector2(0, size.h / 2);
 	nextPos = Vector2::getRotatedVector(nextPos, ship->getRotation()) + shipRect.pos;
 
-	releasedPjs.push_back({ nextPos, ship->getDirection(LOCAL), ship->getRotation(), 0, false });
+	FlyingProjectile* nextProjectile = new FlyingProjectile(
+		renderer, 
+		nextPos, 
+		ship->getDirection(LOCAL), 
+		ship->getRotation(),
+		gunType
+	);
+
+	std::vector<Collidable*> enemyCollidables = ship->getEnemyCollidables();
+
+	for (int i = 0; i < enemyCollidables.size(); i++)
+	{
+		nextProjectile->registerEnemyCollidable(enemyCollidables[i]); // Todo: refactor (add plural method to Collidable class)
+	}
+
+	releasedPjs.push_back(nextProjectile);
 }
 
 void Projectile::move(FlyingProjectile* pj)
 {
-	//pj->position.y -= speed;
-	pj->position = pj-> position + pj->direction * speed/SPEED_DIVIDER;
-}
+	Vector2 pjPosition = pj->getPosition();
+	Vector2 pjDirection = pj->getDirection();
 
-void Projectile::handleEvent(SDL_Event& e)
-{}
+	pj->setPosition(pjPosition + pjDirection * speed / SPEED_DIVIDER);
+	pj->shiftColliders();
+
+	if (pj->checkCollision())
+	{
+		pj->handleCollided();
+	}
+}
 
 void Projectile::onBeforeRender()
 {
 	for (int i = 0; i < releasedPjs.size(); i++)
 	{
-		FlyingProjectile& pj = releasedPjs[i];
+		FlyingProjectile* pj = releasedPjs[i];
 
-		if (pj.isStarted && !ship->level->isPaused)
+		if (pj->getIsStarted() && !ship->level->isPaused)
 		{
-			move(&pj); 
+			move(pj); 
 		}
 
 		// Limit clips if exploaded
 		SDL_Rect* currentClip = 
-			pj.isStarted ? 
-			clips[pj.frame / clips.size()]:
-			explosionClips[pj.frame / explosionClips.size()];
+			pj->getIsStarted() ?
+			clips[pj->getFrame() / clips.size()]:
+			explosionClips[pj->getFrame() / explosionClips.size()];
 
-		Vector2 nextPos = releasedPjs[i].position - Vector2(size.w / 2, size.h / 2);
-		render(nextPos, currentClip, releasedPjs[i].rotation);
+		Vector2 nextPos = releasedPjs[i]->getPosition() - Vector2(size.w / 2, size.h / 2);
+
+		releasedPjs[i]->showColliders();
+		render(nextPos, currentClip, releasedPjs[i]->getRotation());
 	}
 }
 
@@ -79,21 +103,25 @@ void Projectile::onAfterRender()
 {
 	for (int i = 0; i < releasedPjs.size(); i++)
 	{
-		FlyingProjectile& pj = releasedPjs[i];
-		short clipLength = pj.isStarted ? clips.size() : explosionClips.size();
-		
-		if (++pj.frame / clipLength >= clipLength)
+		FlyingProjectile* pj = releasedPjs[i];
+		short clipLength = pj->getIsStarted() ? clips.size() : explosionClips.size();
+		short frame = pj->getFrame();
+
+		if (pj->setFrame(frame + 1) / clipLength >= clipLength)
 		{
-			if (!pj.isStarted)
+			if (!pj->getIsStarted())
 			{
-				pj.isStarted = true;
+				pj->setIsStarted(true);
 			}
-			pj.frame = 0;
+			pj->setFrame(0);
 		}
 
 		// Remove missed projectiles
-		if (pj.position.y < 0 || pj.position.x < 0)
+		Vector2 pjPosition = pj->getPosition();
+
+		if (pjPosition.y < 0 || pjPosition.x < 0)
 		{
+			delete releasedPjs[i];
 			releasedPjs.erase(releasedPjs.begin() + i);
 		}
 	}

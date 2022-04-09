@@ -14,13 +14,13 @@ PlayerShip::PlayerShip(
 
 void PlayerShip::handleEvent(SDL_Event& e)
 {
-    if (level->isPaused)
+    if (level->isPaused || isCollided)
     {
         return;
     }
     int rotateVal = 10;
 
-    if (e.type == SDL_KEYDOWN) 
+    if (e.type == SDL_KEYDOWN)
     {
         switch (e.key.keysym.sym)
         {
@@ -87,10 +87,17 @@ void PlayerShip::onBeforeRender()
     std::vector<SDL_Rect>& shipClips = getClips();
     SDL_Rect* currentClip = &shipClips[frame / shipClips.size()];
 
-    Vector2 dir = getDirection();
+    //Vector2 dir = getDirection();
 
     render(pos - Vector2(size.w / 2, size.h / 2), currentClip, rotation, NULL);
-    SDL_RenderDrawLine(renderer, pos.x, pos.y, dir.x, dir.y);
+    //SDL_RenderDrawLine(renderer, pos.x, pos.y, dir.x, dir.y);
 
-    showColliders();
+    //showColliders();
+}
+
+void PlayerShip::handleCollided()
+{
+    loadFromSprite(explosion);
+
+    frame = 0;
 }

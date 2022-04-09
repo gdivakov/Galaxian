@@ -226,12 +226,12 @@ AmmoParams getAmmoParamsByGunType(GunType type)
     switch (type)
     {
     case ROCKET:
-        return { ROCKET_AMMO_SPEED, ROCKET_AMMO_TEXTURE_PARAMS };
+        return { ROCKET_AMMO_SPEED, ROCKET_AMMO_TEXTURE_PARAMS, ROCKET_AMMO_COLLIDER };
         break;
     case LAZER:
-        return { LAZER_AMMO_SPEED, LAZER_AMMO_TEXTURE_PARAMS };
+        return { LAZER_AMMO_SPEED, LAZER_AMMO_TEXTURE_PARAMS, LAZER_AMMO_COLLIDER };
         break;
     default:
-        return { ROCKET_AMMO_SPEED, ROCKET_AMMO_TEXTURE_PARAMS };
+        return { ROCKET_AMMO_SPEED, ROCKET_AMMO_TEXTURE_PARAMS, ROCKET_AMMO_COLLIDER };
     }
 }

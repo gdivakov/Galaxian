@@ -137,15 +137,16 @@ int Texture::getHeight()
 	return size.h;
 }
 
-bool Texture::loadFromSprite(std::string path, SpriteParams params, RGB* colorKeyRGB)
+bool Texture::loadFromSprite(SpriteParams params, RGB* colorKeyRGB)
 {
-	if (!loadFromFile(path, colorKeyRGB))
+	if (!loadFromFile(params.path, colorKeyRGB))
 	{
 		return false;
 	}
 
 	size.w = params.imageW;
 	size.h = params.imageH;
+	spriteClips.clear();
 
 	for (int i = 0; i < params.length; i++)
 	{

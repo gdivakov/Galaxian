@@ -4,6 +4,7 @@
 #include "Texture.h"
 #include "ShipConsts.h"
 #include "Ship.h"
+#include "FlyingProjectile.h"
 
 class Ship;
 struct ShipRect;
@@ -18,12 +19,12 @@ public:
 	void startProjectile();
 	void move(FlyingProjectile* pj);
 
-	void virtual handleEvent(SDL_Event& e);
+	void virtual handleEvent(SDL_Event& e) {};
 	void virtual onBeforeRender();
 	void virtual onAfterRender();
 private:
 	typedef std::vector<SDL_Rect*> ClipPointers;
-	typedef std::vector<FlyingProjectile> FlyingProjectiles;
+	typedef std::vector<FlyingProjectile*> FlyingProjectiles;
 
 	Size size;
 	int speed;

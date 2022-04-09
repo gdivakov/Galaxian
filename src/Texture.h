@@ -20,7 +20,7 @@ public:
 	virtual ~Texture();
 
 	bool loadFromFile(std::string path, RGB* colorKeyRGB = NULL);
-	bool loadFromSprite(std::string, SpriteParams params, RGB* colorKeyRGB = NULL);
+	bool loadFromSprite(SpriteParams params, RGB* colorKeyRGB = NULL);
 	bool loadFromRenderedText(TTF_Font* font, std::string textureText, SDL_Color textColor);
 	void render(Vector2 pos, SDL_Rect* clip = NULL, double angle = 0.0, SDL_Point* center = NULL, SDL_RendererFlip flip = SDL_FLIP_NONE);
 	void free();

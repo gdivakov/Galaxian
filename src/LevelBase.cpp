@@ -28,6 +28,19 @@ void LevelBase::deregisterListeners()
 	objsToFree.clear();
 }
 
+void LevelBase::removeObject(Object* object)
+{
+	delete object;
+
+	auto removeIter = remove(objsToFree.begin(), objsToFree.end(), object);
+	objsToFree.erase(removeIter, objsToFree.end());
+
+	Loop* gameLoop = system->getGameLoop();
+
+	gameLoop->removeEventListener(object);
+	gameLoop->removeRenderListener(object);
+}
+
 void LevelBase::quit()
 {
 	controller->stop();

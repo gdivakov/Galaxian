@@ -15,6 +15,9 @@ struct SpriteParams
 
 const SpriteParams SONIC_A_SHIP = { "res/shipA.png", 102, 114, 10 };
 const SpriteParams PIRATE_A_SHIP = { "res/pirateA.png", 65, 144, 10 };
+const SpriteParams SONIC_A_SHIP_EXPLOSION = { "res/explosion_sonicA.png", 165, 114, 9 };
+const SpriteParams PIRATE_A_SHIP_EXPLOSION = { "res/explosion_pirateA.png", 165, 114, 9 };
+
 
 const int SONIC_A_SPEED = 6;
 const int PIRATE_A_SPEED = 5;
@@ -40,6 +43,7 @@ struct ShipRect {
 
 struct ShipParams {
 	SpriteParams sprite;
+	SpriteParams explosion;
 	GunType gunType;
 	int maxSpeed;
 	const std::vector<RectColliderPoint>& colliders;
@@ -115,6 +119,24 @@ const int ROCKET_AMMO_SPEED = 8;
 const int LAZER_AMMO_SPEED = 1000;
 
 const SpriteParams ROCKET_AMMO_TEXTURE_PARAMS = { "res/rocket3.png", 30, 50, 2 };
+const Colliders ROCKET_AMMO_COLLIDER =
+{
+	{
+		Vector2(-7.5, -25),
+		Vector2(7.5, -25),
+		Vector2(7.5, 25),
+		Vector2(-7.5, 25)
+	}
+};
+const Colliders LAZER_AMMO_COLLIDER =
+{
+	{
+		Vector2(-7.5, -25),
+		Vector2(7.5, -25),
+		Vector2(7.5, 25),
+		Vector2(-7.5, 25)
+	}
+};
 const SpriteParams LAZER_AMMO_TEXTURE_PARAMS = { "res/lazer_ammo.png", 27, 111, 3 };
 
 struct GunParams
@@ -124,19 +146,11 @@ struct GunParams
 	std::string soundPath;
 };
 
-struct FlyingProjectile
-{
-	Vector2 position;
-	Vector2 direction;
-	int rotation;
-	short frame;
-	bool isStarted;
-};
-
 struct AmmoParams
 {
 	int speed;
 	SpriteParams texture;
+	Colliders colliders;
 };
 
 void DrawCircle(SDL_Renderer* renderer, int32_t centreX, int32_t centreY, int32_t radius);

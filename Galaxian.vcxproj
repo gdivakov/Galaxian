@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\FlyingProjectile.cpp" />
     <ClCompile Include="src\Collidable.cpp" />
     <ClCompile Include="src\ShipConsts.cpp" />
     <ClCompile Include="src\PauseView.cpp" />
@@ -45,6 +46,7 @@
     <ClCompile Include="src\Vector2.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\FlyingProjectile.h" />
     <ClInclude Include="src\Collidable.h" />
     <ClInclude Include="src\ShipConsts.h" />
     <ClInclude Include="src\PauseView.h" />
@@ -84,6 +86,8 @@
     <Media Include="src\res\lvl1.mp3" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="C:\Users\humanz\Desktop\shipA resized\sprite\explosion\explosion_sonicA.png" />
+    <Image Include="res\explosion_sonicA.png" />
     <Image Include="res\main_screen_bg.png" />
     <Image Include="res\pirateA.png" />
     <Image Include="res\rocket2.png" />

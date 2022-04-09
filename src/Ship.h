@@ -28,7 +28,6 @@ public:
 private:
     const App* system;
     void shiftColliders();
-    virtual void handleCollided() { std::cout << "handle collide" << std::endl; };
 protected:
     Vector2 pos;
     Vector2 vel;
@@ -37,5 +36,6 @@ protected:
     int frame;
     int rotation;
     WeaponModule* gun;
+    SpriteParams explosion;
     void rotate(int r);
 };

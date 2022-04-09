@@ -59,11 +59,11 @@ void EnemyShip::onBeforeRender()
 
 	std::vector<SDL_Rect>& shipClips = getClips();
 	SDL_Rect* currentClip = &shipClips[frame / shipClips.size()];
-	Vector2 dirToRender = Vector2::getRotatedVector(dir, rotation) + pos;
+	//Vector2 dirToRender = Vector2::getRotatedVector(dir, rotation) + pos;
 
 	render(pos - Vector2(size.w / 2, size.h / 2), currentClip, rotation, NULL);
 	
-	SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
+	//SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
 
 	showColliders();
 	//SDL_RenderDrawLine(renderer, pos.x, pos.y, dirToRender.x, dirToRender.y);
@@ -115,6 +115,11 @@ void EnemyShip::displayPath()
 		);
 		pathIdx++;
 	} while (pathIdx + 1 < path.size());
+}
+
+void EnemyShip::handleCollided()
+{
+	std::cout << "handle enemy collided" << std::endl;
 }
 
 //void EnemyShip::isInView()

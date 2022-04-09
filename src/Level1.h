@@ -5,6 +5,7 @@
 #include "App.h"
 #include "LevelBase.h"
 #include "LevelManager.h"
+#include "Object.h"
 
 class Level1 : public LevelBase {
 private:

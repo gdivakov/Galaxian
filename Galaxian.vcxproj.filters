@@ -141,6 +141,9 @@
     <ClCompile Include="src\Collidable.cpp">
       <Filter>Source Files\Objects</Filter>
     </ClCompile>
+    <ClCompile Include="src\FlyingProjectile.cpp">
+      <Filter>Source Files\Objects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Projectile.h">
@@ -224,6 +227,9 @@
     <ClInclude Include="src\Collidable.h">
       <Filter>Header Files\Objects</Filter>
     </ClInclude>
+    <ClInclude Include="src\FlyingProjectile.h">
+      <Filter>Header Files\Objects</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Galaxian.aps" />
@@ -272,6 +278,12 @@
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="res\pirateA.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="C:\Users\humanz\Desktop\shipA resized\sprite\explosion\explosion_sonicA.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\explosion_sonicA.png">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

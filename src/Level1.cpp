@@ -3,7 +3,6 @@
 
 #include "Level1.h"
 #include "Ship.h"
-
 #include "PlayerShip.h"
 #include "EnemyShip.h"
 #include "Background.h"
@@ -50,8 +49,7 @@ void Level1::load()
 		sonicParams
 	);
 
-	playerShip->registerEnemyCollider(pirate);
-	//playerShip->deregisterEnemyCollider(pirate);
+	playerShip->registerEnemyCollidable(pirate);
 
 	// Prepare level audio
 	Audio* audioPlayer = system->getAudioPlayer();
@@ -70,9 +68,9 @@ ShipParams getShipParams(const Size* windowSize, const ShipType type)
 	switch (type)
 	{
 		case SONIC_A:
-			return { SONIC_A_SHIP, ROCKET, SONIC_A_SPEED, SONIC_A_COLLIDERS_DEFAULT };
+			return { SONIC_A_SHIP, SONIC_A_SHIP_EXPLOSION, ROCKET, SONIC_A_SPEED, SONIC_A_COLLIDERS_DEFAULT };
 		case PIRATE_A:
-			return { PIRATE_A_SHIP, ROCKET, PIRATE_A_SPEED, PIRATE_A_COLLIDERS_DEFAULT };
+			return { PIRATE_A_SHIP, PIRATE_A_SHIP_EXPLOSION, ROCKET, PIRATE_A_SPEED, PIRATE_A_COLLIDERS_DEFAULT };
 	}
 }
 
