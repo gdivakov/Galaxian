@@ -14,20 +14,6 @@
 ShipParams getShipParams(const Size* windowSize, const ShipType type);
 std::vector<BezierCurve> getEnemyPathCurves();
 
-// Todo: 
-// 1. Select ship before the game; ship should has params as [ health, armour, speed, weapon, buffs ]
-// 2. Show dialog with the task description at the begining
-// ---> 3. Create pause menu view and mechanism to stop the level
-// 4. Hood should have: [ health, armour, buffs, score, weapon ]
-// 5. Add joystick support
-// 6. 2 players game support 
-// 7. Fullscreen mode
-// 8. Russian language
-// --> 9. File saving progress and settings
-// 10. More [ player ships, enemies, weapons, buffs, bosses, enemies behaviour logic ]
-// 11. Score at the end of the level with achieved weapon
-// ---> 12. Ship collision box
-
 void Level1::load() 
 {
 	ShipParams sonicParams = getShipParams(system->getWindowSize(), SONIC_A); // Todo: don't pass params, get it and save is from constructor
