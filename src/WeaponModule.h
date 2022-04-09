@@ -19,7 +19,8 @@ public:
 	WeaponModule(
 		GunType initGunType, 
 		const App* p_system,
-		Ship* p_ship
+		Ship* p_ship,
+		bool p_isEnemyShip
 	);
 	void fire();
 	void addGun();
@@ -39,4 +40,5 @@ private:
 	Ship* ship;
 	Projectile* ammo;
 	const App* system;
+	bool isEnemyShip;
 };

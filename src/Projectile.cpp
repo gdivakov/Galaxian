@@ -4,6 +4,7 @@
 #include "Vector2.h"
 
 const int SPEED_DIVIDER = 50;
+bool isOutside(Vector2 pos);
 
 Projectile::Projectile(GunType p_type, SDL_Renderer* p_renderer, Ship* p_ship) 
 	: 
@@ -71,7 +72,7 @@ void Projectile::move(FlyingProjectile* pj)
 
 	if (pj->checkCollision())
 	{
-		pj->handleCollided();
+		ship->deregisterEnemyCollidable(pj->getCollidedTo());
 	}
 }
 
@@ -94,7 +95,7 @@ void Projectile::onBeforeRender()
 
 		Vector2 nextPos = releasedPjs[i]->getPosition() - Vector2(size.w / 2, size.h / 2);
 
-		releasedPjs[i]->showColliders();
+		//releasedPjs[i]->showColliders();
 		render(nextPos, currentClip, releasedPjs[i]->getRotation());
 	}
 }
@@ -117,12 +118,20 @@ void Projectile::onAfterRender()
 		}
 
 		// Remove missed projectiles
-		Vector2 pjPosition = pj->getPosition();
-
-		if (pjPosition.y < 0 || pjPosition.x < 0)
+		if (isOutside(pj->getPosition()) || pj->getIsCollided())
 		{
 			delete releasedPjs[i];
 			releasedPjs.erase(releasedPjs.begin() + i);
 		}
 	}
 }
+
+bool isOutside(Vector2 pos)
+{
+	bool isOutside = pos.y < 0
+		|| pos.x < 0
+		|| pos.y > WINDOWED_HEIGHT
+		|| pos.x > WINDOWED_WIDTH;
+
+	return isOutside;
+};

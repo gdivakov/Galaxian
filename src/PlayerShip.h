@@ -1,5 +1,4 @@
 #pragma once
-
 #include <iostream>
 
 #include "Ship.h"
@@ -10,9 +9,8 @@ public:
     PlayerShip(
         const App* p_system, 
         LevelBase* p_level, 
-        ShipParams params
+        ShipParams& params
     );
     virtual void handleEvent(SDL_Event& e);
     virtual void onBeforeRender();
-    void handleCollided();
 };

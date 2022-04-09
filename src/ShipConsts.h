@@ -16,8 +16,7 @@ struct SpriteParams
 const SpriteParams SONIC_A_SHIP = { "res/shipA.png", 102, 114, 10 };
 const SpriteParams PIRATE_A_SHIP = { "res/pirateA.png", 65, 144, 10 };
 const SpriteParams SONIC_A_SHIP_EXPLOSION = { "res/explosion_sonicA.png", 165, 114, 9 };
-const SpriteParams PIRATE_A_SHIP_EXPLOSION = { "res/explosion_pirateA.png", 165, 114, 9 };
-
+const SpriteParams PIRATE_A_SHIP_EXPLOSION = { "res/explosion_pirateA.png", 103, 144, 8 };
 
 const int SONIC_A_SPEED = 6;
 const int PIRATE_A_SPEED = 5;

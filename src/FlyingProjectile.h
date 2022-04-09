@@ -1,5 +1,6 @@
 #pragma once
 #include <SDL.h>
+
 #include "Collidable.h"
 #include "Vector2.h"
 
@@ -9,6 +10,7 @@ private:
 	Vector2 position;
 	Vector2 direction;
 	int rotation;
+
 	short frame;
 	bool isStarted;
 public:

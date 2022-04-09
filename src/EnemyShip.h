@@ -20,7 +20,6 @@ private:
     //void isInView();
     void followPath();
     void displayPath();
-    virtual void handleCollided();
 public:
     EnemyShip(
         const App* p_system, 

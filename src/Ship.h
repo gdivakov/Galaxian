@@ -15,7 +15,7 @@ class Ship : public Texture, public Collidable
 {
 public:
     LevelBase* level;
-    Ship(const App* system, ShipParams params, LevelBase* p_level);
+    Ship(const App* system, ShipParams params, LevelBase* p_level, bool isEnemyShip);
     ~Ship();
     void move();
     ShipRect getRect() { return { pos, size }; };
@@ -25,9 +25,10 @@ public:
     virtual void onBeforeRender() = 0;
     virtual void onAfterRender();
     virtual void handleEvent(SDL_Event& e) {};
+    virtual void handleCollided();
 private:
     const App* system;
-    void shiftColliders();
+    virtual void shiftColliders();
 protected:
     Vector2 pos;
     Vector2 vel;

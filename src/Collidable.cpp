@@ -5,6 +5,7 @@ Collidable::Collidable(SDL_Renderer* p_renderer, Colliders p_colliders, int wrap
 {
     collidableRotation = 0;
     isCollided = false;
+    collidedTo = NULL;
     wrapperCollider.r = wrapperRadius;
 };
 
@@ -35,7 +36,7 @@ bool Collidable::checkCollision()
         return isCollided;
     }
 
-    std::vector<Collidable*> possibleColliders;
+    std::vector<Collidable*> possibleCollidables;
 
     for (int i = 0; i < enemyCollidables.size(); i++)
     {
@@ -49,20 +50,27 @@ bool Collidable::checkCollision()
             continue;
         }
 
-        possibleColliders.push_back(coll);
+        possibleCollidables.push_back(coll);
     }
 
-    if (!possibleColliders.size())
+    if (!possibleCollidables.size())
     {
         return false;
     }
 
-    for (int i = 0; i < possibleColliders.size(); i++)
+    for (int i = 0; i < possibleCollidables.size(); i++)
     {
-        if (checkRectCollision(possibleColliders[i]))
+        if (checkRectCollision(possibleCollidables[i]))
         {
             isCollided = true;
-            //possibleColliders[i]->handleCollided();
+            collidedTo = enemyCollidables[i];
+
+            collidedTo->isCollided = true;
+
+            handleCollided();
+            // Remove collidable from ship list of enemy collidables
+            deregisterEnemyCollidable(possibleCollidables[i]);
+            possibleCollidables[i]->handleCollided();
         }
     }
 
@@ -100,11 +108,11 @@ void Collidable::registerEnemyCollidable(Collidable* enemyCollider)
     enemyCollidables.push_back(enemyCollider);
 };
 
-//void Collidable::deregisterEnemyCollidable(Collidable* collidable) 
-//{
-//    auto removeIter = remove(enemyCollidables.begin(), enemyCollidables.end(), collidable);
-//    enemyCollidables.erase(removeIter, enemyCollidables.end());
-//}
+void Collidable::deregisterEnemyCollidable(Collidable* collidable) 
+{
+    auto removeIter = remove(enemyCollidables.begin(), enemyCollidables.end(), collidable);
+    enemyCollidables.erase(removeIter, enemyCollidables.end());
+}
 
 //Colliders Collidable::getColliders(Space space)
 //{

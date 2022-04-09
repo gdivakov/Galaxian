@@ -28,8 +28,10 @@ void LevelBase::deregisterListeners()
 	objsToFree.clear();
 }
 
+
 void LevelBase::removeObject(Object* object)
 {
+	std::cout << "remove object" << std::endl;
 	delete object;
 
 	auto removeIter = remove(objsToFree.begin(), objsToFree.end(), object);

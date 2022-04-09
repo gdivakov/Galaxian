@@ -4,7 +4,8 @@
 WeaponModule::WeaponModule(
 	GunType initGunType,
 	const App* p_system,
-	Ship* p_ship
+	Ship* p_ship,
+	bool p_isEnemyShip
 ) : Texture(p_system->getRenderer()), system(p_system)
 {
 	ammo = new Projectile(initGunType, system->getRenderer(), p_ship);
@@ -18,6 +19,8 @@ WeaponModule::WeaponModule(
 	availableGuns.push_back(initGunType);
 	selectedGun = availableGuns[0];
 	fireSoundId = system->getAudioPlayer()->loadSound(params.soundPath);
+
+	isEnemyShip = p_isEnemyShip;
 }
 
 void WeaponModule::fire()
@@ -53,10 +56,21 @@ void WeaponModule::handleEvent(SDL_Event& e)
 	const Uint8* currentKeyStates = SDL_GetKeyboardState(NULL);
 
 	// Todo: Fix issue with left+top+l pressed
-	if (currentKeyStates[SDL_SCANCODE_L])
+	if (isEnemyShip) 
 	{
-		fire();
-		return;
+		if (currentKeyStates[SDL_SCANCODE_L])
+		{
+			fire();
+			return;
+		}
+	}
+	else
+	{
+		if (currentKeyStates[SDL_SCANCODE_F])
+		{
+			fire();
+			return;
+		}
 	}
 }
 void WeaponModule::onBeforeRender()

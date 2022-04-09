@@ -8,7 +8,7 @@ EnemyShip::EnemyShip(
 	ShipParams& params, 
 	std::vector<BezierCurve> pathCurves
 ) :
-	Ship(p_system, params, p_level)
+	Ship(p_system, params, p_level, true)
 {
 	currentWaypoint = 0;
 	inView = false;
@@ -25,7 +25,8 @@ EnemyShip::EnemyShip(
 
 	delete bezierPath;
 	
-	pos = path[0];
+	pos = path[1];
+	rotation = 180;
 }
 
 void EnemyShip::followPath()
@@ -53,20 +54,16 @@ void EnemyShip::onBeforeRender()
 
 	if (!level->isPaused)
 	{
-		followPath();
+		//followPath();
 		move();
 	}
 
 	std::vector<SDL_Rect>& shipClips = getClips();
 	SDL_Rect* currentClip = &shipClips[frame / shipClips.size()];
-	//Vector2 dirToRender = Vector2::getRotatedVector(dir, rotation) + pos;
 
 	render(pos - Vector2(size.w / 2, size.h / 2), currentClip, rotation, NULL);
 	
-	//SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
-
-	showColliders();
-	//SDL_RenderDrawLine(renderer, pos.x, pos.y, dirToRender.x, dirToRender.y);
+	//showColliders();
 
 	//displayPath();
 }
@@ -97,6 +94,44 @@ void EnemyShip::handleEvent(SDL_Event& e)
 			break;
 		}
 	}
+
+	if (e.type == SDL_KEYDOWN && e.key.repeat == 0) {
+		switch (e.key.keysym.sym)
+		{
+			case SDLK_UP:
+		//case SDLK_w:
+			vel.y -= maxSpeed; break;
+			case SDLK_DOWN:
+		//case SDLK_s:
+			vel.y += maxSpeed; break;
+			case SDLK_LEFT:
+		//case SDLK_a:
+			vel.x -= maxSpeed; break;
+			case SDLK_RIGHT:
+		//case SDLK_d:
+			vel.x += maxSpeed; break;
+		}
+	}
+	else if (e.type == SDL_KEYUP && e.key.repeat == 0)
+	{
+		switch (e.key.keysym.sym)
+		{
+			case SDLK_UP:
+		//case SDLK_w:
+			vel.y += maxSpeed; break;
+			case SDLK_DOWN:
+		//case SDLK_s:
+			vel.y -= maxSpeed; break;
+			case SDLK_LEFT:
+		//case SDLK_a:
+			vel.x += maxSpeed; break;
+			case SDLK_RIGHT:
+		//case SDLK_d:
+			vel.x -= maxSpeed; break;
+		}
+	}
+
+	gun->handleEvent(e);
 }
 
 void EnemyShip::displayPath()
@@ -115,11 +150,6 @@ void EnemyShip::displayPath()
 		);
 		pathIdx++;
 	} while (pathIdx + 1 < path.size());
-}
-
-void EnemyShip::handleCollided()
-{
-	std::cout << "handle enemy collided" << std::endl;
 }
 
 //void EnemyShip::isInView()

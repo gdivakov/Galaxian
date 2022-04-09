@@ -50,6 +50,7 @@ void Level1::load()
 	);
 
 	playerShip->registerEnemyCollidable(pirate);
+	pirate->registerEnemyCollidable(playerShip);
 
 	// Prepare level audio
 	Audio* audioPlayer = system->getAudioPlayer();

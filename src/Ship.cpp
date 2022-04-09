@@ -6,7 +6,7 @@
 
 Extrems getExtrems(std::vector<float> values);
 
-Ship::Ship(const App* p_system, ShipParams params, LevelBase* p_level) 
+Ship::Ship(const App* p_system, ShipParams params, LevelBase* p_level, bool isEnemyShip) 
 :   system(p_system),
     Texture(p_system->getRenderer()),
     Collidable(p_system->getRenderer(), params.colliders, params.sprite.imageH > params.sprite.imageW ? params.sprite.imageH / 2 : params.sprite.imageW / 2),
@@ -18,7 +18,7 @@ Ship::Ship(const App* p_system, ShipParams params, LevelBase* p_level)
     maxSpeed = params.maxSpeed;
     explosion = params.explosion;
 
-    gun = new WeaponModule(params.gunType, p_system, this);
+    gun = new WeaponModule(params.gunType, p_system, this, isEnemyShip);
 
     loadFromSprite(params.sprite);
     
@@ -54,17 +54,20 @@ void Ship::move()
         shiftColliders();
     }
 
-    if (checkCollision())
-    {
-        shiftColliders();
-        handleCollided();
-    }
+    checkCollision();
 }
 
 void Ship::shiftColliders()
 {
     wrapperCollider.pos = pos;
     collidableRotation = rotation;
+}
+
+void Ship::handleCollided()
+{
+    loadFromSprite(explosion);
+
+    frame = 0;
 }
 
 void Ship::onAfterRender()

@@ -4,12 +4,12 @@
 PlayerShip::PlayerShip(
     const App* p_system, 
     LevelBase* p_level, 
-    ShipParams params
+    ShipParams& params
 ):
-	Ship(p_system, params, p_level) 
+	Ship(p_system, params, p_level, false) 
 {
     pos = Vector2((WINDOWED_WIDTH)/2, WINDOWED_HEIGHT - getHeight() - 20);
-    rotation = 10;
+    rotation = 0;
 }
 
 void PlayerShip::handleEvent(SDL_Event& e)
@@ -39,16 +39,16 @@ void PlayerShip::handleEvent(SDL_Event& e)
     {
         switch (e.key.keysym.sym)
         {
-        case SDLK_UP:
+        //case SDLK_UP:
         case SDLK_w:
             vel.y -= maxSpeed; break;
-        case SDLK_DOWN:
+        //case SDLK_DOWN:
         case SDLK_s:
             vel.y += maxSpeed; break;
-        case SDLK_LEFT:
+        //case SDLK_LEFT:
         case SDLK_a:
             vel.x -= maxSpeed; break;
-        case SDLK_RIGHT:
+        //case SDLK_RIGHT:
         case SDLK_d:
             vel.x += maxSpeed; break;
         }
@@ -57,16 +57,16 @@ void PlayerShip::handleEvent(SDL_Event& e)
     {
         switch (e.key.keysym.sym)
         {
-        case SDLK_UP:
+        //case SDLK_UP:
         case SDLK_w:
             vel.y += maxSpeed; break;
-        case SDLK_DOWN:
+        //case SDLK_DOWN:
         case SDLK_s:
             vel.y -= maxSpeed; break;
-        case SDLK_LEFT:
+        //case SDLK_LEFT:
         case SDLK_a:
             vel.x += maxSpeed; break;
-        case SDLK_RIGHT:
+        //case SDLK_RIGHT:
         case SDLK_d:
             vel.x -= maxSpeed; break;
         }
@@ -87,17 +87,7 @@ void PlayerShip::onBeforeRender()
     std::vector<SDL_Rect>& shipClips = getClips();
     SDL_Rect* currentClip = &shipClips[frame / shipClips.size()];
 
-    //Vector2 dir = getDirection();
-
     render(pos - Vector2(size.w / 2, size.h / 2), currentClip, rotation, NULL);
-    //SDL_RenderDrawLine(renderer, pos.x, pos.y, dir.x, dir.y);
 
     //showColliders();
-}
-
-void PlayerShip::handleCollided()
-{
-    loadFromSprite(explosion);
-
-    frame = 0;
 }

@@ -21,7 +21,7 @@ void FlyingProjectile::shiftColliders() {
 
 void FlyingProjectile::handleCollided()
 {
-	std::cout << "Collided" << std::endl;
+	//collidedTo->handleCollided();
 }
 
 int getRadius(GunType type)
