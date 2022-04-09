@@ -4,25 +4,23 @@
 #include <map>
 #include <iostream>
 
-#include "Object.h"
-
-class Audio : public Object
+class Audio
 {
 public: 
 	Audio();
 	~Audio();
 	bool loadMusic(std::string path);
-	short loadSound(std::string path);
+	bool loadSound(std::string path);
 	void playMusic();
-	void playSound(short key);
+	void playSound(std::string key);
 	void setMuted(bool isMuted, bool isMusic = true);
 	void togglePaused(bool p_isPaused = false);
-	virtual void handleEvent(SDL_Event& e);
 	bool isMusicMuted;
 	bool isSoundsMuted;
+	void freeSounds();
+	void freeMusic();
 private:
-	typedef std::map<short, Mix_Chunk*> SoundMap;
-	short key;
+	typedef std::map<std::string, Mix_Chunk*> SoundMap;
 	Mix_Music* mainTheme;
 	SoundMap sounds;
 	bool isPaused;

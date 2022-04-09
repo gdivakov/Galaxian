@@ -35,10 +35,11 @@ private:
 	float cooldownMs;
 	short fireSoundId;
 	GunType selectedGun;
-	std::vector<GunType> availableGuns;
+	//std::vector<GunType> availableGuns;
 	Timer cooldownTimer;
 	Ship* ship;
 	Projectile* ammo;
 	const App* system;
 	bool isEnemyShip;
+	std::string fireSound;
 };

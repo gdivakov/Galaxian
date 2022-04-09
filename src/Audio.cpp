@@ -12,24 +12,35 @@ Audio::Audio()
 	isSoundsMuted = !settingsConfig[SOUNDS_IDX];
 
 	mainTheme = NULL;
-	key = 1; // 0 is reserved for error case
+	isPaused = false;
 
 	Mix_VolumeMusic(!isMusicMuted ? MUSIC_VOLUME : 0);
 	Mix_Volume(-1, !isSoundsMuted ? SOUNDS_VOLUME : 0);
 }
 
-Audio::~Audio()
+void Audio::freeSounds()
 {
-
 	for (SoundMap::iterator i = sounds.begin(); i != sounds.end(); i++)
 	{
 		Mix_FreeChunk(i->second);
 	}
-	
-	sounds.clear();
 
-	Mix_FreeMusic(mainTheme);
-	mainTheme = NULL;
+	sounds.clear();
+}
+
+void Audio::freeMusic()
+{
+	if (mainTheme)
+	{
+		Mix_FreeMusic(mainTheme);
+		mainTheme = NULL;
+	}
+}
+
+Audio::~Audio()
+{
+	freeSounds();
+	freeMusic();
 }
 
 bool Audio::loadMusic(std::string path)
@@ -44,20 +55,17 @@ bool Audio::loadMusic(std::string path)
 	return mainTheme != NULL;
 }
 
-short Audio::loadSound(std::string path)
+bool Audio::loadSound(std::string path)
 {
-	short id = key;
-	key++;
+	sounds[path] = Mix_LoadWAV(path.c_str());
 
-	sounds[id] = Mix_LoadWAV(path.c_str());
-
-	if (sounds[id] == NULL)
+	if (sounds[path] == NULL)
 	{
 		std::cout << "Failed to load music! SDL_mixer Error: " << Mix_GetError() << std::endl;
-		return 0;
+		return false;
 	}
 
-	return id;
+	return true;
 }
 
 void Audio::playMusic()
@@ -65,15 +73,15 @@ void Audio::playMusic()
 	Mix_PlayMusic(mainTheme, -1);
 }
 
-void Audio::playSound(short id)
+void Audio::playSound(std::string key)
 {
-	if (!sounds[id])
+	if (!sounds[key])
 	{
-		std::cout << "Error while playing sound id: " << id << std::endl;
+		std::cout << "Error while playing sound id: " << key << std::endl;
 		return;
 	}
 
-	Mix_PlayChannel(-1, sounds[id], 0);
+	Mix_PlayChannel(-1, sounds[key], 0);
 };
 
 void Audio::setMuted(bool isMuted, bool isMusic)
@@ -102,6 +110,3 @@ void Audio::togglePaused(bool p_isPaused)
 		Mix_ResumeMusic();
 	}
 }
-
-void Audio::handleEvent(SDL_Event& e)
-{}

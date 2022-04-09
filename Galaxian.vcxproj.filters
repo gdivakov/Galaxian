@@ -117,9 +117,6 @@
     <ClCompile Include="src\ControlPanel.cpp">
       <Filter>Source Files\Levels\MainScreen</Filter>
     </ClCompile>
-    <ClCompile Include="src\Settings.cpp">
-      <Filter>Source Files\Levels\MainScreen</Filter>
-    </ClCompile>
     <ClCompile Include="src\Level1.cpp">
       <Filter>Source Files\Levels\Level1</Filter>
     </ClCompile>
@@ -143,6 +140,9 @@
     </ClCompile>
     <ClCompile Include="src\FlyingProjectile.cpp">
       <Filter>Source Files\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Settings.cpp">
+      <Filter>Source Files\Levels\General</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -194,15 +194,6 @@
     <ClInclude Include="src\ControlPanel.h">
       <Filter>Header Files\Levels\MainScreen</Filter>
     </ClInclude>
-    <ClInclude Include="src\PanelConsts.h">
-      <Filter>Header Files\Levels\MainScreen</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Settings.h">
-      <Filter>Header Files\Levels\MainScreen</Filter>
-    </ClInclude>
-    <ClInclude Include="src\SettingsConsts.h">
-      <Filter>Header Files\Levels\MainScreen</Filter>
-    </ClInclude>
     <ClInclude Include="src\Level1.h">
       <Filter>Header Files\Levels\Level1</Filter>
     </ClInclude>
@@ -230,6 +221,18 @@
     <ClInclude Include="src\FlyingProjectile.h">
       <Filter>Header Files\Objects</Filter>
     </ClInclude>
+    <ClInclude Include="src\SoundConst.h">
+      <Filter>Header Files\consts</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Settings.h">
+      <Filter>Header Files\Levels\General</Filter>
+    </ClInclude>
+    <ClInclude Include="src\SettingsConsts.h">
+      <Filter>Header Files\consts</Filter>
+    </ClInclude>
+    <ClInclude Include="src\PanelConsts.h">
+      <Filter>Header Files\consts</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Galaxian.aps" />
@@ -248,6 +251,9 @@
     <Media Include="res\blast.mp3">
       <Filter>Resource Files</Filter>
     </Media>
+    <Media Include="G:\My Drive\preparedSprites\sounds\game_over.mp3" />
+    <Media Include="res\game_over.mp3" />
+    <Media Include="res\pirate_explosion.mp3" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="src\res\rocket2.png">
@@ -284,6 +290,9 @@
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="res\explosion_sonicA.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\explosion_pirateA.png">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

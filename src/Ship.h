@@ -29,6 +29,7 @@ public:
 private:
     const App* system;
     virtual void shiftColliders();
+    std::string explosionSound;
 protected:
     Vector2 pos;
     Vector2 vel;

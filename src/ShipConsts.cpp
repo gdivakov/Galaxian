@@ -211,13 +211,13 @@ GunParams getGunParamsByType(GunType type)
     switch (type)
     {
     case ROCKET:
-        return { ROCKET_COOLDOWN, ROCKET_TEXTURE_PATH, BLAST_SOUND_PATH };
+        return { ROCKET_COOLDOWN, ROCKET_TEXTURE_PATH, BLAST_SOUND };
         break;
     case LAZER:
-        return { LAZER_COOLDOWN, LAZER_TEXTURE_PATH, BLAST_SOUND_PATH };
+        return { LAZER_COOLDOWN, LAZER_TEXTURE_PATH, BLAST_SOUND };
         break;
     default:
-        return { ROCKET_COOLDOWN, ROCKET_TEXTURE_PATH, BLAST_SOUND_PATH };
+        return { ROCKET_COOLDOWN, ROCKET_TEXTURE_PATH, BLAST_SOUND };
     }
 }
 

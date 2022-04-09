@@ -10,6 +10,7 @@
 class Level1 : public LevelBase {
 private:
 	LevelManager* controller;
+	void initAudio();
 public: 
 	Level1(const App* p_system, LevelManager* p_controller) :
 		LevelBase(p_system, p_controller) {};

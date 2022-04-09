@@ -1,6 +1,7 @@
 #include "MainScreen.h"
 #include "Background.h"
 #include "ControlPanel.h"
+#include "SoundConst.h"
 
 void MainScreen::load()
 {
@@ -12,9 +13,22 @@ void MainScreen::load()
 	objsToFree = { panel, bgMain };
 
 	registerListeners();
+
+	initAudio();
 }
 
 void MainScreen::startGame()
 {
 	controller->start(LEVEL_1);
+}
+
+void MainScreen::initAudio()
+{
+	Audio* audioPlayer = system->getAudioPlayer();
+
+	// Load level sounds
+	for (int i = 0; i < LEVEL_0_SOUNDS.size(); i++)
+	{
+		audioPlayer->loadSound(LEVEL_0_SOUNDS[i]);
+	}
 }

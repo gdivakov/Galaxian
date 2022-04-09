@@ -19,11 +19,12 @@ public:
 	{};
 	virtual ~LevelBase() { unload(); }
 	virtual void load() = 0;
+	virtual void initAudio() = 0;
 	void unload();
 	void quit();
 	void registerListeners();
 	void deregisterListeners();
-	bool togglePaused() { isPaused = !isPaused; return isPaused; };
+	bool togglePaused() { return isPaused = !isPaused; };
 	void removeObject(Object* object);
 protected:
 	const App* system;

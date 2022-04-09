@@ -1,5 +1,7 @@
-#include "Hood.h"
 #include <iostream>
+
+#include "SoundConst.h"
+#include "Hood.h"
 
 Hood::Hood(SDL_Renderer* p_renderer, LevelBase* p_level, const App* p_system)
 {
@@ -25,11 +27,15 @@ void Hood::handleEvent(SDL_Event& e)
         return;
     }
 
-    if (e.key.keysym.sym == SDLK_ESCAPE && !pauseView->isSettingsOpened)
+    if (e.key.keysym.sym == SDLK_ESCAPE && e.key.repeat == 0 && !pauseView->isSettingsOpened)
     {
         // Pause game and open pauseView
         bool isPaused = level->togglePaused();
-        system->getAudioPlayer()->togglePaused(isPaused);
+        Audio* audioPlayer = system->getAudioPlayer();
+        
+        audioPlayer->togglePaused(isPaused);
+        audioPlayer->playSound(PAUSE_SOUND);
+
         return;
     }
 

@@ -1,5 +1,6 @@
 #include "Settings.h"
 #include "Vector2.h"
+#include "SoundConst.h"
 
 Settings::Settings(const App* p_system, bool& p_isOpened)
     :system(p_system), 
@@ -277,6 +278,7 @@ void Settings::handleEvent(SDL_Event& e)
         if (selectedIdx - 1 >= 0)
         {
             updateSelectedOption(selectedIdx - 1);
+            system->getAudioPlayer()->playSound(SELECT_ITEM_SOUND);
         }
         break;
     case SDLK_DOWN:
@@ -284,6 +286,7 @@ void Settings::handleEvent(SDL_Event& e)
         if (selectedIdx + 1 <= options.size())
         {
             updateSelectedOption(selectedIdx + 1);
+            system->getAudioPlayer()->playSound(SELECT_ITEM_SOUND);
         }
         break;
     case SDLK_ESCAPE:

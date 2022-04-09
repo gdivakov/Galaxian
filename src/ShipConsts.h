@@ -4,6 +4,7 @@
 
 #include "Vector2.h"
 #include "Consts.h"	
+#include "SoundConst.h"
 
 struct SpriteParams
 {
@@ -46,6 +47,7 @@ struct ShipParams {
 	GunType gunType;
 	int maxSpeed;
 	const std::vector<RectColliderPoint>& colliders;
+	std::string explosionSound;
 };
 
 struct Extrems {
@@ -111,7 +113,6 @@ const float ROCKET_COOLDOWN = 100.0f;
 const float LAZER_COOLDOWN = 0;
 const std::string ROCKET_TEXTURE_PATH = "res/rocket.png";
 const std::string LAZER_TEXTURE_PATH = "res/lazer.png";
-const std::string BLAST_SOUND_PATH = "res/blast.mp3";
 
 const int EXPLOSION_PROJECTILE_CLIP_LENGTH = 1;
 const int ROCKET_AMMO_SPEED = 8;

@@ -13,5 +13,6 @@ public:
 	MainScreen(const App* p_system, LevelManager* p_controller) :
 		LevelBase(p_system, p_controller) {};
 	virtual void load();
+	virtual void initAudio();
 	void startGame();
 }; 

@@ -25,8 +25,7 @@ EnemyShip::EnemyShip(
 
 	delete bezierPath;
 	
-	pos = path[1];
-	rotation = 180;
+	pos = path[0];
 }
 
 void EnemyShip::followPath()
@@ -54,7 +53,7 @@ void EnemyShip::onBeforeRender()
 
 	if (!level->isPaused)
 	{
-		//followPath();
+		followPath();
 		move();
 	}
 

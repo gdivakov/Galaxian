@@ -15,10 +15,10 @@ WeaponModule::WeaponModule(
 	// Prepare gun
 	GunParams params = getGunParamsByType(initGunType);
 	cooldownMs = params.cooldownMs;
+	fireSound = params.soundPath;
 
-	availableGuns.push_back(initGunType);
-	selectedGun = availableGuns[0];
-	fireSoundId = system->getAudioPlayer()->loadSound(params.soundPath);
+	//availableGuns.push_back(initGunType);
+	selectedGun = initGunType;
 
 	isEnemyShip = p_isEnemyShip;
 }
@@ -30,7 +30,7 @@ void WeaponModule::fire()
 		return;
 	}
 
-	system->getAudioPlayer()->playSound(fireSoundId);
+	system->getAudioPlayer()->playSound(fireSound);
 	ammo->startProjectile();
 
 

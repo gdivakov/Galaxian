@@ -65,12 +65,16 @@ bool Collidable::checkCollision()
             isCollided = true;
             collidedTo = enemyCollidables[i];
 
-            collidedTo->isCollided = true;
-
             handleCollided();
+
+            if (!possibleCollidables[i]->isCollided)
+            {
+                collidedTo->isCollided = true;
+                possibleCollidables[i]->handleCollided();
+            }
+
             // Remove collidable from ship list of enemy collidables
             deregisterEnemyCollidable(possibleCollidables[i]);
-            possibleCollidables[i]->handleCollided();
         }
     }
 

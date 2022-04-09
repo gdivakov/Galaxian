@@ -1,5 +1,6 @@
 #include "ControlPanel.h"
 #include "Vector2.h"
+#include "SoundConst.h"
 
 ControlPanel::ControlPanel(SDL_Renderer* p_renderer, const App* p_system, MainScreen* p_mainScreenPt)
 {
@@ -89,7 +90,6 @@ void ControlPanel::handleEvent(SDL_Event& e)
 
         if (selectedOptionIdx == MENU_SETTINGS)
         {
-            /*mainScreenPt->openSettings();*/
             isSettingsOpened = true;
             return;
         }
@@ -108,11 +108,13 @@ void ControlPanel::handleEvent(SDL_Event& e)
     case SDLK_w:
         nextSelectedOptionIdx = selectedOptionIdx - 1 < 0 ? options.size() - 1 : selectedOptionIdx - 1;
         updateSelectedOption(nextSelectedOptionIdx);
+        system->getAudioPlayer()->playSound(SELECT_ITEM_SOUND);
         break;
     case SDLK_DOWN:
     case SDLK_s:
         nextSelectedOptionIdx = selectedOptionIdx + 1 > options.size() - 1 ? 0 : selectedOptionIdx + 1;
         updateSelectedOption(nextSelectedOptionIdx);
+        system->getAudioPlayer()->playSound(SELECT_ITEM_SOUND);
         break;
     }
 }

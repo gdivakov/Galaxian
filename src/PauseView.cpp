@@ -1,6 +1,7 @@
 #include "PauseView.h"
 #include "Consts.h"
 #include "Vector2.h"
+#include "SoundConst.h"
 
 std::vector<std::string> PAUSE_MENU_NAMES = 
 {
@@ -94,6 +95,7 @@ void PauseView::handleEvent(SDL_Event& e)
         if (selectedIdx - 1 >= 0)
         {
             updateSelectedOption(selectedIdx - 1);
+            system->getAudioPlayer()->playSound(SELECT_ITEM_SOUND);
         }
         return;
     case SDLK_DOWN:
@@ -101,18 +103,22 @@ void PauseView::handleEvent(SDL_Event& e)
         if (selectedIdx + 1 < options.size())
         {
             updateSelectedOption(selectedIdx + 1);
+            system->getAudioPlayer()->playSound(SELECT_ITEM_SOUND);
         }
         return;
     }
 
-    char keyDown = e.key.keysym.scancode;
-
-    if (keyDown == SDL_SCANCODE_RETURN)
+    if (e.key.keysym.scancode == SDL_SCANCODE_RETURN)
     {
         if (selectedIdx == RESUME_IDX)
         {
             bool isPaused = level->togglePaused();
-            system->getAudioPlayer()->togglePaused(isPaused);
+            
+            Audio* audioPlayer = system->getAudioPlayer();
+
+            audioPlayer->togglePaused(isPaused);
+            audioPlayer->playSound(PAUSE_SOUND);
+
             return;
         }
 

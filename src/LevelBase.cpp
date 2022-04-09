@@ -8,6 +8,9 @@ void LevelBase::unload()
 	{
 		delete objsToFree[i];
 	}
+
+	system->getAudioPlayer()->freeSounds();
+	system->getAudioPlayer()->freeMusic();
 }
 
 void LevelBase::registerListeners()

@@ -3,6 +3,7 @@
 #include <algorithm>
 
 #include "Ship.h"
+#include "SoundConst.h"
 
 Extrems getExtrems(std::vector<float> values);
 
@@ -17,6 +18,7 @@ Ship::Ship(const App* p_system, ShipParams params, LevelBase* p_level, bool isEn
     vel = Vector2();
     maxSpeed = params.maxSpeed;
     explosion = params.explosion;
+    explosionSound = params.explosionSound;
 
     gun = new WeaponModule(params.gunType, p_system, this, isEnemyShip);
 
@@ -66,6 +68,7 @@ void Ship::shiftColliders()
 void Ship::handleCollided()
 {
     loadFromSprite(explosion);
+    system->getAudioPlayer()->playSound(explosionSound);
 
     frame = 0;
 }
