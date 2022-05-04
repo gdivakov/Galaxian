@@ -19,7 +19,9 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\FlyingProjectile.cpp" />
+    <ClCompile Include="src\MilesView.cpp" />
+    <ClCompile Include="src\DynamicBackground.cpp" />
+    <ClCompile Include="src\Projectile.cpp" />
     <ClCompile Include="src\Collidable.cpp" />
     <ClCompile Include="src\ShipConsts.cpp" />
     <ClCompile Include="src\PauseView.cpp" />
@@ -34,20 +36,22 @@
     <ClCompile Include="src\EnemyShip.cpp" />
     <ClCompile Include="src\App.cpp" />
     <ClCompile Include="src\Audio.cpp" />
-    <ClCompile Include="src\Background.cpp" />
     <ClCompile Include="src\Level1.cpp" />
     <ClCompile Include="src\Loop.cpp" />
     <ClCompile Include="src\Main.cpp" />
-    <ClCompile Include="src\Projectile.cpp" />
+    <ClCompile Include="src\ProjectileManager.cpp" />
     <ClCompile Include="src\Ship.cpp" />
     <ClCompile Include="src\Texture.cpp" />
     <ClCompile Include="src\Timer.cpp" />
     <ClCompile Include="src\WeaponModule.cpp" />
     <ClCompile Include="src\Vector2.cpp" />
+    <ClCompile Include="src\StateView.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\MilesView.h" />
+    <ClInclude Include="src\DynamicBackground.h" />
     <ClInclude Include="src\SoundConst.h" />
-    <ClInclude Include="src\FlyingProjectile.h" />
+    <ClInclude Include="src\Projectile.h" />
     <ClInclude Include="src\Collidable.h" />
     <ClInclude Include="src\ShipConsts.h" />
     <ClInclude Include="src\PauseView.h" />
@@ -69,12 +73,13 @@
     <ClInclude Include="src\Level1.h" />
     <ClInclude Include="src\Loop.h" />
     <ClInclude Include="src\Object.h" />
-    <ClInclude Include="src\Projectile.h" />
+    <ClInclude Include="src\ProjectileManager.h" />
     <ClInclude Include="src\Ship.h" />
     <ClInclude Include="src\Texture.h" />
     <ClInclude Include="src\Timer.h" />
     <ClInclude Include="src\WeaponModule.h" />
     <ClInclude Include="src\Vector2.h" />
+    <ClInclude Include="src\StateView.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include=".gitignore" />
@@ -82,15 +87,11 @@
     <None Include="res\store\settings.bin" />
   </ItemGroup>
   <ItemGroup>
-    <Media Include="G:\My Drive\preparedSprites\sounds\game_over.mp3" />
     <Media Include="res\blast.mp3" />
-    <Media Include="res\game_over.mp3" />
     <Media Include="res\lvl1.mp3" />
-    <Media Include="res\pirate_explosion.mp3" />
     <Media Include="src\res\lvl1.mp3" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="C:\Users\humanz\Desktop\shipA resized\sprite\explosion\explosion_sonicA.png" />
     <Image Include="res\explosion_pirateA.png" />
     <Image Include="res\explosion_sonicA.png" />
     <Image Include="res\main_screen_bg.png" />

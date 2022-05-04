@@ -2,13 +2,20 @@
 
 #include "SoundConst.h"
 #include "Hood.h"
+#include "StateView.h"
 
-Hood::Hood(SDL_Renderer* p_renderer, LevelBase* p_level, const App* p_system)
+Hood::Hood(LevelBase* p_level)
 {
-	renderer = p_renderer;
     level = p_level;
-    system = p_system;
-    pauseView = new PauseView(system, p_level);
+    system = level->getSystem();
+	renderer = system->getRenderer();
+
+    pauseView = new PauseView(level, this);
+    milesView = new MilesView(level);
+    stateView = new StateView(level);
+    // selectedWeaponView = new WeaponView(level);
+    // armourView = new ArmourView(level);
+    // buffsView = new BuffsView(level);
 }
 
 Hood::~Hood()
@@ -29,14 +36,7 @@ void Hood::handleEvent(SDL_Event& e)
 
     if (e.key.keysym.sym == SDLK_ESCAPE && e.key.repeat == 0 && !pauseView->isSettingsOpened)
     {
-        // Pause game and open pauseView
-        bool isPaused = level->togglePaused();
-        Audio* audioPlayer = system->getAudioPlayer();
-        
-        audioPlayer->togglePaused(isPaused);
-        audioPlayer->playSound(PAUSE_SOUND);
-
-        return;
+        return level->isPaused ? handleResumed() : handlePaused();
     }
 
     if (level->isPaused)
@@ -48,8 +48,36 @@ void Hood::handleEvent(SDL_Event& e)
 
 void Hood::onBeforeRender()
 {
-    if (level->isPaused)
-    {
-        pauseView->handleRender();
-    }
+    milesView->handleRender();
+    stateView->handleRender();
+}
+
+void Hood::handlePaused()
+{
+    // Pause game and open pauseView
+    Loop* gameLoop = system->getGameLoop();
+    bool isPaused = level->togglePaused();
+    Audio* audioPlayer = system->getAudioPlayer();
+
+    audioPlayer->togglePaused(isPaused);
+    audioPlayer->playSound(PAUSE_SOUND);
+
+    milesView->handlePaused();
+
+    // Render above all other objects
+    gameLoop->addRenderListener(pauseView);
+}
+
+void Hood::handleResumed()
+{
+    Loop* gameLoop = system->getGameLoop();
+    bool isPaused = level->togglePaused();
+    Audio* audioPlayer = system->getAudioPlayer();
+
+    audioPlayer->togglePaused(isPaused);
+    audioPlayer->playSound(PAUSE_SOUND);
+
+    milesView->handleResumed();
+
+    gameLoop->removeRenderListener(pauseView);
 }

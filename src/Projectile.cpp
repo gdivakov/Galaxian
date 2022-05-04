@@ -1,129 +1,167 @@
-#include <iostream>
-
 #include "Projectile.h"
-#include "Vector2.h"
 
-const int SPEED_DIVIDER = 50;
+int getRadius(GunType type);
 bool isOutside(Vector2 pos);
+const int SPEED_DIVIDER = 50;
 
-Projectile::Projectile(GunType p_type, SDL_Renderer* p_renderer, Ship* p_ship) 
-	: 
-	Texture(p_renderer)
+Projectile::Projectile(
+	const App* p_system, 
+	Vector2 initPosition,
+	Ship* p_ship,
+	GunType gunType,
+	int p_speed,
+	PJ_Textures& p_textures,
+	ProjectileManager* p_parent
+) 
+: Collidable(
+	p_system->getRenderer(),
+	getAmmoParamsByGunType(gunType).colliders, 
+	getAmmoParamsByGunType(gunType).collidableType,
+	getRadius(gunType)
+),
+textures(p_textures)
 {
-	AmmoParams params = getAmmoParamsByGunType(gunType);
-
-	size = { params.texture.imageW, params.texture.imageH };
-	speed = params.speed;
-	gunType = p_type;
 	ship = p_ship;
+	frame = 0;
+	rotation = ship->getRotation();
+	position = initPosition;
+	direction = ship->getDirection(LOCAL, false);
+	isStarted = false;
+	system = p_system;
+	speed = p_speed;
+	parent = p_parent;
+	selectedTexture = textures.launch;
 
-	loadFromSprite(params.texture);
+	shiftColliders();
 
-	// Set up explosion and common clips
-	Clips& pjClips = getClips();
-
-	for (short i = 0; i < pjClips.size(); i++)
-	{
-		if (i < EXPLOSION_PROJECTILE_CLIP_LENGTH) // Todo: length should relate on type
-		{
-			explosionClips.push_back(&pjClips[i]);
-		}
-		else
-		{
-			clips.push_back(&pjClips[i]);
-		}
-	}
-}
-
-void Projectile::startProjectile()
-{
-	// Todo: relate x and y on gun position & rotation
-	ShipRect shipRect = ship->getRect();
-	Vector2 nextPos = ship->getDirection(LOCAL, false);
-
-	nextPos = nextPos - Vector2(0, size.h / 2);
-	nextPos = Vector2::getRotatedVector(nextPos, ship->getRotation()) + shipRect.pos;
-
-	FlyingProjectile* nextProjectile = new FlyingProjectile(
-		renderer, 
-		nextPos, 
-		ship->getDirection(LOCAL), 
-		ship->getRotation(),
-		gunType
-	);
-
+	// Register it this way to have PJ always on top of other sprites
+	system->getGameLoop()->addRenderListener(this);
+	
 	std::vector<Collidable*> enemyCollidables = ship->getEnemyCollidables();
 
 	for (int i = 0; i < enemyCollidables.size(); i++)
 	{
-		nextProjectile->registerEnemyCollidable(enemyCollidables[i]); // Todo: refactor (add plural method to Collidable class)
+		registerEnemyCollidable(enemyCollidables[i]);
 	}
-
-	releasedPjs.push_back(nextProjectile);
 }
 
-void Projectile::move(FlyingProjectile* pj)
+Projectile::~Projectile()
 {
-	Vector2 pjPosition = pj->getPosition();
-	Vector2 pjDirection = pj->getDirection();
+	Loop* gameLoop = system->getGameLoop();
 
-	pj->setPosition(pjPosition + pjDirection * speed / SPEED_DIVIDER);
-	pj->shiftColliders();
+	gameLoop->removeRenderListener(this);
 
-	if (pj->checkCollision())
-	{
-		ship->deregisterEnemyCollidable(pj->getCollidedTo());
-	}
+	system = NULL;
+	ship = NULL;
+	parent = NULL;
+	selectedTexture = NULL;
 }
 
 void Projectile::onBeforeRender()
 {
-	for (int i = 0; i < releasedPjs.size(); i++)
+	if (isStarted && !isCollided && !ship->level->isPaused)
 	{
-		FlyingProjectile* pj = releasedPjs[i];
+		move();
+	}
 
-		if (pj->getIsStarted() && !ship->level->isPaused)
+	// Update selected texture if needed
+	if (!isStarted)
+	{
+		selectedTexture = textures.launch;
+	}
+	else if (isCollided)
+	{
+		selectedTexture = textures.explosion;
+	}
+	else
+	{
+		selectedTexture = textures.flying;
+	}
+
+	Texture::Clips clips = selectedTexture->getClips();
+	int clipsLength = clips.size();
+
+	SDL_Rect* currentClip = &clips[frame / clipsLength];
+
+	Vector2 center(selectedTexture->getWidth() / 2, selectedTexture->getHeight() / 2);
+	Vector2 nextPos = position - center;
+
+	if (isCollided)
+	{
+		// Explode above the enemy object
+		nextPos = 
+			position +
+			Vector2::getRotatedVector(direction, rotation) -
+			Vector2(selectedTexture->getWidth() / 2, 0);
+	}
+
+	selectedTexture->render(nextPos, currentClip, rotation);
+
+	if (++frame / clipsLength >= clipsLength)
+	{
+		if (!isStarted)
 		{
-			move(pj); 
+			isStarted = true;
 		}
 
-		// Limit clips if exploaded
-		SDL_Rect* currentClip = 
-			pj->getIsStarted() ?
-			clips[pj->getFrame() / clips.size()]:
-			explosionClips[pj->getFrame() / explosionClips.size()];
+		if (isCollided)
+		{
+			// Collided and exploded
+			isActive = false;
+		}
 
-		Vector2 nextPos = releasedPjs[i]->getPosition() - Vector2(size.w / 2, size.h / 2);
-
-		//releasedPjs[i]->showColliders();
-		render(nextPos, currentClip, releasedPjs[i]->getRotation());
+		// Renew animation
+		frame = 0;
 	}
 }
 
 void Projectile::onAfterRender()
 {
-	for (int i = 0; i < releasedPjs.size(); i++)
+	int explosionClipsSize = textures.explosion->getClips().size();
+
+	if (isOutside(position) || !isActive) // Remove projectiles
 	{
-		FlyingProjectile* pj = releasedPjs[i];
-		short clipLength = pj->getIsStarted() ? clips.size() : explosionClips.size();
-		short frame = pj->getFrame();
-
-		if (pj->setFrame(frame + 1) / clipLength >= clipLength)
-		{
-			if (!pj->getIsStarted())
-			{
-				pj->setIsStarted(true);
-			}
-			pj->setFrame(0);
-		}
-
-		// Remove missed projectiles
-		if (isOutside(pj->getPosition()) || pj->getIsCollided())
-		{
-			delete releasedPjs[i];
-			releasedPjs.erase(releasedPjs.begin() + i);
-		}
+		parent->destroyProjectile(this);
 	}
+}
+
+void Projectile::move()
+{
+	Vector2 rotatedDir = Vector2::getRotatedVector(direction, rotation);
+	position = position + rotatedDir * speed / SPEED_DIVIDER;
+
+	shiftColliders();
+	checkCollision();
+}
+
+void Projectile::shiftColliders() {
+	wrapperCollider.pos = position;
+	collidableRotation = rotation;
+};
+
+void Projectile::handleCollided()
+{
+	if (!collidedTo->getIsActive())
+	{
+		ship->deregisterEnemyCollidable(collidedTo); // Deregister enemy collidable from the parent ship
+
+		// As long as it has "one to many" relation this is correct (game ends when player dies)
+		// Otherwise refactor to prevent leaks (all the listeners of the collidedTo should be updated)
+	}
+
+	destroyCollidable();
+}
+
+void Projectile::destroyCollidable()
+{
+	deregisterEnemyCollidable(collidedTo); // Deregister enemy collidable from the projectile
+	frame = 0;
+}
+
+int getRadius(GunType type)
+{
+	AmmoParams params = getAmmoParamsByGunType(type);
+	return params.texture.imageH > params.texture.imageW ? params.texture.imageH / 2 : params.texture.imageW / 2;
 }
 
 bool isOutside(Vector2 pos)

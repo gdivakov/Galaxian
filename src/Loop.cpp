@@ -86,7 +86,6 @@ void Loop::addRenderListeners(const ObjectPointers& objects)
 
 void Loop::removeRenderListener(const Object* ptr)
 {
-	//std::cout << "to remove (render): " << ptr << std::endl;
 	auto removeIter = remove(renderListeners.begin(), renderListeners.end(), ptr);
 	renderListeners.erase(removeIter, renderListeners.end());
 }

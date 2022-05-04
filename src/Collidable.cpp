@@ -1,8 +1,9 @@
 #include "Collidable.h"
 
-Collidable::Collidable(SDL_Renderer* p_renderer, Colliders p_colliders, int wrapperRadius)
+Collidable::Collidable(SDL_Renderer* p_renderer, Colliders p_colliders, CollidableType p_type, int wrapperRadius)
 : colliders(p_colliders), collidableRenderer(p_renderer)
 {
+    type = p_type;
     collidableRotation = 0;
     isCollided = false;
     collidedTo = NULL;
@@ -24,18 +25,8 @@ void Collidable::showColliders()
     }
 }
 
-Collidable::~Collidable()
-{
-    //deregisterCollidable from enemyCollidable array where collidable is "self"
-}
-
 bool Collidable::checkCollision()
 {
-    if (isCollided)
-    {
-        return isCollided;
-    }
-
     std::vector<Collidable*> possibleCollidables;
 
     for (int i = 0; i < enemyCollidables.size(); i++)
@@ -63,18 +54,14 @@ bool Collidable::checkCollision()
         if (checkRectCollision(possibleCollidables[i]))
         {
             isCollided = true;
-            collidedTo = enemyCollidables[i];
 
+            possibleCollidables[i]->isCollided = true;
+            possibleCollidables[i]->collidedTo = this;
+            collidedTo = possibleCollidables[i];
+
+            possibleCollidables[i]->handleCollided();
             handleCollided();
-
-            if (!possibleCollidables[i]->isCollided)
-            {
-                collidedTo->isCollided = true;
-                possibleCollidables[i]->handleCollided();
-            }
-
-            // Remove collidable from ship list of enemy collidables
-            deregisterEnemyCollidable(possibleCollidables[i]);
+            break;
         }
     }
 

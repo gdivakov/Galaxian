@@ -7,17 +7,18 @@
 #include "LevelBase.h"
 #include "Settings.h"
 #include "App.h"
+#include "Hood.h"
+#include "Object.h"
 
-// Todo: show score top right
-// Todo: show controlling
-// Todo: disable react to holding esc and arrows buttons
-class PauseView
+class Hood;
+
+class PauseView : public Object
 {
 public:
-	PauseView(const App* p_system, LevelBase* p_level);
+	PauseView(LevelBase* p_level, Hood* p_hood);
 	~PauseView();
-	void handleRender();
-	void handleEvent(SDL_Event& e);
+	virtual void handleEvent(SDL_Event& e);
+	virtual void onBeforeRender();
 	bool isSettingsOpened;
 private:
 	SDL_Renderer* renderer;
@@ -29,4 +30,5 @@ private:
 	LevelBase* level;
 	Settings* settingsView;
 	const App* system;
+	Hood* parentHood;
 };

@@ -5,11 +5,13 @@
 EnemyShip::EnemyShip(
 	const App* p_system, 
 	LevelBase* p_level,
-	ShipParams& params, 
+	ShipType type, 
+	PlayerShip* p_playerShip,
 	std::vector<BezierCurve> pathCurves
 ) :
-	Ship(p_system, params, p_level, true)
+	Ship(p_system, getShipParams(type), p_level, true)
 {
+	player = p_playerShip;
 	currentWaypoint = 0;
 	inView = false;
 	const int WAYPOINT_NUMBER = 3; // Todo: edit here
@@ -28,11 +30,16 @@ EnemyShip::EnemyShip(
 	pos = path[0];
 }
 
+EnemyShip::~EnemyShip()
+{
+	player = NULL;
+}
+
 void EnemyShip::followPath()
 {
 	if (currentWaypoint < path.size() && Vector2::getDistance(path[currentWaypoint], pos) < EPSILON)
 	{
-		currentWaypoint++;
+		currentWaypoint++; 
 	}
 	else if (currentWaypoint < path.size())
 	{
@@ -43,7 +50,8 @@ void EnemyShip::followPath()
 		rotate(atan2(moveDir.y, moveDir.x) * RAD_TO_DEG + 90.0f);
 	}
 	else {
-		// finish path
+		// finish path - start again
+		currentWaypoint = 0;
 	}
 }
 
@@ -55,15 +63,20 @@ void EnemyShip::onBeforeRender()
 	{
 		followPath();
 		move();
+		isInView();
+
+		if (inView && isActive)
+		{
+			gun->fire();
+		}
 	}
 
 	std::vector<SDL_Rect>& shipClips = getClips();
 	SDL_Rect* currentClip = &shipClips[frame / shipClips.size()];
 
 	render(pos - Vector2(size.w / 2, size.h / 2), currentClip, rotation, NULL);
-	
-	//showColliders();
 
+	//showColliders();
 	//displayPath();
 }
 
@@ -76,59 +89,6 @@ void EnemyShip::handleEvent(SDL_Event& e)
 	}
 
 	int rotateVal = 10;
-
-	if (e.type == SDL_KEYDOWN)
-	{
-		switch (e.key.keysym.sym)
-		{
-		case SDLK_q:
-			rotate(rotation - rotateVal);
-			//checkDirections();
-			//isInView();
-			break;
-		case SDLK_e:
-			rotate(rotation + rotateVal);
-			//checkDirections();
-			//isInView()
-			break;
-		}
-	}
-
-	if (e.type == SDL_KEYDOWN && e.key.repeat == 0) {
-		switch (e.key.keysym.sym)
-		{
-			case SDLK_UP:
-		//case SDLK_w:
-			vel.y -= maxSpeed; break;
-			case SDLK_DOWN:
-		//case SDLK_s:
-			vel.y += maxSpeed; break;
-			case SDLK_LEFT:
-		//case SDLK_a:
-			vel.x -= maxSpeed; break;
-			case SDLK_RIGHT:
-		//case SDLK_d:
-			vel.x += maxSpeed; break;
-		}
-	}
-	else if (e.type == SDL_KEYUP && e.key.repeat == 0)
-	{
-		switch (e.key.keysym.sym)
-		{
-			case SDLK_UP:
-		//case SDLK_w:
-			vel.y += maxSpeed; break;
-			case SDLK_DOWN:
-		//case SDLK_s:
-			vel.y -= maxSpeed; break;
-			case SDLK_LEFT:
-		//case SDLK_a:
-			vel.x += maxSpeed; break;
-			case SDLK_RIGHT:
-		//case SDLK_d:
-			vel.x -= maxSpeed; break;
-		}
-	}
 
 	gun->handleEvent(e);
 }
@@ -151,24 +111,21 @@ void EnemyShip::displayPath()
 	} while (pathIdx + 1 < path.size());
 }
 
-//void EnemyShip::isInView()
-//{
-//	ShipRect playerRect = player->getRect();
-//
-//	const float acceptableShift = 0.1;
-//
-//	Vector2 enemyCenter(pos.x + size.w/2, pos.y + size.h/2);
-//	Vector2 enemyTop(enemyCenter.x + size.w / 2, enemyCenter.y);
-//	Vector2 enemyNorm = dir / Vector2::getDistance(enemyTop, enemyCenter);
-//
-//	Vector2 playerCenter(playerRect.pos.x + playerRect.size.w / 2, playerRect.pos.y + playerRect.size.h / 2);
-//	Vector2 playerDir = playerCenter - enemyCenter;
-//	Vector2 playerNorm = playerDir / Vector2::getDistance(playerCenter, enemyCenter);
-//
-//	float coef = enemyNorm.x * playerNorm.x + enemyNorm.y * playerNorm.y;
-//
-//	inView = coef >= 1 - acceptableShift;
-//}
+void EnemyShip::isInView()
+{
+	ShipRect playerRect = player->getRect();
+	const float acceptableShift = 0.1;
+
+	Vector2 enemyDir = getDirection(LOCAL);
+	Vector2 zero(0, 0);
+	Vector2 enemyNorm = enemyDir / Vector2::getDistance(zero, enemyDir);
+
+	Vector2 playerToEnemyDir = playerRect.pos - pos;
+	Vector2 playerToEnemyNorm = playerToEnemyDir / Vector2::getDistance(playerRect.pos, pos);
+
+	float coef = enemyNorm.x * playerToEnemyNorm.x + enemyNorm.y * playerToEnemyNorm.y;
+	inView = coef >= 1 - acceptableShift;
+}
 
 //void EnemyShip::checkDirections()
 //{ 

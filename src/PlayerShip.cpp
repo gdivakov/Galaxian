@@ -1,12 +1,11 @@
 #include "PlayerShip.h"
-#include "Consts.h"
 
 PlayerShip::PlayerShip(
-    const App* p_system, 
-    LevelBase* p_level, 
-    ShipParams& params
-):
-	Ship(p_system, params, p_level, false) 
+    const App* p_system,
+    LevelBase* p_level,
+    ShipType type
+    ) :
+    Ship(p_system, getShipParams(type), p_level, false)
 {
     pos = Vector2((WINDOWED_WIDTH)/2, WINDOWED_HEIGHT - getHeight() - 20);
     rotation = 0;
@@ -14,24 +13,21 @@ PlayerShip::PlayerShip(
 
 void PlayerShip::handleEvent(SDL_Event& e)
 {
-    if (level->isPaused || isCollided)
+    if (level->isPaused || !health)
     {
         return;
     }
-    int rotateVal = 10;
+
+    gun->handleEvent(e);
 
     if (e.type == SDL_KEYDOWN)
     {
         switch (e.key.keysym.sym)
         {
-        case SDLK_g:
-            rotate(rotation - rotateVal);
-
-            break;
-        case SDLK_h:
-            rotate(rotation + rotateVal);
-
-            break;
+        case SDLK_e:
+            rotate(rotation + 10); break;
+        case SDLK_q:
+            rotate(rotation - 10); break;
         }
     }
 
@@ -39,16 +35,16 @@ void PlayerShip::handleEvent(SDL_Event& e)
     {
         switch (e.key.keysym.sym)
         {
-        //case SDLK_UP:
+        case SDLK_UP:
         case SDLK_w:
             vel.y -= maxSpeed; break;
-        //case SDLK_DOWN:
+        case SDLK_DOWN:
         case SDLK_s:
             vel.y += maxSpeed; break;
-        //case SDLK_LEFT:
+        case SDLK_LEFT:
         case SDLK_a:
             vel.x -= maxSpeed; break;
-        //case SDLK_RIGHT:
+        case SDLK_RIGHT:
         case SDLK_d:
             vel.x += maxSpeed; break;
         }
@@ -57,22 +53,20 @@ void PlayerShip::handleEvent(SDL_Event& e)
     {
         switch (e.key.keysym.sym)
         {
-        //case SDLK_UP:
+        case SDLK_UP:
         case SDLK_w:
             vel.y += maxSpeed; break;
-        //case SDLK_DOWN:
+        case SDLK_DOWN:
         case SDLK_s:
             vel.y -= maxSpeed; break;
-        //case SDLK_LEFT:
+        case SDLK_LEFT:
         case SDLK_a:
             vel.x += maxSpeed; break;
-        //case SDLK_RIGHT:
+        case SDLK_RIGHT:
         case SDLK_d:
             vel.x -= maxSpeed; break;
         }
     }
-
-    gun->handleEvent(e);
 }
 
 void PlayerShip::onBeforeRender()
@@ -91,3 +85,4 @@ void PlayerShip::onBeforeRender()
 
     //showColliders();
 }
+

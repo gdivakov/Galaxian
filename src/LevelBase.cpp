@@ -11,6 +11,8 @@ void LevelBase::unload()
 
 	system->getAudioPlayer()->freeSounds();
 	system->getAudioPlayer()->freeMusic();
+
+	player = NULL;
 }
 
 void LevelBase::registerListeners()
@@ -34,7 +36,6 @@ void LevelBase::deregisterListeners()
 
 void LevelBase::removeObject(Object* object)
 {
-	std::cout << "remove object" << std::endl;
 	delete object;
 
 	auto removeIter = remove(objsToFree.begin(), objsToFree.end(), object);

@@ -7,20 +7,31 @@
 
 Extrems getExtrems(std::vector<float> values);
 
-Ship::Ship(const App* p_system, ShipParams params, LevelBase* p_level, bool isEnemyShip) 
-:   system(p_system),
+Ship::Ship(const App* p_system, ShipParams params, LevelBase* p_level, bool isEnemyShip)
+    : system(p_system),
     Texture(p_system->getRenderer()),
-    Collidable(p_system->getRenderer(), params.colliders, params.sprite.imageH > params.sprite.imageW ? params.sprite.imageH / 2 : params.sprite.imageW / 2),
-    level(p_level)
+    Collidable(
+        p_system->getRenderer(),
+        params.colliders,
+        COLLIDABLE_SHIP,
+        params.sprite.imageH > params.sprite.imageW
+        ? params.sprite.imageH / 2
+        : params.sprite.imageW / 2
+    ),
+    level(p_level),
+    maxHealth(params.health),
+    maxArmor(params.armor)
 {
     frame = 0;
     rotation = 0;
     vel = Vector2();
     maxSpeed = params.maxSpeed;
+    health = params.health;
+    armor = params.armor;
     explosion = params.explosion;
-    explosionSound = params.explosionSound;
-
+    explosionSound = params.explosionSound;;
     gun = new WeaponModule(params.gunType, p_system, this, isEnemyShip);
+    isPlayer = !isEnemyShip;
 
     loadFromSprite(params.sprite);
     
@@ -34,7 +45,7 @@ Ship::Ship(const App* p_system, ShipParams params, LevelBase* p_level, bool isEn
 
 void Ship::move()
 {
-    if (isCollided)
+    if (!isActive)
     {
         return;
     }
@@ -67,10 +78,60 @@ void Ship::shiftColliders()
 
 void Ship::handleCollided()
 {
+    if (!isActive)
+    {
+        return;
+    }
+
+    CollidableType type = collidedTo->getCollidableType();
+
+    switch (type) {
+        case COLLIDABLE_SHIP:
+            health = 0;
+            armor = 0;
+            break;
+        default:
+            handleProjectileCollided();
+    }
+
+    if (health <= 0)
+    {
+        destroyCollidable();
+    }
+}
+
+void Ship::handleProjectileCollided()
+{
+    CollidableType type = collidedTo->getCollidableType();
+    int potentialDamage = 0;
+
+    if (type == COLLIDABLE_PROJECTILE_BLAST)
+    {
+        potentialDamage = BLAST_DAMAGE;
+    }  
+
+    if (type == COLLIDABLE_PROJECTILE_ROCKET)
+    {
+        potentialDamage = ROCKET_DAMAGE;
+    }
+    
+    armor -= potentialDamage;
+
+    health -= armor < 0 ? abs(armor) : 0;
+    armor = armor < 0 ? 0 : armor;
+}
+
+void Ship::destroyCollidable()
+{
+    isActive = false;
+
+    frame = 0;
+    health = 0;
+
     loadFromSprite(explosion);
     system->getAudioPlayer()->playSound(explosionSound);
 
-    frame = 0;
+    deregisterEnemyCollidable(collidedTo); // Deregister enemy collidable from ship
 }
 
 void Ship::onAfterRender()
@@ -81,9 +142,13 @@ void Ship::onAfterRender()
 
     ++frame;
 
-    if (isCollided && frame / clipLength >= clipLength)
+    if (health <= 0 && frame / clipLength >= clipLength)
     {
         // Remove ship
+        if (isPlayer)
+        {
+            level->setPlayer(NULL);
+        }
         level->removeObject(this);
     }
 

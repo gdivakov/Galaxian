@@ -67,15 +67,18 @@
     <Filter Include="Source Files\consts">
       <UniqueIdentifier>{e0504894-4e31-49ec-b701-025487668431}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Levels\General\Hood">
+      <UniqueIdentifier>{6d0963e1-f181-4a73-bba7-9415be4e1d13}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Levels\General\Hood">
+      <UniqueIdentifier>{9c96ab38-480a-4823-b701-45a41c3e5f6d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Background.cpp">
-      <Filter>Source Files\Objects</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Projectile.cpp">
+    <ClCompile Include="src\ProjectileManager.cpp">
       <Filter>Source Files\Objects</Filter>
     </ClCompile>
     <ClCompile Include="src\WeaponModule.cpp">
@@ -120,12 +123,6 @@
     <ClCompile Include="src\Level1.cpp">
       <Filter>Source Files\Levels\Level1</Filter>
     </ClCompile>
-    <ClCompile Include="src\PauseView.cpp">
-      <Filter>Source Files\Levels\General</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Hood.cpp">
-      <Filter>Source Files\Levels\General</Filter>
-    </ClCompile>
     <ClCompile Include="src\LevelBase.cpp">
       <Filter>Source Files\Levels\General</Filter>
     </ClCompile>
@@ -138,21 +135,33 @@
     <ClCompile Include="src\Collidable.cpp">
       <Filter>Source Files\Objects</Filter>
     </ClCompile>
-    <ClCompile Include="src\FlyingProjectile.cpp">
+    <ClCompile Include="src\Projectile.cpp">
       <Filter>Source Files\Objects</Filter>
     </ClCompile>
     <ClCompile Include="src\Settings.cpp">
       <Filter>Source Files\Levels\General</Filter>
     </ClCompile>
+    <ClCompile Include="src\DynamicBackground.cpp">
+      <Filter>Source Files\Levels\General</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Hood.cpp">
+      <Filter>Source Files\Levels\General\Hood</Filter>
+    </ClCompile>
+    <ClCompile Include="src\PauseView.cpp">
+      <Filter>Source Files\Levels\General\Hood</Filter>
+    </ClCompile>
+    <ClCompile Include="src\MilesView.cpp">
+      <Filter>Source Files\Levels\General\Hood</Filter>
+    </ClCompile>
+    <ClCompile Include="src\StateView.cpp">
+      <Filter>Source Files\Levels\General\Hood</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\Projectile.h">
+    <ClInclude Include="src\ProjectileManager.h">
       <Filter>Header Files\Objects</Filter>
     </ClInclude>
     <ClInclude Include="src\Texture.h">
-      <Filter>Header Files\Objects</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Background.h">
       <Filter>Header Files\Objects</Filter>
     </ClInclude>
     <ClInclude Include="src\App.h">
@@ -197,16 +206,10 @@
     <ClInclude Include="src\Level1.h">
       <Filter>Header Files\Levels\Level1</Filter>
     </ClInclude>
-    <ClInclude Include="src\Hood.h">
-      <Filter>Header Files\Levels\General</Filter>
-    </ClInclude>
     <ClInclude Include="src\LevelBase.h">
       <Filter>Header Files\Levels\General</Filter>
     </ClInclude>
     <ClInclude Include="src\LevelManager.h">
-      <Filter>Header Files\Levels\General</Filter>
-    </ClInclude>
-    <ClInclude Include="src\PauseView.h">
       <Filter>Header Files\Levels\General</Filter>
     </ClInclude>
     <ClInclude Include="src\Consts.h">
@@ -218,7 +221,7 @@
     <ClInclude Include="src\Collidable.h">
       <Filter>Header Files\Objects</Filter>
     </ClInclude>
-    <ClInclude Include="src\FlyingProjectile.h">
+    <ClInclude Include="src\Projectile.h">
       <Filter>Header Files\Objects</Filter>
     </ClInclude>
     <ClInclude Include="src\SoundConst.h">
@@ -232,6 +235,24 @@
     </ClInclude>
     <ClInclude Include="src\PanelConsts.h">
       <Filter>Header Files\consts</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Background.h">
+      <Filter>Header Files\Levels\General</Filter>
+    </ClInclude>
+    <ClInclude Include="src\DynamicBackground.h">
+      <Filter>Header Files\Levels\General</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Hood.h">
+      <Filter>Header Files\Levels\General\Hood</Filter>
+    </ClInclude>
+    <ClInclude Include="src\PauseView.h">
+      <Filter>Header Files\Levels\General\Hood</Filter>
+    </ClInclude>
+    <ClInclude Include="src\MilesView.h">
+      <Filter>Header Files\Levels\General\Hood</Filter>
+    </ClInclude>
+    <ClInclude Include="src\StateView.h">
+      <Filter>Header Files\Levels\General\Hood</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -251,9 +272,6 @@
     <Media Include="res\blast.mp3">
       <Filter>Resource Files</Filter>
     </Media>
-    <Media Include="G:\My Drive\preparedSprites\sounds\game_over.mp3" />
-    <Media Include="res\game_over.mp3" />
-    <Media Include="res\pirate_explosion.mp3" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="src\res\rocket2.png">
@@ -284,9 +302,6 @@
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="res\pirateA.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="C:\Users\humanz\Desktop\shipA resized\sprite\explosion\explosion_sonicA.png">
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="res\explosion_sonicA.png">

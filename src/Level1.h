@@ -6,13 +6,21 @@
 #include "LevelBase.h"
 #include "LevelManager.h"
 #include "Object.h"
+#include "EnemyShip.h"
 
 class Level1 : public LevelBase {
 private:
+	int enemiesSpawned = 0;
 	LevelManager* controller;
 	void initAudio();
+	void initObjects();
+	EnemyShip* createEnemyShip(PlayerShip* target);
+	PlayerShip* createPlayerShip();
 public: 
-	Level1(const App* p_system, LevelManager* p_controller) :
+	Level1(
+		const App* p_system,
+		LevelManager* p_controller
+	) :
 		LevelBase(p_system, p_controller) {};
 
 	virtual void load();
@@ -35,5 +43,6 @@ public:
 // 14. Add directional ship moving with GPS system
 // 15. Current goals system
 // 16. Increase windowed screen size;
+// 17. Add meteors
 
 // Current goal - some refactoring and implement #14

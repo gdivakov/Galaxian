@@ -1,14 +1,15 @@
 #include "ControlPanel.h"
 #include "Vector2.h"
 #include "SoundConst.h"
+#include "Consts.h"
 
 ControlPanel::ControlPanel(SDL_Renderer* p_renderer, const App* p_system, MainScreen* p_mainScreenPt)
 {
     renderer = p_renderer;
     system = p_system;
     mainScreenPt = p_mainScreenPt;
-    font = TTF_OpenFont("res/Staatliches-Regular.ttf", 35);
-    smallFont = TTF_OpenFont("res/Staatliches-Regular.ttf", 20);
+    font = TTF_OpenFont(FONT_PATH.c_str(), DEFAULT_FONT_SIZE);
+    smallFont = TTF_OpenFont(FONT_PATH.c_str(), SMALL_FONT_SIZE);
     selectedOptionIdx = MENU_START_GAME;
     isSettingsOpened = false;
     settingsView = new Settings(system, isSettingsOpened);

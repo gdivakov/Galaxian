@@ -1,13 +1,14 @@
 #include "Settings.h"
 #include "Vector2.h"
 #include "SoundConst.h"
+#include "Consts.h"
 
 Settings::Settings(const App* p_system, bool& p_isOpened)
     :system(p_system), 
     renderer(p_system->getRenderer()),
     isOpened(p_isOpened)
 {
-    font = TTF_OpenFont("res/Staatliches-Regular.ttf", 35);
+    font = TTF_OpenFont(FONT_PATH.c_str(), DEFAULT_FONT_SIZE);
     selectedIdx = 0;
     isConfirmSelected = false;
     confirmButton = NULL;
@@ -69,7 +70,7 @@ void Settings::render()
 {
     // Render settings panel
     SDL_Rect rect = {
-        WINDOWED_WIDTH / 14,
+        WINDOWED_WIDTH / 14, // Todo: Replace by system->getWindowSize()
         WINDOWED_HEIGHT / 14,
         WINDOWED_WIDTH - WINDOWED_WIDTH / 7,
         WINDOWED_HEIGHT - WINDOWED_HEIGHT / 7

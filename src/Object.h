@@ -1,5 +1,6 @@
 #pragma once
 #include <SDl.h>
+#include <iostream>
 
 class Object
 {

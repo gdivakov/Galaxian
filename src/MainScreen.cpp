@@ -5,7 +5,7 @@
 
 void MainScreen::load()
 {
-	Background* bgMain = new Background(renderer, "res/main_screen_bg.png", this, false);
+	Background* bgMain = new Background(renderer, "res/sprites/backgrounds/main_screen_bg.png");
 	ControlPanel* panel = new ControlPanel(renderer, system, this);
 
 	eventListeners = { panel };

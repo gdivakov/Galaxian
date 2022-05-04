@@ -210,14 +210,17 @@ GunParams getGunParamsByType(GunType type)
 {
     switch (type)
     {
+    case BLAST:
+        return { BLAST_COOLDOWN, BLAST_SOUND };
+        break;
     case ROCKET:
-        return { ROCKET_COOLDOWN, ROCKET_TEXTURE_PATH, BLAST_SOUND };
+        return { ROCKET_COOLDOWN, ROCKET_SOUND };
         break;
     case LAZER:
-        return { LAZER_COOLDOWN, LAZER_TEXTURE_PATH, BLAST_SOUND };
+        return { LAZER_COOLDOWN, BLAST_SOUND };
         break;
     default:
-        return { ROCKET_COOLDOWN, ROCKET_TEXTURE_PATH, BLAST_SOUND };
+        return { BLAST_COOLDOWN, BLAST_SOUND };
     }
 }
 
@@ -225,13 +228,92 @@ AmmoParams getAmmoParamsByGunType(GunType type)
 {
     switch (type)
     {
+    case BLAST:
+        return 
+        { 
+            BLAST_AMMO_SPEED, 
+            BLAST_AMMO_TEXTURE_PARAMS, 
+            BLAST_AMMO_LAUNCH_TEXTURE_PARAMS,
+            BLAST_AMMO_EXPLOSION_TEXTURE_PARAMS,
+            BLAST_AMMO_COLLIDER,
+            COLLIDABLE_PROJECTILE_BLAST,
+        };
     case ROCKET:
-        return { ROCKET_AMMO_SPEED, ROCKET_AMMO_TEXTURE_PARAMS, ROCKET_AMMO_COLLIDER };
-        break;
-    case LAZER:
-        return { LAZER_AMMO_SPEED, LAZER_AMMO_TEXTURE_PARAMS, LAZER_AMMO_COLLIDER };
-        break;
+        return 
+        { 
+            ROCKET_AMMO_SPEED, 
+            ROCKET_AMMO_TEXTURE_PARAMS, 
+            ROCKET_AMMO_LAUNCH_TEXTURE_PARAMS,
+            ROCKET_AMMO_EXPLOSION_TEXTURE_PARAMS,
+            ROCKET_AMMO_COLLIDER,
+            COLLIDABLE_PROJECTILE_ROCKET
+        };
+    //case LAZER:
+    //    return 
+    //    { 
+    //        LAZER_AMMO_SPEED, 
+    //        LAZER_AMMO_TEXTURE_PARAMS, 
+    //        LAZER_AMMO_COLLIDER 
+    //    };
     default:
-        return { ROCKET_AMMO_SPEED, ROCKET_AMMO_TEXTURE_PARAMS, ROCKET_AMMO_COLLIDER };
+        return 
+        { 
+            ROCKET_AMMO_SPEED, 
+            ROCKET_AMMO_TEXTURE_PARAMS, 
+            ROCKET_AMMO_LAUNCH_TEXTURE_PARAMS,
+            ROCKET_AMMO_EXPLOSION_TEXTURE_PARAMS,
+            ROCKET_AMMO_COLLIDER,
+            COLLIDABLE_PROJECTILE_ROCKET,
+        };
     }
+}
+
+ShipParams getShipParams(const ShipType type)
+{
+    switch (type)
+    {
+    case SONIC_A:
+        return
+        {
+            SONIC_A_SHIP,               // sprite 
+            SONIC_A_SHIP_EXPLOSION,     // explosion 
+            BLAST,                      // gunType 
+            SONIC_A_SPEED,              // maxSpeed 
+            THIN_SHIP_ARMOR,            // armor 
+            THIN_SHIP_HEALTH,           // health 
+            SONIC_A_COLLIDERS_DEFAULT,  // colliders 
+            GAME_OVER_SOUND             // explosionSound 
+        };
+    case PIRATE_A:
+        return
+        {
+            PIRATE_A_SHIP, 
+            PIRATE_A_SHIP_EXPLOSION, 
+            ROCKET, 
+            PIRATE_A_SPEED, 
+            THIN_SHIP_ARMOR, 
+            THIN_SHIP_HEALTH, 
+            PIRATE_A_COLLIDERS_DEFAULT, 
+            PIRATE_EXPLOSION_SOUND
+        };
+    }
+}
+
+std::vector<BezierCurve> getEnemyPathCurves(int enemyCounter)
+{
+    std::vector<BezierCurve> curves;
+
+    if (enemyCounter == 0)
+    {
+        curves.push_back({ Vector2(100, 10), Vector2(350, 60), Vector2(350, 160), Vector2(300, 260) });
+        curves.push_back({ Vector2(300, 260), Vector2(600, 700), Vector2(500, 300), Vector2(600, 600) });
+        //curves.push_back({ Vector2(600, 600), Vector2(400, 200), Vector2(100, 100), Vector2(500, 300) });
+    }
+    else
+    {
+        curves.push_back({ Vector2(800, 10), Vector2(550, 60), Vector2(550, 160), Vector2(300, 260) });
+        curves.push_back({ Vector2(300, 260), Vector2(300, 500), Vector2(100, 100), Vector2(600, 600) });
+    }
+
+    return curves;
 }

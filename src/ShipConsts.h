@@ -14,15 +14,24 @@ struct SpriteParams
 	int length;
 };
 
-const SpriteParams SONIC_A_SHIP = { "res/shipA.png", 102, 114, 10 };
-const SpriteParams PIRATE_A_SHIP = { "res/pirateA.png", 65, 144, 10 };
-const SpriteParams SONIC_A_SHIP_EXPLOSION = { "res/explosion_sonicA.png", 165, 114, 9 };
-const SpriteParams PIRATE_A_SHIP_EXPLOSION = { "res/explosion_pirateA.png", 103, 144, 8 };
+const SpriteParams SONIC_A_SHIP = { "res/sprites/ships/shipA.png", 102, 114, 10 };
+const SpriteParams PIRATE_A_SHIP = { "res/sprites/ships/pirateA.png", 65, 144, 10 };
+const SpriteParams SONIC_A_SHIP_EXPLOSION = { "res/sprites/ships/explosion_sonicA.png", 165, 114, 9 };
+const SpriteParams PIRATE_A_SHIP_EXPLOSION = { "res/sprites/ships/explosion_pirateA.png", 103, 144, 8 };
 
 const int SONIC_A_SPEED = 6;
 const int PIRATE_A_SPEED = 5;
 
-const enum GunType { ROCKET, LAZER }; // Todo: rocket - rename to blaster
+const int THIN_SHIP_HEALTH = 100;
+const int AVERAGE_SHIP_HEALTH = 500;
+const int STRONG_SHIP_HEALTH = 1000;
+
+const int ARMOR_MULTIPLIER = 3;
+const int THIN_SHIP_ARMOR = THIN_SHIP_HEALTH * ARMOR_MULTIPLIER;
+const int AVERAGE_SHIP_ARMOR = AVERAGE_SHIP_HEALTH * ARMOR_MULTIPLIER;
+const int STRONG_SHIP_ARMOR = STRONG_SHIP_HEALTH * ARMOR_MULTIPLIER;
+
+const enum GunType { BLAST, ROCKET, LAZER }; // Todo: BLAST - rename to blaster
 const enum ShipType { SONIC_A, PIRATE_A }; // SONIC - player ship name
 const enum Space { WORLD, LOCAL };
 
@@ -46,6 +55,8 @@ struct ShipParams {
 	SpriteParams explosion;
 	GunType gunType;
 	int maxSpeed;
+	int armor;
+	int health;
 	const std::vector<RectColliderPoint>& colliders;
 	std::string explosionSound;
 };
@@ -109,17 +120,27 @@ const Colliders PIRATE_A_COLLIDERS_DEFAULT =
 	}
 };
 
-const float ROCKET_COOLDOWN = 100.0f;
-const float LAZER_COOLDOWN = 0;
-const std::string ROCKET_TEXTURE_PATH = "res/rocket.png";
-const std::string LAZER_TEXTURE_PATH = "res/lazer.png";
+const float BLAST_COOLDOWN = 150.0f;
+const float ROCKET_COOLDOWN = 1000.0f;
+const float LAZER_COOLDOWN = 0.0f;
 
-const int EXPLOSION_PROJECTILE_CLIP_LENGTH = 1;
-const int ROCKET_AMMO_SPEED = 8;
+const int BLAST_AMMO_SPEED = 8;
+const int ROCKET_AMMO_SPEED = 4;
 const int LAZER_AMMO_SPEED = 1000;
+const int BLAST_DAMAGE = 50;
+const int ROCKET_DAMAGE = 50;
 
-const SpriteParams ROCKET_AMMO_TEXTURE_PARAMS = { "res/rocket3.png", 30, 50, 2 };
-const Colliders ROCKET_AMMO_COLLIDER =
+const SpriteParams BLAST_AMMO_TEXTURE_PARAMS = { "res/sprites/projectiles/blast.png", 30, 50, 1 };
+const SpriteParams ROCKET_AMMO_TEXTURE_PARAMS = { "res/sprites/projectiles/rocket.png", 30, 50, 1 };
+const SpriteParams LAZER_AMMO_TEXTURE_PARAMS = { "res/sprites/projectiles/lazer_ammo.png", 27, 111, 3 };
+
+const SpriteParams BLAST_AMMO_LAUNCH_TEXTURE_PARAMS = { "res/sprites/projectiles/blast_launch.png", 30, 50, 1 };
+const SpriteParams ROCKET_AMMO_LAUNCH_TEXTURE_PARAMS = { "res/sprites/projectiles/rocket_launch.png", 30, 50, 1 };
+
+const SpriteParams BLAST_AMMO_EXPLOSION_TEXTURE_PARAMS = { "res/sprites/projectiles/blast_explosion.png", 30, 19, 5 };
+const SpriteParams ROCKET_AMMO_EXPLOSION_TEXTURE_PARAMS = { "res/sprites/projectiles/blast_explosion.png", 30, 19, 5 };
+
+const Colliders BLAST_AMMO_COLLIDER =
 {
 	{
 		Vector2(-7.5, -25),
@@ -128,6 +149,17 @@ const Colliders ROCKET_AMMO_COLLIDER =
 		Vector2(-7.5, 25)
 	}
 };
+
+const Colliders ROCKET_AMMO_COLLIDER =
+{
+	{
+		Vector2(-7.5, -16),
+		Vector2(7.5, -16),
+		Vector2(7.5, 16),
+		Vector2(-7.5, 16)
+	}
+};
+
 const Colliders LAZER_AMMO_COLLIDER =
 {
 	{
@@ -137,21 +169,30 @@ const Colliders LAZER_AMMO_COLLIDER =
 		Vector2(-7.5, 25)
 	}
 };
-const SpriteParams LAZER_AMMO_TEXTURE_PARAMS = { "res/lazer_ammo.png", 27, 111, 3 };
 
 struct GunParams
 {
 	float cooldownMs;
-	std::string texturePath;
 	std::string soundPath;
+};
+
+const enum CollidableType { 
+	COLLIDABLE_SHIP, 
+	COLLIDABLE_PROJECTILE_BLAST, 
+	COLLIDABLE_PROJECTILE_ROCKET, 
+	COLLIDABLE_METEORITE 
 };
 
 struct AmmoParams
 {
 	int speed;
 	SpriteParams texture;
+	SpriteParams launchTexture;
+	SpriteParams explosionTexture;
 	Colliders colliders;
+	CollidableType collidableType;
 };
+
 
 void DrawCircle(SDL_Renderer* renderer, int32_t centreX, int32_t centreY, int32_t radius);
 Colliders& addVectorToCollider(Colliders& colliders, Vector2& v);
@@ -165,3 +206,5 @@ void renderCollider(SDL_Renderer* renderer, RectColliderPoint& coll);
 
 GunParams getGunParamsByType(GunType type);
 AmmoParams getAmmoParamsByGunType(GunType type);
+ShipParams getShipParams(const ShipType type);
+std::vector<BezierCurve> getEnemyPathCurves(int enemyCounter);

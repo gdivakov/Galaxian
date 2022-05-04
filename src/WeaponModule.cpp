@@ -8,7 +8,7 @@ WeaponModule::WeaponModule(
 	bool p_isEnemyShip
 ) : Texture(p_system->getRenderer()), system(p_system)
 {
-	ammo = new Projectile(initGunType, system->getRenderer(), p_ship);
+	ammo = new ProjectileManager(initGunType, system, p_ship);
 	ship = p_ship;
 	isOnCooldown = false;
 
@@ -42,7 +42,7 @@ void WeaponModule::fire()
 
 void WeaponModule::addGun()
 {
-	//Gun rocket = { ROCKET, 1000, 100, { SPRITE, "res/rocket.png" }, Projectile(ROCKET) };
+	//Gun rocket = { BLAST, 1000, 100, { SPRITE, "res/rocket.png" }, Projectile(BLAST) };
 	//Gun lazer = { LAZER, 0, 100, { SPRITE, "res/lazer.png" }, Projectile(LAZER) };
 }
 
@@ -51,22 +51,13 @@ void WeaponModule::removeGun()
 
 void WeaponModule::handleEvent(SDL_Event& e)
 {
-	ammo->handleEvent(e);
+	//ammo->handleEvent(e);
 
 	const Uint8* currentKeyStates = SDL_GetKeyboardState(NULL);
 
-	// Todo: Fix issue with left+top+l pressed
-	if (isEnemyShip) 
+	if (!isEnemyShip) 
 	{
-		if (currentKeyStates[SDL_SCANCODE_L])
-		{
-			fire();
-			return;
-		}
-	}
-	else
-	{
-		if (currentKeyStates[SDL_SCANCODE_F])
+		if (currentKeyStates[SDL_SCANCODE_L] || currentKeyStates[SDL_SCANCODE_SPACE])
 		{
 			fire();
 			return;
@@ -75,7 +66,7 @@ void WeaponModule::handleEvent(SDL_Event& e)
 }
 void WeaponModule::onBeforeRender()
 {
-	ammo->onBeforeRender();
+	//ammo->onBeforeRender();
 
 	if (isOnCooldown && cooldownTimer.getTicks() > cooldownMs)
 	{
@@ -86,7 +77,7 @@ void WeaponModule::onBeforeRender()
 
 void WeaponModule::onAfterRender()
 {
-	ammo->onAfterRender();
+	//ammo->onAfterRender();
 }
 
 WeaponModule::~WeaponModule()

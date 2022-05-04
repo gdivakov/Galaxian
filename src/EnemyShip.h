@@ -17,16 +17,18 @@ private:
     int currentWaypoint;
     const float EPSILON = 5.0f;
     PlayerShip* player;
-    //void isInView();
+    void isInView();
     void followPath();
     void displayPath();
 public:
     EnemyShip(
         const App* p_system, 
         LevelBase* p_level, 
-        ShipParams& params, 
+        ShipType type, 
+        PlayerShip* playerShip,
         std::vector<BezierCurve> pathCurves
     );
+    virtual ~EnemyShip();
     virtual void onBeforeRender();
     //void checkDirections();
     virtual void handleEvent(SDL_Event& e);

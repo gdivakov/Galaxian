@@ -4,13 +4,13 @@
 #include <vector>
 
 #include "Timer.h"
-#include "Projectile.h"
+#include "ProjectileManager.h"
 #include "Consts.h"
 #include "Ship.h"
 #include "App.h"
 
 class Ship;
-class Projectile;
+class ProjectileManager;
 
 // Todo: refactor
 class WeaponModule : public Texture
@@ -38,7 +38,7 @@ private:
 	//std::vector<GunType> availableGuns;
 	Timer cooldownTimer;
 	Ship* ship;
-	Projectile* ammo;
+	ProjectileManager* ammo;
 	const App* system;
 	bool isEnemyShip;
 	std::string fireSound;

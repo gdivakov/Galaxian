@@ -78,6 +78,8 @@ void Audio::playSound(std::string key)
 	if (!sounds[key])
 	{
 		std::cout << "Error while playing sound id: " << key << std::endl;
+		std::cout << Mix_GetError() << std::endl;
+		std::cout << SDL_GetError() << std::endl;
 		return;
 	}
 

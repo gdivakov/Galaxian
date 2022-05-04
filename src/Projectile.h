@@ -1,36 +1,53 @@
 #pragma once
 #include <SDL.h>
 
-#include "Texture.h"
-#include "ShipConsts.h"
+#include "Collidable.h"
+#include "Vector2.h"
 #include "Ship.h"
-#include "FlyingProjectile.h"
+#include "Object.h"
+#include "Texture.h"
+#include "ProjectileManager.h"
+#include "App.h"
+#include "Consts.h"
 
 class Ship;
-struct ShipRect;
-struct SpriteParams;
-const enum GunType;
+class ProjectileManager;
+struct PJ_Textures;
 
-// Todo: Refactor
-class Projectile : public Texture
+class Projectile : public Collidable, public Object
 {
-public: 
-	Projectile(GunType p_type, SDL_Renderer* p_renderer, Ship* p_ship);
-	void startProjectile();
-	void move(FlyingProjectile* pj);
-
-	void virtual handleEvent(SDL_Event& e) {};
-	void virtual onBeforeRender();
-	void virtual onAfterRender();
 private:
-	typedef std::vector<SDL_Rect*> ClipPointers;
-	typedef std::vector<FlyingProjectile*> FlyingProjectiles;
-
-	Size size;
+	Vector2 position;
+	Vector2 direction;
+	int rotation;
 	int speed;
-	FlyingProjectiles releasedPjs;
-	ClipPointers explosionClips;
-	ClipPointers clips;
-	GunType gunType;
+
+	PJ_Textures& textures;
+	Texture* selectedTexture;
+
+	short frame;
+	bool isStarted;
 	Ship* ship;
+	const App* system;
+	ProjectileManager* parent;
+
+	void move();
+public:
+	Projectile(
+		const App* p_system,
+		Vector2 initPosition,
+		Ship* p_ship,
+		GunType gunType,
+		int p_speed,
+		PJ_Textures& p_textures,
+		ProjectileManager* p_parent
+	);
+	~Projectile();
+	void showColliders() { Collidable::showColliders(); };
+	virtual void shiftColliders();
+	virtual void handleCollided();
+	virtual void destroyCollidable();
+	virtual void handleEvent(SDL_Event& e) {};
+	virtual void onBeforeRender();
+	virtual void onAfterRender();
 };

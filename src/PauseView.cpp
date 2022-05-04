@@ -2,30 +2,25 @@
 #include "Consts.h"
 #include "Vector2.h"
 #include "SoundConst.h"
+#include "Loop.h"
 
-std::vector<std::string> PAUSE_MENU_NAMES = 
-{
-    "Resume",
-    "Settings",
-    "Quit"
-};
-
+std::vector<std::string> PAUSE_MENU_NAMES = { "Resume", "Settings", "Quit" };
 const enum PAUSE_OPTION_IDX { RESUME_IDX, SETTINGS_IDX, QUIT_IDX };
 
-// Todo: fix music mute
-PauseView::PauseView(const App* p_system, LevelBase* p_level)
-    : renderer(p_system->getRenderer()), level(p_level), system(p_system)
+PauseView::PauseView(LevelBase* p_level, Hood* p_hood)
+    : renderer(p_level->getSystem()->getRenderer()), level(p_level), system(p_level->getSystem())
 {
-    font = TTF_OpenFont("res/Staatliches-Regular.ttf", 35);
+    font = TTF_OpenFont(FONT_PATH.c_str(), DEFAULT_FONT_SIZE);
     selectedIdx = RESUME_IDX;
     isSettingsOpened = false;
+    parentHood = p_hood;
 
     settingsView = new Settings(system, isSettingsOpened);
 
     loadOptions();
 }
 
-void PauseView::handleRender()
+void PauseView::onBeforeRender()
 {
     // Render settings panel
     SDL_Rect rect = {
@@ -112,14 +107,7 @@ void PauseView::handleEvent(SDL_Event& e)
     {
         if (selectedIdx == RESUME_IDX)
         {
-            bool isPaused = level->togglePaused();
-            
-            Audio* audioPlayer = system->getAudioPlayer();
-
-            audioPlayer->togglePaused(isPaused);
-            audioPlayer->playSound(PAUSE_SOUND);
-
-            return;
+            return parentHood->handleResumed();
         }
 
         if (selectedIdx == SETTINGS_IDX)
@@ -184,4 +172,5 @@ PauseView::~PauseView()
     options.clear();
     font = NULL;
     level = NULL;
+    parentHood = NULL;
 }
