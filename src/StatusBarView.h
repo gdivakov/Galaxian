@@ -5,11 +5,11 @@
 #include "LevelBase.h"
 #include "Texture.h"
 
-class StateView
+class StatusBarView
 {
 public:
-	StateView(LevelBase* p_level);
-	~StateView();
+	StatusBarView(LevelBase* p_level);
+	~StatusBarView();
 	void handleRender();
 private:
 	Texture* health;

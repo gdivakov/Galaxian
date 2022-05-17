@@ -13,12 +13,9 @@ public:
 	MilesView(LevelBase* p_level);
 	~MilesView();
 	void handleRender();
-	void handlePaused();
-	void handleResumed();
 private:
 	TTF_Font* font;
-	Timer* timer;
-	int milesPassed;
 	LevelBase* level;
+	int milesPassed;
 };
 

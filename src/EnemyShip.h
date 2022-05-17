@@ -1,7 +1,7 @@
 #pragma once
 #include <iostream>
 #include <vector>
-#include "PlayerShip.h"
+
 #include "Vector2.h"
 #include "Ship.h"
 #include "BezierPath.h"
@@ -16,20 +16,23 @@ private:
     std::vector<Vector2> path;
     int currentWaypoint;
     const float EPSILON = 5.0f;
-    PlayerShip* player;
+    Ship* player;
     void isInView();
     void followPath();
     void displayPath();
+    bool isFalling;
 public:
     EnemyShip(
-        const App* p_system, 
         LevelBase* p_level, 
         ShipType type, 
-        PlayerShip* playerShip,
+        Ship* playerShip,
         std::vector<BezierCurve> pathCurves
     );
     virtual ~EnemyShip();
     virtual void onBeforeRender();
     //void checkDirections();
     virtual void handleEvent(SDL_Event& e);
+    virtual void startAccelerate();
+protected:
+    virtual void accelerate();
 };

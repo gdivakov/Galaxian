@@ -29,6 +29,5 @@ private:
 	FlyingProjectiles releasedPjs;
 	GunType gunType;
 	Ship* ship;
-	SDL_Renderer* renderer;
 	const App* system;
 };

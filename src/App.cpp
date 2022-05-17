@@ -21,6 +21,8 @@ App::App(int screenWidth, int screenHeight)
 	renderer = NULL;
 	gameLoop = NULL;
 	audioPlayer = NULL;
+	timer = new Timer();
+	timer->start();
 
 	status = true;
 	windowed = !settingsConfig[FULLSCREEN_IDX];
@@ -116,13 +118,14 @@ App::~App()
 {
 	delete audioPlayer;
 	delete gameLoop;
-
-	audioPlayer = NULL;
-	gameLoop = NULL;
+	delete timer;
 
 	SDL_DestroyRenderer(renderer);
 	SDL_DestroyWindow(window);
 
+	audioPlayer = NULL;
+	gameLoop = NULL;
+	timer = NULL;
 	window = NULL;
 	renderer = NULL;
 

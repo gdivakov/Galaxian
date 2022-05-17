@@ -2,7 +2,8 @@
 
 #include "SoundConst.h"
 #include "Hood.h"
-#include "StateView.h"
+#include "StatusBarView.h"
+#include "BuffBarView.h"
 
 Hood::Hood(LevelBase* p_level)
 {
@@ -12,16 +13,24 @@ Hood::Hood(LevelBase* p_level)
 
     pauseView = new PauseView(level, this);
     milesView = new MilesView(level);
-    stateView = new StateView(level);
+    statusView = new StatusBarView(level);
+    buffView = new BuffBarView(level);
     // selectedWeaponView = new WeaponView(level);
     // armourView = new ArmourView(level);
-    // buffsView = new BuffsView(level);
 }
 
 Hood::~Hood()
 {
     delete pauseView;
+    delete milesView;
+    delete statusView;
+    delete buffView;
+
     pauseView = NULL;
+    milesView = NULL;
+    statusView = NULL;
+    buffView = NULL;
+
     renderer = NULL;
     level = NULL;
     system = NULL;
@@ -49,7 +58,8 @@ void Hood::handleEvent(SDL_Event& e)
 void Hood::onBeforeRender()
 {
     milesView->handleRender();
-    stateView->handleRender();
+    statusView->handleRender();
+    buffView->handleRender();
 }
 
 void Hood::handlePaused()
@@ -61,8 +71,6 @@ void Hood::handlePaused()
 
     audioPlayer->togglePaused(isPaused);
     audioPlayer->playSound(PAUSE_SOUND);
-
-    milesView->handlePaused();
 
     // Render above all other objects
     gameLoop->addRenderListener(pauseView);
@@ -76,8 +84,6 @@ void Hood::handleResumed()
 
     audioPlayer->togglePaused(isPaused);
     audioPlayer->playSound(PAUSE_SOUND);
-
-    milesView->handleResumed();
 
     gameLoop->removeRenderListener(pauseView);
 }

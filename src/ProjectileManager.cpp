@@ -8,15 +8,14 @@ ProjectileManager::ProjectileManager(GunType p_type, const App* p_system, Ship* 
 	AmmoParams params = getAmmoParamsByGunType(p_type);
 
 	ship = p_ship;
-	renderer = p_system->getRenderer();
 	system = p_system;
 	gunType = p_type;
 
 	textures = 
 	{
-		new Texture(renderer),
-		new Texture(renderer),
-		new Texture(renderer)
+		new Texture(system->getRenderer()),
+		new Texture(system->getRenderer()),
+		new Texture(system->getRenderer())
 	};
 
 	textures.flying->loadFromSprite(params.texture);
@@ -34,6 +33,16 @@ ProjectileManager::~ProjectileManager()
 	textures.flying = NULL;
 	textures.launch = NULL;
 	textures.explosion = NULL;
+	system = NULL;
+	ship = NULL;
+
+	for (int i = 0; i < releasedPjs.size(); i++)
+	{
+		releasedPjs[i]->destroyCollidable();
+		delete releasedPjs[i];
+	}
+
+	releasedPjs.clear();
 }
 
 void ProjectileManager::startProjectile()

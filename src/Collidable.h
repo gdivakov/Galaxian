@@ -2,37 +2,36 @@
 #include "Consts.h"
 #include "ShipConsts.h"
 
-// Collidable contains wrapper & rectangle colliders
+const Colliders DEFAULT_RECT_COLLIDERS = {};
+
 class Collidable
 {
 public:
-	Collidable(SDL_Renderer* p_renderer, Colliders p_colliders, CollidableType p_type, int wrapperRadius);
-	virtual ~Collidable() {};
-	std::vector<Collidable*> getEnemyCollidables() { return enemyCollidables; };
-	void registerEnemyCollidable(Collidable* enemyCollidable);
-	bool checkCollision();
-	bool getIsCollided() { return isCollided; };
-	virtual void handleCollided() = 0;
-	Collidable* getCollidedTo() { return collidedTo; };
-	void deregisterEnemyCollidable(Collidable* enemyCollidable);
-	CollidableType getCollidableType() { return type; };
-	bool getIsActive() { return isActive; };
-	bool setIsActive(bool nextIsActive) { return isActive = nextIsActive; }
-private:
-	Colliders colliders;
-	std::vector<Collidable*> enemyCollidables;
-	SDL_Renderer* collidableRenderer;
-	bool checkRectCollision(Collidable* enemyCollider);
+	typedef std::vector<Collidable*> Collidables;
+
 	CollidableType type;
+	bool isActive;
+	Collidables linkedCollidables;
+
+	Collidable(SDL_Renderer* p_renderer, CollidableType p_type, int wrapperRadius, Colliders p_colliders = DEFAULT_RECT_COLLIDERS);
+	virtual ~Collidable();
+	virtual void handleCollided() = 0;
+	void linkTo(Collidable* enColl);
+	void unlinkFrom();
+	bool checkCollision();
+private:
+	Colliders colliders; // Rect colliders
+	SDL_Renderer* renderer;
+	
+	bool checkRectCollision(Collidable* enemyCollider);
 protected:
 	Collidable* collidedTo;
 	bool isCollided;
-	bool isActive = true;
-	int collidableRotation;
-	Circle wrapperCollider;
+	int rotation;
+	Circle wrapperCollider; // Circle wrapper collider
+
 	void showColliders();
 	Colliders getColliders() { return colliders; };
 	virtual void shiftColliders() = 0;
 	virtual void destroyCollidable() = 0;
 };
-

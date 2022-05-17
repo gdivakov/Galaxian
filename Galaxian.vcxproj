@@ -19,6 +19,12 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\AnimatedBuffManager.cpp" />
+    <ClCompile Include="src\ShipSpecialsConsts.cpp" />
+    <ClCompile Include="src\BuffView.cpp" />
+    <ClCompile Include="src\Spawner.cpp" />
+    <ClCompile Include="src\BuffModule.cpp" />
+    <ClCompile Include="src\BuffBarView.cpp" />
     <ClCompile Include="src\MilesView.cpp" />
     <ClCompile Include="src\DynamicBackground.cpp" />
     <ClCompile Include="src\Projectile.cpp" />
@@ -45,9 +51,16 @@
     <ClCompile Include="src\Timer.cpp" />
     <ClCompile Include="src\WeaponModule.cpp" />
     <ClCompile Include="src\Vector2.cpp" />
-    <ClCompile Include="src\StateView.cpp" />
+    <ClCompile Include="src\StatusBarView.cpp" />
+    <ClCompile Include="src\StatusModule.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\AnimatedBuffManager.h" />
+    <ClInclude Include="src\BuffView.h" />
+    <ClInclude Include="src\Spawner.h" />
+    <ClInclude Include="src\ShipSpecialsConsts.h" />
+    <ClInclude Include="src\BuffModule.h" />
+    <ClInclude Include="src\BuffBarView.h" />
     <ClInclude Include="src\MilesView.h" />
     <ClInclude Include="src\DynamicBackground.h" />
     <ClInclude Include="src\SoundConst.h" />
@@ -79,7 +92,8 @@
     <ClInclude Include="src\Timer.h" />
     <ClInclude Include="src\WeaponModule.h" />
     <ClInclude Include="src\Vector2.h" />
-    <ClInclude Include="src\StateView.h" />
+    <ClInclude Include="src\StatusBarView.h" />
+    <ClInclude Include="src\StatusModule.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include=".gitignore" />

@@ -275,6 +275,7 @@ ShipParams getShipParams(const ShipType type)
     case SONIC_A:
         return
         {
+            SONIC_A,
             SONIC_A_SHIP,               // sprite 
             SONIC_A_SHIP_EXPLOSION,     // explosion 
             BLAST,                      // gunType 
@@ -287,6 +288,7 @@ ShipParams getShipParams(const ShipType type)
     case PIRATE_A:
         return
         {
+            PIRATE_A,
             PIRATE_A_SHIP, 
             PIRATE_A_SHIP_EXPLOSION, 
             ROCKET, 

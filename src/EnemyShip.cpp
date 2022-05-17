@@ -3,13 +3,12 @@
 #include "EnemyShip.h"
 
 EnemyShip::EnemyShip(
-	const App* p_system, 
 	LevelBase* p_level,
 	ShipType type, 
-	PlayerShip* p_playerShip,
+	Ship* p_playerShip,
 	std::vector<BezierCurve> pathCurves
 ) :
-	Ship(p_system, getShipParams(type), p_level, true)
+	Ship(p_level->getSystem(), getShipParams(type), p_level, true)
 {
 	player = p_playerShip;
 	currentWaypoint = 0;
@@ -59,7 +58,7 @@ void EnemyShip::onBeforeRender()
 {
 	gun->onBeforeRender();
 
-	if (!level->isPaused)
+	if (!level->isPaused && !isAccelerated)
 	{
 		followPath();
 		move();
@@ -88,8 +87,6 @@ void EnemyShip::handleEvent(SDL_Event& e)
 		return;
 	}
 
-	int rotateVal = 10;
-
 	gun->handleEvent(e);
 }
 
@@ -97,11 +94,11 @@ void EnemyShip::displayPath()
 {
 	int pathIdx = 0;
 
-	SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
+	SDL_SetRenderDrawColor(Texture::renderer, 0xFF, 0xFF, 0xFF, 0xFF);
 
 	do {
 		SDL_RenderDrawLine(
-			renderer,
+			Texture::renderer,
 			path[pathIdx].x,
 			path[pathIdx].y,
 			path[pathIdx + 1].x,
@@ -125,6 +122,30 @@ void EnemyShip::isInView()
 
 	float coef = enemyNorm.x * playerToEnemyNorm.x + enemyNorm.y * playerToEnemyNorm.y;
 	inView = coef >= 1 - acceptableShift;
+}
+
+void EnemyShip::startAccelerate()
+{
+	isAccelerated = true;
+	isActive = false;
+
+	unlinkFrom();
+}
+
+void EnemyShip::accelerate()
+{
+	if (!isAccelerated)
+	{
+		return;
+	}
+
+	Vector2 addVel = Vector2(0, BG_SCROLLING_SPEED_ACCELERATED);
+	pos += addVel;
+
+	if (pos.y >= level->getSystem()->getWindowSize()->h)
+	{
+		level->getSpawner()->removeObject(this);
+	}
 }
 
 //void EnemyShip::checkDirections()

@@ -2,21 +2,44 @@
 #include <SDL.h>
 
 #include "Level1.h"
-#include "Ship.h"
-#include "PlayerShip.h"
-#include "EnemyShip.h"
-#include "DynamicBackground.h"
 #include "Consts.h"
 #include "ShipConsts.h"
 #include "Hood.h"
 #include "SoundConst.h"
+#include "Spawner.h"
+
+class Spawner;
+
+Level1::Level1(const App* p_system, LevelManager* p_controller) 
+: 
+LevelBase(p_system, p_controller, new Spawner(this)) {}
+
+Level1::~Level1()
+{
+	bg = NULL;
+}
 
 void Level1::load() 
 {
 	initObjects();
 	initAudio();
-
 	registerListeners();
+}
+
+void Level1::initObjects()
+{
+	bg = new DynamicBackground(renderer, LEVEL1_BG_PATH, this);
+	Hood* hood = new Hood(this);
+
+	spawner->spawnPlayer();
+	spawner->spawnEnemy();
+	spawner->spawnEnemy();
+
+	ObjectPointers initObjects = { bg, spawner, hood };
+
+	eventListeners = initObjects;
+	renderListeners = initObjects;
+	objsToFree = initObjects;
 }
 
 void Level1::initAudio()
@@ -33,42 +56,8 @@ void Level1::initAudio()
 	audioPlayer->playMusic();
 }
 
-void Level1::initObjects()
+void Level1::accelerate()
 {
-	DynamicBackground* bg = new DynamicBackground(renderer, LEVEL1_BG_PATH, this);
-	Hood* hood = new Hood(this);
-	PlayerShip* player = createPlayerShip();
-	EnemyShip* enemy = createEnemyShip(player);
-	EnemyShip* enemy2 = createEnemyShip(player);
-
-	setPlayer(player);
-
-	ObjectPointers initObjects = { 
-		bg, 
-		player,
-		enemy,
-		enemy2,
-		hood,
-	};
-
-	eventListeners = initObjects;
-	renderListeners = initObjects;
-	objsToFree = initObjects;
-}
-
-PlayerShip* Level1::createPlayerShip()
-{
-	return new PlayerShip(system, this, SONIC_A);
-}
-
-EnemyShip* Level1::createEnemyShip(PlayerShip* target)
-{
-	EnemyShip* enemy = new EnemyShip(system, this, PIRATE_A, target, getEnemyPathCurves(enemiesSpawned));
-
-	enemiesSpawned++;
-
-	target->registerEnemyCollidable(enemy);
-	enemy->registerEnemyCollidable(target);
-
-	return enemy;
+	bg->accelerate();
+	spawner->accelerateEnemies();
 }

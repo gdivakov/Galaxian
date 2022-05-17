@@ -1,5 +1,10 @@
 #include "LevelBase.h"
 
+Ship* LevelBase::getPlayer()
+{
+	return spawner ? spawner->getPlayer() : NULL;
+}
+
 void LevelBase::unload()
 {
 	deregisterListeners();
@@ -12,7 +17,7 @@ void LevelBase::unload()
 	system->getAudioPlayer()->freeSounds();
 	system->getAudioPlayer()->freeMusic();
 
-	player = NULL;
+	spawner = NULL;
 }
 
 void LevelBase::registerListeners()
@@ -33,21 +38,24 @@ void LevelBase::deregisterListeners()
 	objsToFree.clear();
 }
 
-
-void LevelBase::removeObject(Object* object)
-{
-	delete object;
-
-	auto removeIter = remove(objsToFree.begin(), objsToFree.end(), object);
-	objsToFree.erase(removeIter, objsToFree.end());
-
-	Loop* gameLoop = system->getGameLoop();
-
-	gameLoop->removeEventListener(object);
-	gameLoop->removeRenderListener(object);
-}
-
 void LevelBase::quit()
 {
 	controller->stop();
+}
+
+bool LevelBase::togglePaused()
+{
+	isPaused = !isPaused;
+
+	// Pause/Unpause system timer
+	if (isPaused)
+	{
+		system->getTimer()->pause();
+	}
+	else 
+	{
+		system->getTimer()->unpause();
+	}
+
+	return isPaused;
 }

@@ -15,9 +15,9 @@ Projectile::Projectile(
 ) 
 : Collidable(
 	p_system->getRenderer(),
-	getAmmoParamsByGunType(gunType).colliders, 
 	getAmmoParamsByGunType(gunType).collidableType,
-	getRadius(gunType)
+	getRadius(gunType),
+	getAmmoParamsByGunType(gunType).colliders
 ),
 textures(p_textures)
 {
@@ -37,11 +37,11 @@ textures(p_textures)
 	// Register it this way to have PJ always on top of other sprites
 	system->getGameLoop()->addRenderListener(this);
 	
-	std::vector<Collidable*> enemyCollidables = ship->getEnemyCollidables();
+	Collidables enemyCollidables = ship->linkedCollidables;
 
 	for (int i = 0; i < enemyCollidables.size(); i++)
 	{
-		registerEnemyCollidable(enemyCollidables[i]);
+		linkTo(enemyCollidables[i]);
 	}
 }
 
@@ -55,6 +55,7 @@ Projectile::~Projectile()
 	ship = NULL;
 	parent = NULL;
 	selectedTexture = NULL;
+	parent = NULL;
 }
 
 void Projectile::onBeforeRender()
@@ -86,9 +87,9 @@ void Projectile::onBeforeRender()
 	Vector2 center(selectedTexture->getWidth() / 2, selectedTexture->getHeight() / 2);
 	Vector2 nextPos = position - center;
 
-	if (isCollided)
+	if (isCollided && collidedTo->type == COLLIDABLE_SHIP)
 	{
-		// Explode above the enemy object
+		// Explode above the enemy ship
 		nextPos = 
 			position +
 			Vector2::getRotatedVector(direction, rotation) -
@@ -121,6 +122,7 @@ void Projectile::onAfterRender()
 
 	if (isOutside(position) || !isActive) // Remove projectiles
 	{
+		destroyCollidable();
 		parent->destroyProjectile(this);
 	}
 }
@@ -128,7 +130,14 @@ void Projectile::onAfterRender()
 void Projectile::move()
 {
 	Vector2 rotatedDir = Vector2::getRotatedVector(direction, rotation);
+
 	position = position + rotatedDir * speed / SPEED_DIVIDER;
+
+	if (ship->getIsAccelerated())
+	{
+		Vector2 addVel = Vector2(0, BG_SCROLLING_SPEED_ACCELERATED);
+		position += addVel;
+	}
 
 	shiftColliders();
 	checkCollision();
@@ -136,25 +145,20 @@ void Projectile::move()
 
 void Projectile::shiftColliders() {
 	wrapperCollider.pos = position;
-	collidableRotation = rotation;
+	Collidable::rotation = rotation;
 };
 
 void Projectile::handleCollided()
 {
-	if (!collidedTo->getIsActive())
-	{
-		ship->deregisterEnemyCollidable(collidedTo); // Deregister enemy collidable from the parent ship
-
-		// As long as it has "one to many" relation this is correct (game ends when player dies)
-		// Otherwise refactor to prevent leaks (all the listeners of the collidedTo should be updated)
-	}
+	Audio* audioPlayer = system->getAudioPlayer();
+	audioPlayer->playSound(PJ_EXPLOSION_SOUND);
 
 	destroyCollidable();
 }
 
 void Projectile::destroyCollidable()
 {
-	deregisterEnemyCollidable(collidedTo); // Deregister enemy collidable from the projectile
+	unlinkFrom();
 	frame = 0;
 }
 

@@ -139,6 +139,8 @@ int Texture::getHeight()
 
 bool Texture::loadFromSprite(SpriteParams params, RGB* colorKeyRGB)
 {
+	free();
+
 	if (!loadFromFile(params.path, colorKeyRGB))
 	{
 		return false;
@@ -173,7 +175,5 @@ void Texture::free()
 	texture = NULL;
 	size.w = 0;
 	size.h = 0;
+	spriteClips.clear();
 }
-
-void Texture::handleEvent(SDL_Event& e)
-{}

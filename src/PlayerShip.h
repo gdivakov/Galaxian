@@ -10,11 +10,17 @@ class PlayerShip : public Ship
 {
 public:
     PlayerShip(
-        const App* p_system, 
-        LevelBase* p_level, 
+        LevelBase* p_level,
         ShipType type
     );
-    ~PlayerShip() {};
+
+    int getMilesPassed();
     virtual void handleEvent(SDL_Event& e);
     virtual void onBeforeRender();
+    virtual void startAccelerate();
+protected:
+    virtual void accelerate();
+private:
+    Uint32 acceleratedAt;
+    int acceleratedMiles;
 };

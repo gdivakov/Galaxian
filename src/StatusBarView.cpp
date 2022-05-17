@@ -1,6 +1,6 @@
 #include <iostream>
 
-#include "StateView.h"
+#include "StatusBarView.h"
 #include "App.h"
 #include "Ship.h"
 
@@ -10,7 +10,7 @@ const int STATUS_BAR_HEIGHT = 15;
 const std::string TEXTURE_PATH_STATUSBAR_HEALTH = "res/icons/health.png";
 const std::string TEXTURE_PATH_STATUSBAR_ARMOR = "res/icons/armor.png";
 
-StateView::StateView(LevelBase* p_level)
+StatusBarView::StatusBarView(LevelBase* p_level)
 {
 	level = p_level;
 
@@ -21,7 +21,7 @@ StateView::StateView(LevelBase* p_level)
 	armor->loadFromFile(TEXTURE_PATH_STATUSBAR_ARMOR);
 }
 
-StateView::~StateView()
+StatusBarView::~StatusBarView()
 {
 	delete health;
 	delete armor;
@@ -31,16 +31,23 @@ StateView::~StateView()
 	level = NULL;
 }
 
-void StateView::handleRender()
+void StatusBarView::handleRender()
 {
+	Ship* player = level->getPlayer();
+
+	if (!player)
+	{
+		return;
+	}
+
 	const App* system = level->getSystem();
 	SDL_Renderer* renderer = system->getRenderer();
 	const Size* windowSize = system->getWindowSize();
 
-	Ship* player = level->getPlayer();
+	StatusModule* statusModule = level->getPlayer()->getSpecials()->status;
 
-	float healthBarValue = player ? player->getHealth() / (float) player->maxHealth : 0;
-	float armorBarValue = player ? player->getArmor() / (float) player->maxArmor : 0;
+	float healthBarValue = player ? statusModule->getHealth() / (float)statusModule->getMaxHealth() : 0;
+	float armorBarValue = player ? statusModule->getArmor() / (float)statusModule->getMaxArmor() : 0;
 
 	SDL_Rect armorBar = 
 	{ 

@@ -31,7 +31,7 @@ public:
 
 	Clips& getClips();
 
-	void virtual handleEvent(SDL_Event& e);
+	void virtual handleEvent(SDL_Event& e) {};
 private: 
 	SDL_Texture* texture;
 	Clips spriteClips;

@@ -1,50 +1,40 @@
 
 #include "MilesView.h"
 #include "Consts.h"
+#include "PlayerShip.h"
 
 const int MILES_UPDATE_DELTA = 500;
 
 MilesView::MilesView(LevelBase* p_level) : Texture(p_level->getSystem()->getRenderer())
 {
     font = TTF_OpenFont(FONT_PATH.c_str(), DEFAULT_FONT_SIZE);
-    timer = new Timer();
-    timer->start();
-    milesPassed = 0;
     level = p_level;
+    milesPassed = 0;
 
     loadFromRenderedText(font, std::to_string(milesPassed), selectedOptionColor);
 }
 
 MilesView::~MilesView()
 {
-    delete timer;
     TTF_CloseFont(font);
 
     font = NULL;
-    timer = NULL;
     level = NULL;
 }
 
 void MilesView::handleRender()
 {
-    Vector2 pos(level->getSystem()->getWindowSize()->w - size.w - 16, 16);
+    int windowWidth = level->getSystem()->getWindowSize()->w;
+    Vector2 pos(windowWidth - size.w - 16, 16);
+    PlayerShip* player = (PlayerShip*) level->getPlayer();
 
-    if (timer->getTicks() > milesPassed + MILES_UPDATE_DELTA && level->getPlayer())
+    if (player && player->getMilesPassed() > milesPassed + MILES_UPDATE_DELTA)
     {
-        milesPassed += MILES_UPDATE_DELTA;
+        milesPassed = player->getMilesPassed();
+        milesPassed = milesPassed - (milesPassed % 500);
 
         loadFromRenderedText(font, std::to_string(milesPassed), selectedOptionColor);
     }
 
     render(pos);
-}
-
-void MilesView::handlePaused()
-{
-    timer->pause();
-}
-
-void MilesView::handleResumed()
-{
-    timer->unpause();
 }

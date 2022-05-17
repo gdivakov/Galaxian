@@ -6,14 +6,6 @@
 #include "Consts.h"	
 #include "SoundConst.h"
 
-struct SpriteParams
-{
-	std::string path;
-	int imageW;
-	int imageH;
-	int length;
-};
-
 const SpriteParams SONIC_A_SHIP = { "res/sprites/ships/shipA.png", 102, 114, 10 };
 const SpriteParams PIRATE_A_SHIP = { "res/sprites/ships/pirateA.png", 65, 144, 10 };
 const SpriteParams SONIC_A_SHIP_EXPLOSION = { "res/sprites/ships/explosion_sonicA.png", 165, 114, 9 };
@@ -51,6 +43,7 @@ struct ShipRect {
 };
 
 struct ShipParams {
+	ShipType type;
 	SpriteParams sprite;
 	SpriteParams explosion;
 	GunType gunType;
@@ -176,11 +169,13 @@ struct GunParams
 	std::string soundPath;
 };
 
-const enum CollidableType { 
+const enum CollidableType 
+{ 
 	COLLIDABLE_SHIP, 
 	COLLIDABLE_PROJECTILE_BLAST, 
 	COLLIDABLE_PROJECTILE_ROCKET, 
-	COLLIDABLE_METEORITE 
+	COLLIDABLE_BUFF,
+	COLLIDABLE_METEORITE
 };
 
 struct AmmoParams
@@ -192,7 +187,6 @@ struct AmmoParams
 	Colliders colliders;
 	CollidableType collidableType;
 };
-
 
 void DrawCircle(SDL_Renderer* renderer, int32_t centreX, int32_t centreY, int32_t radius);
 Colliders& addVectorToCollider(Colliders& colliders, Vector2& v);

@@ -1,37 +1,50 @@
 #include "Collidable.h"
 
-Collidable::Collidable(SDL_Renderer* p_renderer, Colliders p_colliders, CollidableType p_type, int wrapperRadius)
-: colliders(p_colliders), collidableRenderer(p_renderer)
+void removeFromArray(Collidable::Collidables& arr, Collidable* enColl) // Todo: Replace by Template Function
+{
+    auto removeIter = remove(arr.begin(), arr.end(), enColl);
+    arr.erase(removeIter, arr.end());
+};
+
+Collidable::Collidable(SDL_Renderer* p_renderer, CollidableType p_type, int wrapperRadius, Colliders p_colliders)
+: colliders(p_colliders), renderer(p_renderer)
 {
     type = p_type;
-    collidableRotation = 0;
+    rotation = 0;
     isCollided = false;
     collidedTo = NULL;
+    isActive = true;
     wrapperCollider.r = wrapperRadius;
 };
+
+Collidable::~Collidable()
+{
+    collidedTo = NULL;
+    renderer = NULL;
+}
 
 void Collidable::showColliders()
 {
     // Display wrapper & inner colliders
-    DrawCircle(collidableRenderer, wrapperCollider.pos.x, wrapperCollider.pos.y, wrapperCollider.r);
+    DrawCircle(renderer, wrapperCollider.pos.x, wrapperCollider.pos.y, wrapperCollider.r);
 
     Colliders preparedColliders = colliders;
-    rotateColliders(preparedColliders, collidableRotation);
+    rotateColliders(preparedColliders, rotation);
     addVectorToCollider(preparedColliders, wrapperCollider.pos);
 
     for (int i = 0; i < preparedColliders.size(); i++)
     {
-        renderCollider(collidableRenderer, preparedColliders[i]);
+        renderCollider(renderer, preparedColliders[i]);
     }
 }
 
 bool Collidable::checkCollision()
 {
-    std::vector<Collidable*> possibleCollidables;
+    Collidables possibleCollidables;
 
-    for (int i = 0; i < enemyCollidables.size(); i++)
+    for (int i = 0; i < linkedCollidables.size(); i++)
     {
-        Collidable* coll = enemyCollidables[i];
+        Collidable* coll = linkedCollidables[i];
 
         int distanceSquared = Vector2::getDistanceSquared(coll->wrapperCollider.pos, wrapperCollider.pos);
         int radiusesSquared = pow(wrapperCollider.r + coll->wrapperCollider.r, 2);
@@ -51,10 +64,13 @@ bool Collidable::checkCollision()
 
     for (int i = 0; i < possibleCollidables.size(); i++)
     {
-        if (checkRectCollision(possibleCollidables[i]))
-        {
-            isCollided = true;
+        bool hasRectColliders = colliders.size();
+        bool enemyHasRectColliders = possibleCollidables[i]->colliders.size();
 
+        if (!hasRectColliders || !enemyHasRectColliders || checkRectCollision(possibleCollidables[i]))
+        {
+            // Circle collision check is enough if there are no rect colliders
+            isCollided = true;
             possibleCollidables[i]->isCollided = true;
             possibleCollidables[i]->collidedTo = this;
             collidedTo = possibleCollidables[i];
@@ -74,8 +90,8 @@ bool Collidable::checkRectCollision(Collidable* enemyCollider)
     Colliders enemyColliders = enemyCollider->getColliders();
     Vector2 enemyToShip = wrapperCollider.pos - enemyCollider->wrapperCollider.pos;
 
-    rotateColliders(enemyColliders, enemyCollider->collidableRotation);
-    rotateColliders(preparedColliders, collidableRotation);
+    rotateColliders(enemyColliders, enemyCollider->rotation);
+    rotateColliders(preparedColliders, rotation);
 
     addVectorToCollider(preparedColliders, enemyToShip);
 
@@ -94,33 +110,18 @@ bool Collidable::checkRectCollision(Collidable* enemyCollider)
     return false;
 }
 
-void Collidable::registerEnemyCollidable(Collidable* enemyCollider)
+void Collidable::linkTo(Collidable* enColl)
 { 
-    enemyCollidables.push_back(enemyCollider);
+    linkedCollidables.push_back(enColl);
+    enColl->linkedCollidables.push_back(this);
 };
 
-void Collidable::deregisterEnemyCollidable(Collidable* collidable) 
-{
-    auto removeIter = remove(enemyCollidables.begin(), enemyCollidables.end(), collidable);
-    enemyCollidables.erase(removeIter, enemyCollidables.end());
+void Collidable::unlinkFrom() 
+{    
+    for (int i = 0; i < linkedCollidables.size(); i++)
+    {
+        removeFromArray(linkedCollidables[i]->linkedCollidables, this);
+    }
+
+    linkedCollidables.clear();
 }
-
-//Colliders Collidable::getColliders(Space space)
-//{
-    //Colliders preparedColliders = colliders;
-    //CollidableDesc desc = getCollidableDesc();
-    //rotateColliders(preparedColliders, desc.rotation);
-
-    //if (parent == NULL)
-    //{
-    //    return space == LOCAL ? colliders : addVectorToCollider(preparedColliders, pos);
-    //}
-
-    //if (parent) // Return position relative to the parent
-    //{
-    //    Vector2 parentToShip = pos - parent->pos;
-    //    addVectorToCollider(preparedColliders, parentToShip);
-
-    //    return space == LOCAL ? preparedColliders : addVectorToCollider(preparedColliders, parent->pos);
-    //}
-//}

@@ -1,12 +1,12 @@
 #pragma once
-
 #include <SDL.h>
 
 #include "Object.h"
 #include "LevelBase.h"
 #include "PauseView.h"
 #include "MilesView.h"
-#include "StateView.h"
+#include "StatusBarView.h"
+#include "BuffBarView.h"
 
 class PauseView;
 
@@ -23,8 +23,11 @@ private:
 	SDL_Renderer* renderer;
 	LevelBase* level;
 	const App* system;
+
 	PauseView* pauseView;
 	MilesView* milesView;
-	StateView* stateView;
+	StatusBarView* statusView;
+	BuffBarView* buffView;
+
 };
 

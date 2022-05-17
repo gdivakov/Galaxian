@@ -6,6 +6,7 @@
 #include "Audio.h"
 #include "Loop.h"
 #include "Consts.h"
+#include "Timer.h"
 
 class App
 {
@@ -21,6 +22,7 @@ public:
 	const SDL_Window* getWindow() const;
 	const Size* getWindowSize() const;
 	void enableFullScreen();
+	Timer* getTimer() const { return timer; };
 private: 
 	Loop* gameLoop;
 	Audio* audioPlayer;
@@ -30,4 +32,5 @@ private:
 	std::string errMessage;
 	bool windowed;
 	Size windowSize;
+	Timer* timer;
 };

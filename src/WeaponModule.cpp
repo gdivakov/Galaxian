@@ -25,7 +25,7 @@ WeaponModule::WeaponModule(
 
 void WeaponModule::fire()
 {
-	if (isOnCooldown)
+	if (isOnCooldown || ship->getIsAccelerated())
 	{
 		return;
 	}

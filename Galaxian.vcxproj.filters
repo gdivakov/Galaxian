@@ -73,16 +73,16 @@
     <Filter Include="Source Files\Levels\General\Hood">
       <UniqueIdentifier>{9c96ab38-480a-4823-b701-45a41c3e5f6d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Objects\Ship\Specials">
+      <UniqueIdentifier>{50c96e20-6dc9-41dd-9549-03fe98114170}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Objects\Ship\Specials">
+      <UniqueIdentifier>{6453d121-ea1f-4576-9ab2-dbad0c6cb0e5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Main.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\ProjectileManager.cpp">
-      <Filter>Source Files\Objects</Filter>
-    </ClCompile>
-    <ClCompile Include="src\WeaponModule.cpp">
-      <Filter>Source Files\Objects</Filter>
     </ClCompile>
     <ClCompile Include="src\App.cpp">
       <Filter>Source Files\System</Filter>
@@ -135,9 +135,6 @@
     <ClCompile Include="src\Collidable.cpp">
       <Filter>Source Files\Objects</Filter>
     </ClCompile>
-    <ClCompile Include="src\Projectile.cpp">
-      <Filter>Source Files\Objects</Filter>
-    </ClCompile>
     <ClCompile Include="src\Settings.cpp">
       <Filter>Source Files\Levels\General</Filter>
     </ClCompile>
@@ -153,14 +150,41 @@
     <ClCompile Include="src\MilesView.cpp">
       <Filter>Source Files\Levels\General\Hood</Filter>
     </ClCompile>
-    <ClCompile Include="src\StateView.cpp">
+    <ClCompile Include="src\StatusBarView.cpp">
       <Filter>Source Files\Levels\General\Hood</Filter>
+    </ClCompile>
+    <ClCompile Include="src\BuffBarView.cpp">
+      <Filter>Source Files\Levels\General\Hood</Filter>
+    </ClCompile>
+    <ClCompile Include="src\BuffModule.cpp">
+      <Filter>Source Files\Objects\Ship\Specials</Filter>
+    </ClCompile>
+    <ClCompile Include="src\StatusModule.cpp">
+      <Filter>Source Files\Objects\Ship\Specials</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Spawner.cpp">
+      <Filter>Source Files\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Projectile.cpp">
+      <Filter>Source Files\Objects\Ship</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ProjectileManager.cpp">
+      <Filter>Source Files\Objects\Ship</Filter>
+    </ClCompile>
+    <ClCompile Include="src\WeaponModule.cpp">
+      <Filter>Source Files\Objects\Ship</Filter>
+    </ClCompile>
+    <ClCompile Include="src\BuffView.cpp">
+      <Filter>Source Files\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ShipSpecialsConsts.cpp">
+      <Filter>Source Files\consts</Filter>
+    </ClCompile>
+    <ClCompile Include="src\AnimatedBuffManager.cpp">
+      <Filter>Source Files\Objects\Ship\Specials</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\ProjectileManager.h">
-      <Filter>Header Files\Objects</Filter>
-    </ClInclude>
     <ClInclude Include="src\Texture.h">
       <Filter>Header Files\Objects</Filter>
     </ClInclude>
@@ -172,9 +196,6 @@
     </ClInclude>
     <ClInclude Include="src\Loop.h">
       <Filter>Header Files\System</Filter>
-    </ClInclude>
-    <ClInclude Include="src\WeaponModule.h">
-      <Filter>Header Files\Objects</Filter>
     </ClInclude>
     <ClInclude Include="src\Object.h">
       <Filter>Header Files\Objects</Filter>
@@ -221,9 +242,6 @@
     <ClInclude Include="src\Collidable.h">
       <Filter>Header Files\Objects</Filter>
     </ClInclude>
-    <ClInclude Include="src\Projectile.h">
-      <Filter>Header Files\Objects</Filter>
-    </ClInclude>
     <ClInclude Include="src\SoundConst.h">
       <Filter>Header Files\consts</Filter>
     </ClInclude>
@@ -251,8 +269,38 @@
     <ClInclude Include="src\MilesView.h">
       <Filter>Header Files\Levels\General\Hood</Filter>
     </ClInclude>
-    <ClInclude Include="src\StateView.h">
+    <ClInclude Include="src\StatusBarView.h">
       <Filter>Header Files\Levels\General\Hood</Filter>
+    </ClInclude>
+    <ClInclude Include="src\BuffBarView.h">
+      <Filter>Header Files\Levels\General\Hood</Filter>
+    </ClInclude>
+    <ClInclude Include="src\StatusModule.h">
+      <Filter>Header Files\Objects\Ship\Specials</Filter>
+    </ClInclude>
+    <ClInclude Include="src\BuffModule.h">
+      <Filter>Header Files\Objects\Ship\Specials</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ShipSpecialsConsts.h">
+      <Filter>Header Files\consts</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Spawner.h">
+      <Filter>Header Files\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="src\WeaponModule.h">
+      <Filter>Header Files\Objects\Ship</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Projectile.h">
+      <Filter>Header Files\Objects\Ship</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ProjectileManager.h">
+      <Filter>Header Files\Objects\Ship</Filter>
+    </ClInclude>
+    <ClInclude Include="src\BuffView.h">
+      <Filter>Header Files\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="src\AnimatedBuffManager.h">
+      <Filter>Header Files\Objects\Ship\Specials</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

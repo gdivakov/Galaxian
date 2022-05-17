@@ -9,12 +9,24 @@
 const int WINDOWED_WIDTH = 920;
 const int WINDOWED_HEIGHT = 620;
 
+const int BG_SCROLLING_SPEED = 2;
+const int ACCELERATION_SPEED_MP = 10;
+const int BG_SCROLLING_SPEED_ACCELERATED = BG_SCROLLING_SPEED * ACCELERATION_SPEED_MP;
+
 const float RAD_TO_DEG = 180.0f / M_PI;
 const float DEG_TO_RAD = M_PI / 180;
 
 const SDL_Color textColor = { 0, 0, 0 };
 const SDL_Color selectedOptionColor = { 1, 98, 177 };
 const SDL_Color selectedDisabledOptionColor = { 153, 153, 153 };
+
+struct SpriteParams
+{
+	std::string path;
+	int imageW;
+	int imageH;
+	int length;
+};
 
 const std::string LEVEL1_BG_PATH = "res/sprites/backgrounds/space.png";
 
