@@ -2,6 +2,8 @@
 
 #include "EnemyShip.h"
 
+const int WAYPOINT_NUMBER = 4; // Todo: edit here
+
 EnemyShip::EnemyShip(
 	LevelBase* p_level,
 	ShipType type, 
@@ -13,8 +15,19 @@ EnemyShip::EnemyShip(
 	player = p_playerShip;
 	currentWaypoint = 0;
 	inView = false;
-	const int WAYPOINT_NUMBER = 3; // Todo: edit here
 
+
+	addPath(pathCurves);
+	pos = path[0];
+}
+
+EnemyShip::~EnemyShip()
+{
+	player = NULL;
+}
+
+void EnemyShip::addPath(std::vector<BezierCurve> pathCurves)
+{
 	BezierPath* bezierPath = new BezierPath();
 
 	for (int i = 0; i < pathCurves.size(); i++)
@@ -25,16 +38,9 @@ EnemyShip::EnemyShip(
 	bezierPath->setPath(&path);
 
 	delete bezierPath;
-	
-	pos = path[0];
 }
 
-EnemyShip::~EnemyShip()
-{
-	player = NULL;
-}
-
-void EnemyShip::followPath()
+void EnemyShip::followPath(bool withDirRotation)
 {
 	if (currentWaypoint < path.size() && Vector2::getDistance(path[currentWaypoint], pos) < EPSILON)
 	{
@@ -46,11 +52,14 @@ void EnemyShip::followPath()
 		Vector2 normMoveDir = moveDir / Vector2::getDistance(path[currentWaypoint], pos);
 		pos = pos + normMoveDir * maxSpeed/2;
 
-		rotate(atan2(moveDir.y, moveDir.x) * RAD_TO_DEG + 90.0f);
+		if (withDirRotation)
+		{
+			rotate(atan2(moveDir.y, moveDir.x) * RAD_TO_DEG + 90.0f);
+		}
 	}
-	else {
-		// finish path - start again
-		currentWaypoint = 0;
+	else 
+	{
+		currentWaypoint = 0; // Repeat path
 	}
 }
 

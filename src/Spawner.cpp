@@ -3,6 +3,7 @@
 #include "Spawner.h"
 #include "PlayerShip.h"
 #include "EnemyShip.h"
+#include "BossShip.h"
 #include "Vector2.h"
 #include "ShipSpecialsConsts.h"
 
@@ -44,8 +45,11 @@ Spawner::~Spawner()
 	enemies.clear();
 	buffs.clear();
 
-	delete player;
-	player = NULL;
+	if (player)
+	{
+		delete player;
+		player = NULL;
+	}
 }
 
 void Spawner::handleEvent(SDL_Event& e)
@@ -109,6 +113,14 @@ void Spawner::spawnEnemy()
 
 	nextEnemy->linkTo(player);
 	enemies.push_back(nextEnemy);
+}
+
+void Spawner::spawnBoss()
+{
+	BossShip* nextBoss = new BossShip(level, BOSS_A, player);
+
+	nextBoss->linkTo(player);
+	enemies.push_back(nextBoss);
 }
 
 void Spawner::spawnPlayer()

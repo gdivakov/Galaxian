@@ -9,27 +9,15 @@ const SpriteParams SONIC_A_BUFF_SAVE_HAND = { "res/sprites/ships/sonicA/buffs/sa
 const SpriteParams SONIC_A_BUFF_SPEED_UP = { "res/sprites/ships/sonicA/buffs/speedUp.png", 114, 114, 9 };
 const SpriteParams SONIC_A_BUFF_SUPERPOWER = { "res/sprites/ships/sonicA/buffs/superpower.png", 114, 114, 9 };
 
-SpriteParams getBuffSpriteParams(BuffType type, ShipType shipType)
+SpriteParams getBuffSpriteParams(BuffType type)
 {
-	switch (shipType)
-	{
-	case SONIC_A:
-		if (type == BUFF_SHIELD) return SONIC_A_BUFF_SHIELD;
-		if (type == BUFF_ARMOR_UP) return SONIC_A_BUFF_ARMOR_UP;
-		if (type == BUFF_BREAK_HAND) return SONIC_A_BUFF_BREAK_HAND;
-		if (type == BUFF_HEALTH_UP) return SONIC_A_BUFF_HEALTH_UP;
-		if (type == BUFF_SAVE_HAND) return SONIC_A_BUFF_SAVE_HAND;
-		if (type == BUFF_SPEED_UP) return SONIC_A_BUFF_SPEED_UP;
-		if (type == BUFF_SUPERPOWER) return SONIC_A_BUFF_SUPERPOWER;
-	case PIRATE_A:
-		if (type == BUFF_SHIELD) return SONIC_A_BUFF_SHIELD;
-		if (type == BUFF_ARMOR_UP) return SONIC_A_BUFF_ARMOR_UP;
-		if (type == BUFF_BREAK_HAND) return SONIC_A_BUFF_BREAK_HAND;
-		if (type == BUFF_SAVE_HAND) return SONIC_A_BUFF_SAVE_HAND;
-		if (type == BUFF_SPEED_UP) return SONIC_A_BUFF_SPEED_UP;
-		if (type == BUFF_SUPERPOWER) return SONIC_A_BUFF_SUPERPOWER;
-		break;
-	}
+	if (type == BUFF_SHIELD) return SONIC_A_BUFF_SHIELD;
+	if (type == BUFF_ARMOR_UP) return SONIC_A_BUFF_ARMOR_UP;
+	if (type == BUFF_BREAK_HAND) return SONIC_A_BUFF_BREAK_HAND;
+	if (type == BUFF_SAVE_HAND) return SONIC_A_BUFF_SAVE_HAND;
+	if (type == BUFF_SPEED_UP) return SONIC_A_BUFF_SPEED_UP;
+	if (type == BUFF_SUPERPOWER) return SONIC_A_BUFF_SUPERPOWER;
+	if (type == BUFF_HEALTH_UP) return SONIC_A_BUFF_HEALTH_UP;
 }
 
 AnimatedBuffManager::~AnimatedBuffManager()
@@ -95,7 +83,7 @@ AnimatedBuff::AnimatedBuff(LevelBase* p_level, BuffType p_buffType, Ship* p_ship
 	level = p_level;
 	manager = p_manager;
 
-	loadFromSprite(getBuffSpriteParams(type, ship->getType()));
+	loadFromSprite(getBuffSpriteParams(type));
 	gameLoop->addRenderListener(this);
 }
 

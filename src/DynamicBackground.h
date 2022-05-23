@@ -18,6 +18,7 @@ private:
 	void updateAcceleratedStatus();
 public:
 	DynamicBackground(SDL_Renderer* p_renderer, std::string path, LevelBase* p_level);
+	~DynamicBackground();
 	virtual void onBeforeRender();
 	virtual void handleEvent(SDL_Event& e) {};
 	void accelerate();

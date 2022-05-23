@@ -1,4 +1,5 @@
 #include "BuffModule.h"
+#include "Audio.h"
 
 BuffModule::BuffModule(Ship* p_ship) 
 { 
@@ -29,8 +30,14 @@ void BuffModule::updateBuffs()
 void BuffModule::addBuff(BuffType nextBuff) { 
     Uint32 currentTime = ship->level->getSystem()->getTimer()->getTicks();
     BuffParams nextParams = getBuffParamsByType(nextBuff, currentTime);
+    Audio* audio = ship->level->getSystem()->getAudioPlayer();
 
-    switch (nextParams.type)
+    if (nextBuff != BUFF_SPEED_UP)
+    {
+        audio->playSound(BUFF_APPLIED_SOUND);
+    }
+
+    switch (nextBuff)
     {
         case BUFF_HEALTH_UP:
             ship->refreshHealth();
@@ -41,15 +48,15 @@ void BuffModule::addBuff(BuffType nextBuff) {
             ship->animatedBuff->loadBuffAnimation(nextBuff);
             break;
         case BUFF_SPEED_UP:
-            if (ship->getIsPlayer())
+            if (ship->getIsPlayer()) // Todo: prevent from speed up while fighting w/ boss
             {
-                ship->level->getSystem()->getAudioPlayer()->playSound(BUFF_SPEED_UP_SOUND);
+                audio->playSound(BUFF_SPEED_UP_SOUND);
 
                 ship->level->accelerate();
                 ship->animatedBuff->loadBuffAnimation(nextBuff);
                 appliedBuffs[nextParams.sprite.path] = nextParams;
-                break;
             }
+            break;
         default: 
             ship->animatedBuff->loadBuffAnimation(nextBuff);
             appliedBuffs[nextParams.sprite.path] = nextParams;

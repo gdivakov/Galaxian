@@ -7,6 +7,7 @@
 #include "MilesView.h"
 #include "StatusBarView.h"
 #include "BuffBarView.h"
+#include "GameOverView.h"
 
 class PauseView;
 
@@ -28,6 +29,7 @@ private:
 	MilesView* milesView;
 	StatusBarView* statusView;
 	BuffBarView* buffView;
+	GameOverView* gameOverView;
 
 };
 

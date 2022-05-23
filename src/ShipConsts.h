@@ -5,14 +5,19 @@
 #include "Vector2.h"
 #include "Consts.h"	
 #include "SoundConst.h"
+#include "Texture.h"
 
 const SpriteParams SONIC_A_SHIP = { "res/sprites/ships/shipA.png", 102, 114, 10 };
 const SpriteParams PIRATE_A_SHIP = { "res/sprites/ships/pirateA.png", 65, 144, 10 };
+const SpriteParams BOSS_A_SHIP = { "res/sprites/ships/bossA.png", 300, 195, 9 };
+
 const SpriteParams SONIC_A_SHIP_EXPLOSION = { "res/sprites/ships/explosion_sonicA.png", 165, 114, 9 };
 const SpriteParams PIRATE_A_SHIP_EXPLOSION = { "res/sprites/ships/explosion_pirateA.png", 103, 144, 8 };
+const SpriteParams BOSS_A_SHIP_EXPLOSION = { "res/sprites/ships/explosion_bossA.png", 300, 191, 10 }; // Todo: fix sprite triggering
 
 const int SONIC_A_SPEED = 6;
 const int PIRATE_A_SPEED = 5;
+const int BOSS_A_SPEED = 5; // Todo: replace by certain categories
 
 const int THIN_SHIP_HEALTH = 100;
 const int AVERAGE_SHIP_HEALTH = 500;
@@ -23,8 +28,8 @@ const int THIN_SHIP_ARMOR = THIN_SHIP_HEALTH * ARMOR_MULTIPLIER;
 const int AVERAGE_SHIP_ARMOR = AVERAGE_SHIP_HEALTH * ARMOR_MULTIPLIER;
 const int STRONG_SHIP_ARMOR = STRONG_SHIP_HEALTH * ARMOR_MULTIPLIER;
 
-const enum GunType { BLAST, ROCKET, LAZER }; // Todo: BLAST - rename to blaster
-const enum ShipType { SONIC_A, PIRATE_A }; // SONIC - player ship name
+const enum GunType { BLAST, ROCKET, ROCKET_DOUBLE, DIFFUSER, LAZER };
+const enum ShipType { SONIC_A, PIRATE_A, BOSS_A };
 const enum Space { WORLD, LOCAL };
 
 struct RectColliderPoint
@@ -46,7 +51,7 @@ struct ShipParams {
 	ShipType type;
 	SpriteParams sprite;
 	SpriteParams explosion;
-	GunType gunType;
+	std::vector<GunType >guns;
 	int maxSpeed;
 	int armor;
 	int health;
@@ -113,13 +118,40 @@ const Colliders PIRATE_A_COLLIDERS_DEFAULT =
 	}
 };
 
+const int BOSS_A_IMG_HALF_W = BOSS_A_SHIP.imageW/2;
+const int BOSS_A_IMG_HALF_H = BOSS_A_SHIP.imageH/2;
+
+const Colliders BOSS_A_COLLIDERS_DEFAULT =
+{
+	{
+		Vector2(-25, -BOSS_A_IMG_HALF_H + 15),
+		Vector2(25, -BOSS_A_IMG_HALF_H + 15),
+		Vector2(25, -BOSS_A_IMG_HALF_H + 40),
+		Vector2(-25, -BOSS_A_IMG_HALF_H + 40),
+	},
+	{
+		Vector2(-BOSS_A_IMG_HALF_W + 42, -BOSS_A_IMG_HALF_H + 40),
+		Vector2(BOSS_A_IMG_HALF_W - 42, -BOSS_A_IMG_HALF_H + 40),
+		Vector2(BOSS_A_IMG_HALF_W - 42, -BOSS_A_IMG_HALF_H + 77),
+		Vector2(-BOSS_A_IMG_HALF_W + 42, -BOSS_A_IMG_HALF_H + 77),
+	},
+	{
+		Vector2(-BOSS_A_IMG_HALF_W, -BOSS_A_IMG_HALF_H + 77),
+		Vector2(BOSS_A_IMG_HALF_W, -BOSS_A_IMG_HALF_H + 77),
+		Vector2(BOSS_A_IMG_HALF_W, BOSS_A_IMG_HALF_H - 21),
+		Vector2(-BOSS_A_IMG_HALF_W, BOSS_A_IMG_HALF_H - 21),
+	}
+};
+
 const float BLAST_COOLDOWN = 150.0f;
 const float ROCKET_COOLDOWN = 1000.0f;
 const float LAZER_COOLDOWN = 0.0f;
 
 const int BLAST_AMMO_SPEED = 8;
 const int ROCKET_AMMO_SPEED = 4;
+const int DIFFUSER_AMMO_SPEED = 3;
 const int LAZER_AMMO_SPEED = 1000;
+
 const int BLAST_DAMAGE = 50;
 const int ROCKET_DAMAGE = 50;
 
@@ -188,6 +220,16 @@ struct AmmoParams
 	CollidableType collidableType;
 };
 
+struct PJ_Textures { Texture* flying; Texture* launch; Texture* explosion; };
+struct PJ_Params {
+	Vector2 position;
+	GunType gun;
+	int speed;
+	Vector2 direction;
+	int rotation;
+	PJ_Textures textures;
+};
+
 void DrawCircle(SDL_Renderer* renderer, int32_t centreX, int32_t centreY, int32_t radius);
 Colliders& addVectorToCollider(Colliders& colliders, Vector2& v);
 Colliders& rotateColliders(Colliders& colliders, int angle);
@@ -202,3 +244,6 @@ GunParams getGunParamsByType(GunType type);
 AmmoParams getAmmoParamsByGunType(GunType type);
 ShipParams getShipParams(const ShipType type);
 std::vector<BezierCurve> getEnemyPathCurves(int enemyCounter);
+
+int getRadius(GunType type);
+bool isOutside(Vector2 pos);

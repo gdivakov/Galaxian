@@ -12,15 +12,9 @@
 class EnemyShip : public Ship
 {
 private:
-    bool inView;
     std::vector<Vector2> path;
-    int currentWaypoint;
     const float EPSILON = 5.0f;
     Ship* player;
-    void isInView();
-    void followPath();
-    void displayPath();
-    bool isFalling;
 public:
     EnemyShip(
         LevelBase* p_level, 
@@ -35,4 +29,11 @@ public:
     virtual void startAccelerate();
 protected:
     virtual void accelerate();
+    void isInView();
+    void addPath(std::vector<BezierCurve> pathCurves);
+    void followPath(bool withDirRotation = true);
+    void displayPath();
+    bool inView;
+    bool isFalling;
+    int currentWaypoint;
 };

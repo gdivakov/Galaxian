@@ -216,6 +216,10 @@ GunParams getGunParamsByType(GunType type)
     case ROCKET:
         return { ROCKET_COOLDOWN, ROCKET_SOUND };
         break;
+    case DIFFUSER:
+        return { ROCKET_COOLDOWN, ROCKET_SOUND };
+    case ROCKET_DOUBLE:
+        return { ROCKET_COOLDOWN, ROCKET_SOUND };
     case LAZER:
         return { LAZER_COOLDOWN, BLAST_SOUND };
         break;
@@ -238,12 +242,12 @@ AmmoParams getAmmoParamsByGunType(GunType type)
             BLAST_AMMO_COLLIDER,
             COLLIDABLE_PROJECTILE_BLAST,
         };
-    case ROCKET:
-        return 
-        { 
-            ROCKET_AMMO_SPEED, 
-            ROCKET_AMMO_TEXTURE_PARAMS, 
-            ROCKET_AMMO_LAUNCH_TEXTURE_PARAMS,
+    case DIFFUSER:
+        return
+        {
+            DIFFUSER_AMMO_SPEED,
+            ROCKET_AMMO_TEXTURE_PARAMS,
+            ROCKET_AMMO_TEXTURE_PARAMS,
             ROCKET_AMMO_EXPLOSION_TEXTURE_PARAMS,
             ROCKET_AMMO_COLLIDER,
             COLLIDABLE_PROJECTILE_ROCKET
@@ -278,7 +282,7 @@ ShipParams getShipParams(const ShipType type)
             SONIC_A,
             SONIC_A_SHIP,               // sprite 
             SONIC_A_SHIP_EXPLOSION,     // explosion 
-            BLAST,                      // gunType 
+            { BLAST },                  // gunType 
             SONIC_A_SPEED,              // maxSpeed 
             THIN_SHIP_ARMOR,            // armor 
             THIN_SHIP_HEALTH,           // health 
@@ -291,11 +295,24 @@ ShipParams getShipParams(const ShipType type)
             PIRATE_A,
             PIRATE_A_SHIP, 
             PIRATE_A_SHIP_EXPLOSION, 
-            ROCKET, 
+            { ROCKET },
             PIRATE_A_SPEED, 
             THIN_SHIP_ARMOR, 
             THIN_SHIP_HEALTH, 
             PIRATE_A_COLLIDERS_DEFAULT, 
+            PIRATE_EXPLOSION_SOUND
+        };
+    case BOSS_A:
+        return
+        {
+            BOSS_A,
+            BOSS_A_SHIP,
+            BOSS_A_SHIP_EXPLOSION,
+            { ROCKET, DIFFUSER, ROCKET_DOUBLE },
+            BOSS_A_SPEED,
+            STRONG_SHIP_ARMOR,
+            STRONG_SHIP_HEALTH,
+            BOSS_A_COLLIDERS_DEFAULT,
             PIRATE_EXPLOSION_SOUND
         };
     }
@@ -309,13 +326,28 @@ std::vector<BezierCurve> getEnemyPathCurves(int enemyCounter)
     {
         curves.push_back({ Vector2(100, 10), Vector2(350, 60), Vector2(350, 160), Vector2(300, 260) });
         curves.push_back({ Vector2(300, 260), Vector2(600, 700), Vector2(500, 300), Vector2(600, 600) });
-        //curves.push_back({ Vector2(600, 600), Vector2(400, 200), Vector2(100, 100), Vector2(500, 300) });
     }
     else
     {
         curves.push_back({ Vector2(800, 10), Vector2(550, 60), Vector2(550, 160), Vector2(300, 260) });
         curves.push_back({ Vector2(300, 260), Vector2(300, 500), Vector2(100, 100), Vector2(600, 600) });
     }
-
+    
     return curves;
 }
+
+int getRadius(GunType type)
+{
+    AmmoParams params = getAmmoParamsByGunType(type);
+    return params.texture.imageH > params.texture.imageW ? params.texture.imageH / 2 : params.texture.imageW / 2;
+}
+
+bool isOutside(Vector2 pos)
+{
+    bool isOutside = pos.y < 0
+        || pos.x < 0
+        || pos.y > WINDOWED_HEIGHT
+        || pos.x > WINDOWED_WIDTH;
+
+    return isOutside;
+};

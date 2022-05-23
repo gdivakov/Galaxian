@@ -24,10 +24,12 @@ BuffView::~BuffView()
 
 void BuffView::onBeforeRender()
 {
-	position = Vector2(position.x, position.y) + Vector2(0, BG_SCROLLING_SPEED_ACCELERATED/4);
+	position = Vector2(position.x, position.y) + Vector2(0, BG_SCROLLING_SPEED_ACCELERATED / 4);
+
 	shiftColliders();
 
 	render(position - Vector2(size.w/2, size.h/2));
+
 	checkCollision();
 };
 

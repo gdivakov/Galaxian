@@ -33,7 +33,7 @@ Ship::Ship(const App* p_system, ShipParams params, LevelBase* p_level, bool isEn
     isAccelerated = false;
     type = params.type;
 
-    gun = new WeaponModule(params.gunType, p_system, this, isEnemyShip);
+    gun = new WeaponModule(params.guns, p_system, this, isEnemyShip);
     specials.status = new StatusModule(params.health, params.armor);
     specials.buff = new BuffModule(this);
 

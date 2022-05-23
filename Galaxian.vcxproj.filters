@@ -79,6 +79,12 @@
     <Filter Include="Source Files\Objects\Ship\Specials">
       <UniqueIdentifier>{6453d121-ea1f-4576-9ab2-dbad0c6cb0e5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Objects\Ship\Projectile">
+      <UniqueIdentifier>{c4c52387-a8a9-481b-abf6-6a7f355d9e0c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Objects\Ship\Projectile">
+      <UniqueIdentifier>{1397b70a-f018-4c3f-9ccc-c00b2a2ee6b2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Main.cpp">
@@ -165,12 +171,6 @@
     <ClCompile Include="src\Spawner.cpp">
       <Filter>Source Files\Objects</Filter>
     </ClCompile>
-    <ClCompile Include="src\Projectile.cpp">
-      <Filter>Source Files\Objects\Ship</Filter>
-    </ClCompile>
-    <ClCompile Include="src\ProjectileManager.cpp">
-      <Filter>Source Files\Objects\Ship</Filter>
-    </ClCompile>
     <ClCompile Include="src\WeaponModule.cpp">
       <Filter>Source Files\Objects\Ship</Filter>
     </ClCompile>
@@ -182,6 +182,27 @@
     </ClCompile>
     <ClCompile Include="src\AnimatedBuffManager.cpp">
       <Filter>Source Files\Objects\Ship\Specials</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GameOverView.cpp">
+      <Filter>Source Files\Levels\General\Hood</Filter>
+    </ClCompile>
+    <ClCompile Include="src\BossShip.cpp">
+      <Filter>Source Files\Objects\Ship</Filter>
+    </ClCompile>
+    <ClCompile Include="src\DoublePJManager.cpp">
+      <Filter>Source Files\Objects\Ship\Projectile</Filter>
+    </ClCompile>
+    <ClCompile Include="src\DiffuserPJManager.cpp">
+      <Filter>Source Files\Objects\Ship\Projectile</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Projectile.cpp">
+      <Filter>Source Files\Objects\Ship\Projectile</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ProjectileManager.cpp">
+      <Filter>Source Files\Objects\Ship\Projectile</Filter>
+    </ClCompile>
+    <ClCompile Include="src\SinglePJManager.cpp">
+      <Filter>Source Files\Objects\Ship\Projectile</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -290,17 +311,35 @@
     <ClInclude Include="src\WeaponModule.h">
       <Filter>Header Files\Objects\Ship</Filter>
     </ClInclude>
-    <ClInclude Include="src\Projectile.h">
-      <Filter>Header Files\Objects\Ship</Filter>
-    </ClInclude>
-    <ClInclude Include="src\ProjectileManager.h">
-      <Filter>Header Files\Objects\Ship</Filter>
-    </ClInclude>
     <ClInclude Include="src\BuffView.h">
       <Filter>Header Files\Objects</Filter>
     </ClInclude>
     <ClInclude Include="src\AnimatedBuffManager.h">
       <Filter>Header Files\Objects\Ship\Specials</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GameOverView.h">
+      <Filter>Header Files\Levels\General\Hood</Filter>
+    </ClInclude>
+    <ClInclude Include="src\BossShip.h">
+      <Filter>Header Files\Objects\Ship</Filter>
+    </ClInclude>
+    <ClInclude Include="src\BossShipConsts.h">
+      <Filter>Header Files\consts</Filter>
+    </ClInclude>
+    <ClInclude Include="src\DiffuserPJManager.h">
+      <Filter>Header Files\Objects\Ship\Projectile</Filter>
+    </ClInclude>
+    <ClInclude Include="src\DoublePJManager.h">
+      <Filter>Header Files\Objects\Ship\Projectile</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Projectile.h">
+      <Filter>Header Files\Objects\Ship\Projectile</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ProjectileManager.h">
+      <Filter>Header Files\Objects\Ship\Projectile</Filter>
+    </ClInclude>
+    <ClInclude Include="src\SinglePJManager.h">
+      <Filter>Header Files\Objects\Ship\Projectile</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

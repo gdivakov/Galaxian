@@ -12,7 +12,10 @@ class Spawner;
 
 Level1::Level1(const App* p_system, LevelManager* p_controller) 
 : 
-LevelBase(p_system, p_controller, new Spawner(this)) {}
+LevelBase(p_system, p_controller) 
+{
+	initAudio(); // Todo: move to basic class 
+}
 
 Level1::~Level1()
 {
@@ -22,18 +25,19 @@ Level1::~Level1()
 void Level1::load() 
 {
 	initObjects();
-	initAudio();
 	registerListeners();
 }
 
 void Level1::initObjects()
 {
 	bg = new DynamicBackground(renderer, LEVEL1_BG_PATH, this);
+	spawner = new Spawner(this);
 	Hood* hood = new Hood(this);
 
-	spawner->spawnPlayer();
-	spawner->spawnEnemy();
-	spawner->spawnEnemy();
+	spawner->spawnPlayer(); // Todo: Render player above other objects (add important renderListeners to loop)
+	//spawner->spawnEnemy();
+	//spawner->spawnEnemy();
+	//spawner->spawnBoss();
 
 	ObjectPointers initObjects = { bg, spawner, hood };
 

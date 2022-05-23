@@ -5,6 +5,14 @@ Ship* LevelBase::getPlayer()
 	return spawner ? spawner->getPlayer() : NULL;
 }
 
+LevelBase::~LevelBase()
+{
+	unload();
+
+	system->getAudioPlayer()->freeSounds();
+	system->getAudioPlayer()->freeMusic();
+}
+
 void LevelBase::unload()
 {
 	deregisterListeners();
@@ -14,8 +22,7 @@ void LevelBase::unload()
 		delete objsToFree[i];
 	}
 
-	system->getAudioPlayer()->freeSounds();
-	system->getAudioPlayer()->freeMusic();
+	objsToFree.clear();
 
 	spawner = NULL;
 }
@@ -34,8 +41,6 @@ void LevelBase::deregisterListeners()
 
 	gameLoop->removeEventListeners(eventListeners);
 	gameLoop->removeRenderListeners(renderListeners);
-
-	objsToFree.clear();
 }
 
 void LevelBase::quit()
@@ -47,7 +52,6 @@ bool LevelBase::togglePaused()
 {
 	isPaused = !isPaused;
 
-	// Pause/Unpause system timer
 	if (isPaused)
 	{
 		system->getTimer()->pause();

@@ -15,8 +15,9 @@ Hood::Hood(LevelBase* p_level)
     milesView = new MilesView(level);
     statusView = new StatusBarView(level);
     buffView = new BuffBarView(level);
+    gameOverView = new GameOverView(level);
+
     // selectedWeaponView = new WeaponView(level);
-    // armourView = new ArmourView(level);
 }
 
 Hood::~Hood()
@@ -25,11 +26,13 @@ Hood::~Hood()
     delete milesView;
     delete statusView;
     delete buffView;
+    delete gameOverView;
 
     pauseView = NULL;
     milesView = NULL;
     statusView = NULL;
     buffView = NULL;
+    gameOverView = NULL;
 
     renderer = NULL;
     level = NULL;
@@ -43,6 +46,11 @@ void Hood::handleEvent(SDL_Event& e)
         return;
     }
 
+    if (gameOverView->getIsActive())
+    {
+        return gameOverView->handleEvent(e);
+    }
+
     if (e.key.keysym.sym == SDLK_ESCAPE && e.key.repeat == 0 && !pauseView->isSettingsOpened)
     {
         return level->isPaused ? handleResumed() : handlePaused();
@@ -50,16 +58,21 @@ void Hood::handleEvent(SDL_Event& e)
 
     if (level->isPaused)
     {
-        pauseView->handleEvent(e);
-        return;
+        return pauseView->handleEvent(e);
     }
 }
 
 void Hood::onBeforeRender()
 {
+    if (!level->getPlayer() && !gameOverView->getIsActive()) // Player is dead
+    {
+        gameOverView->setIsActive(true);
+    }
+
     milesView->handleRender();
     statusView->handleRender();
     buffView->handleRender();
+    gameOverView->handleRender();
 }
 
 void Hood::handlePaused()

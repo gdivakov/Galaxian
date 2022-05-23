@@ -12,16 +12,18 @@ struct ShipRect;
 struct SpriteParams;
 const enum GunType;
 class Projectile;
-struct PJ_Textures { Texture* flying; Texture* launch; Texture* explosion; };
 
 class ProjectileManager
 {
 public:
 	ProjectileManager(GunType p_type, const App* p_system, Ship* p_ship);
-	~ProjectileManager();
-	void startProjectile();
+	virtual ~ProjectileManager();
+
+	virtual void startProjectile() = 0;
 	void destroyProjectile(Projectile* pj);
-private:
+	Ship* getShip() { return ship; };
+	const App* getSystem() { return system; };
+protected:
 	typedef std::vector<SDL_Rect*> ClipPointers;
 	typedef std::vector<Projectile*> FlyingProjectiles;
 

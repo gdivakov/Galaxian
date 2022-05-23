@@ -168,9 +168,13 @@ PauseView::~PauseView()
         delete options[i];
     }
 
+    delete settingsView;
+
     TTF_CloseFont(font);
     options.clear();
+
     font = NULL;
     level = NULL;
     parentHood = NULL;
+    settingsView = NULL;
 }

@@ -1,58 +1,72 @@
 #include "Ship.h"
 #include "ShipConsts.h"
+#include "SinglePJManager.h"
+#include "DiffuserPJManager.h"
+#include "DoublePJManager.h"
 
 WeaponModule::WeaponModule(
-	GunType initGunType,
+	std::vector<GunType> guns,
 	const App* p_system,
 	Ship* p_ship,
 	bool p_isEnemyShip
 ) : Texture(p_system->getRenderer()), system(p_system)
 {
-	ammo = new ProjectileManager(initGunType, system, p_ship);
 	ship = p_ship;
-	isOnCooldown = false;
-
-	// Prepare gun
-	GunParams params = getGunParamsByType(initGunType);
-	cooldownMs = params.cooldownMs;
-	fireSound = params.soundPath;
-
-	//availableGuns.push_back(initGunType);
-	selectedGun = initGunType;
-
 	isEnemyShip = p_isEnemyShip;
+	pos = Vector2();
+
+	selectGun(guns[0]);
 }
 
-void WeaponModule::fire()
+void WeaponModule::selectGun(GunType nextGun)
+{
+	if (ammo)
+	{
+		delete ammo;
+	}
+
+	GunParams params = getGunParamsByType(nextGun);
+	selectedGun = nextGun;
+	cooldownMs = params.cooldownMs;
+	fireSound = params.soundPath;
+	isOnCooldown = false;
+
+	// Todo: refactor here (Ammo constructor class should be part of constant)
+	switch (selectedGun)
+	{
+	case ROCKET: 
+	case BLAST:
+		ammo = new SinglePJManager(selectedGun, system, ship);
+		break;
+	case DIFFUSER:
+		ammo = new DiffuserPJManager(selectedGun, system, ship);
+		break;
+	case ROCKET_DOUBLE:
+		ammo = new DoublePJManager(selectedGun, system, ship);
+		break;
+	}
+}
+
+bool WeaponModule::fire()
 {
 	if (isOnCooldown || ship->getIsAccelerated())
 	{
-		return;
+		return false;
 	}
 
 	system->getAudioPlayer()->playSound(fireSound);
 	ammo->startProjectile();
 
-
 	if (cooldownMs != 0) {
 		isOnCooldown = true;
 		cooldownTimer.start();
 	}
-}
 
-void WeaponModule::addGun()
-{
-	//Gun rocket = { BLAST, 1000, 100, { SPRITE, "res/rocket.png" }, Projectile(BLAST) };
-	//Gun lazer = { LAZER, 0, 100, { SPRITE, "res/lazer.png" }, Projectile(LAZER) };
+	return true;
 }
-
-void WeaponModule::removeGun()
-{}
 
 void WeaponModule::handleEvent(SDL_Event& e)
 {
-	//ammo->handleEvent(e);
-
 	const Uint8* currentKeyStates = SDL_GetKeyboardState(NULL);
 
 	if (!isEnemyShip) 
@@ -66,8 +80,6 @@ void WeaponModule::handleEvent(SDL_Event& e)
 }
 void WeaponModule::onBeforeRender()
 {
-	//ammo->onBeforeRender();
-
 	if (isOnCooldown && cooldownTimer.getTicks() > cooldownMs)
 	{
 		isOnCooldown = false;
@@ -75,15 +87,11 @@ void WeaponModule::onBeforeRender()
 	}
 }
 
-void WeaponModule::onAfterRender()
-{
-	//ammo->onAfterRender();
-}
-
 WeaponModule::~WeaponModule()
 {
-	ship = NULL;
 	delete ammo;
+
+	ship = NULL;
 	ammo = NULL;
 	system = NULL;
 }

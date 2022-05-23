@@ -8,6 +8,7 @@
 #include "Consts.h"
 #include "Ship.h"
 #include "App.h"
+#include "Vector2.h"
 
 class Ship;
 class ProjectileManager;
@@ -17,29 +18,30 @@ class WeaponModule : public Texture
 {
 public:
 	WeaponModule(
-		GunType initGunType, 
+		std::vector<GunType> guns, 
 		const App* p_system,
 		Ship* p_ship,
 		bool p_isEnemyShip
 	);
-	void fire();
-	void addGun();
-	void removeGun();
+	bool fire();
+	void selectGun(GunType nextGun);
+	Vector2 getGunPos() { return pos; };
+	void setGunPos(Vector2 nextPos) { pos = nextPos; }
+	GunType getSelectedGun() { return selectedGun; };
 
 	virtual void handleEvent(SDL_Event& e);
 	virtual void onBeforeRender();
-	virtual void onAfterRender();
 	~WeaponModule();
 private:
 	bool isOnCooldown;
 	float cooldownMs;
 	short fireSoundId;
 	GunType selectedGun;
-	//std::vector<GunType> availableGuns;
 	Timer cooldownTimer;
 	Ship* ship;
 	ProjectileManager* ammo;
 	const App* system;
 	bool isEnemyShip;
 	std::string fireSound;
+	Vector2 pos; // Relative pos
 };

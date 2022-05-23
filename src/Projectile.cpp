@@ -1,43 +1,35 @@
 #include "Projectile.h"
 
-int getRadius(GunType type);
-bool isOutside(Vector2 pos);
 const int SPEED_DIVIDER = 50;
 
 Projectile::Projectile(
-	const App* p_system, 
-	Vector2 initPosition,
-	Ship* p_ship,
-	GunType gunType,
-	int p_speed,
-	PJ_Textures& p_textures,
+	PJ_Params params,
 	ProjectileManager* p_parent
 ) 
 : Collidable(
-	p_system->getRenderer(),
-	getAmmoParamsByGunType(gunType).collidableType,
-	getRadius(gunType),
-	getAmmoParamsByGunType(gunType).colliders
-),
-textures(p_textures)
+	p_parent->getShip()->level->getSystem()->getRenderer(),
+	getAmmoParamsByGunType(params.gun).collidableType,
+	getRadius(params.gun),
+	getAmmoParamsByGunType(params.gun).colliders
+)
 {
-	ship = p_ship;
-	frame = 0;
-	rotation = ship->getRotation();
-	position = initPosition;
-	direction = ship->getDirection(LOCAL, false);
-	isStarted = false;
-	system = p_system;
-	speed = p_speed;
-	parent = p_parent;
+	rotation = params.rotation;
+	position = params.position;
+	direction = params.direction;
+	speed = params.speed;
+	textures = params.textures;
 	selectedTexture = textures.launch;
+	parent = p_parent;
+	frame = 0;
+	isStarted = false;
 
 	shiftColliders();
 
 	// Register it this way to have PJ always on top of other sprites
-	system->getGameLoop()->addRenderListener(this);
+	parent->getSystem()->getGameLoop()->addRenderListener(this);
 	
-	Collidables enemyCollidables = ship->linkedCollidables;
+	// Link collidables
+	Collidables enemyCollidables = parent->getShip()->linkedCollidables;
 
 	for (int i = 0; i < enemyCollidables.size(); i++)
 	{
@@ -47,24 +39,15 @@ textures(p_textures)
 
 Projectile::~Projectile()
 {
-	Loop* gameLoop = system->getGameLoop();
 
-	gameLoop->removeRenderListener(this);
+	parent->getSystem()->getGameLoop()->removeRenderListener(this);
 
-	system = NULL;
-	ship = NULL;
 	parent = NULL;
 	selectedTexture = NULL;
-	parent = NULL;
 }
 
-void Projectile::onBeforeRender()
+void Projectile::selectTexture()
 {
-	if (isStarted && !isCollided && !ship->level->isPaused)
-	{
-		move();
-	}
-
 	// Update selected texture if needed
 	if (!isStarted)
 	{
@@ -78,25 +61,46 @@ void Projectile::onBeforeRender()
 	{
 		selectedTexture = textures.flying;
 	}
+}
 
-	Texture::Clips clips = selectedTexture->getClips();
-	int clipsLength = clips.size();
-
-	SDL_Rect* currentClip = &clips[frame / clipsLength];
-
+Vector2 Projectile::getNextPos()
+{
 	Vector2 center(selectedTexture->getWidth() / 2, selectedTexture->getHeight() / 2);
 	Vector2 nextPos = position - center;
 
 	if (isCollided && collidedTo->type == COLLIDABLE_SHIP)
 	{
 		// Explode above the enemy ship
-		nextPos = 
+		nextPos =
 			position +
 			Vector2::getRotatedVector(direction, rotation) -
 			Vector2(selectedTexture->getWidth() / 2, 0);
 	}
 
+	return nextPos;
+}
+
+void Projectile::onBeforeRender()
+{
+	if (isStarted && !isCollided && !parent->getShip()->level->isPaused)
+	{
+		move();
+	}
+
+	selectTexture();
+
+	Texture::Clips clips = selectedTexture->getClips();
+	SDL_Rect* currentClip = &clips[frame / clips.size()];
+
+	Vector2 nextPos = getNextPos();
+
 	selectedTexture->render(nextPos, currentClip, rotation);
+}
+
+void Projectile::onAfterRender()
+{
+	Texture::Clips clips = selectedTexture->getClips();
+	int clipsLength = clips.size();
 
 	if (++frame / clipsLength >= clipsLength)
 	{
@@ -105,20 +109,13 @@ void Projectile::onBeforeRender()
 			isStarted = true;
 		}
 
-		if (isCollided)
+		if (isCollided)// Collided and exploded
 		{
-			// Collided and exploded
 			isActive = false;
 		}
 
-		// Renew animation
-		frame = 0;
+		resetAnimation();
 	}
-}
-
-void Projectile::onAfterRender()
-{
-	int explosionClipsSize = textures.explosion->getClips().size();
 
 	if (isOutside(position) || !isActive) // Remove projectiles
 	{
@@ -133,7 +130,7 @@ void Projectile::move()
 
 	position = position + rotatedDir * speed / SPEED_DIVIDER;
 
-	if (ship->getIsAccelerated())
+	if (parent->getShip()->getIsAccelerated())
 	{
 		Vector2 addVel = Vector2(0, BG_SCROLLING_SPEED_ACCELERATED);
 		position += addVel;
@@ -150,7 +147,7 @@ void Projectile::shiftColliders() {
 
 void Projectile::handleCollided()
 {
-	Audio* audioPlayer = system->getAudioPlayer();
+	Audio* audioPlayer = parent->getSystem()->getAudioPlayer();
 	audioPlayer->playSound(PJ_EXPLOSION_SOUND);
 
 	destroyCollidable();
@@ -159,21 +156,6 @@ void Projectile::handleCollided()
 void Projectile::destroyCollidable()
 {
 	unlinkFrom();
-	frame = 0;
+	resetAnimation();
 }
 
-int getRadius(GunType type)
-{
-	AmmoParams params = getAmmoParamsByGunType(type);
-	return params.texture.imageH > params.texture.imageW ? params.texture.imageH / 2 : params.texture.imageW / 2;
-}
-
-bool isOutside(Vector2 pos)
-{
-	bool isOutside = pos.y < 0
-		|| pos.x < 0
-		|| pos.y > WINDOWED_HEIGHT
-		|| pos.x > WINDOWED_WIDTH;
-
-	return isOutside;
-};

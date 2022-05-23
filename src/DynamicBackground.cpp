@@ -14,6 +14,11 @@ DynamicBackground::DynamicBackground(SDL_Renderer* p_renderer, std::string path,
 	scrollingOffset = 0;
 }
 
+DynamicBackground::~DynamicBackground()
+{
+	level = NULL;
+}
+
 void DynamicBackground::onBeforeRender()
 {
 	if (!level->isPaused)

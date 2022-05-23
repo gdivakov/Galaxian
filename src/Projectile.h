@@ -3,16 +3,14 @@
 
 #include "Collidable.h"
 #include "Vector2.h"
-#include "Ship.h"
 #include "Object.h"
 #include "Texture.h"
 #include "ProjectileManager.h"
-#include "App.h"
 #include "Consts.h"
+#include "ShipConsts.h"
 
 class Ship;
 class ProjectileManager;
-struct PJ_Textures;
 
 class Projectile : public Collidable, public Object
 {
@@ -22,26 +20,19 @@ private:
 	int rotation;
 	int speed;
 
-	PJ_Textures& textures;
+	PJ_Textures textures;
 	Texture* selectedTexture;
 
 	short frame;
 	bool isStarted;
-	Ship* ship;
-	const App* system;
 	ProjectileManager* parent;
 
 	void move();
+	void resetAnimation() { frame = 0; };
+	void selectTexture();
+	Vector2 getNextPos();
 public:
-	Projectile(
-		const App* p_system,
-		Vector2 initPosition,
-		Ship* p_ship,
-		GunType gunType,
-		int p_speed,
-		PJ_Textures& p_textures,
-		ProjectileManager* p_parent
-	);
+	Projectile(PJ_Params params, ProjectileManager* p_parent);
 	~Projectile();
 	void showColliders() { Collidable::showColliders(); };
 	virtual void shiftColliders();

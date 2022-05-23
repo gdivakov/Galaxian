@@ -14,6 +14,7 @@ const string PIRATE_EXPLOSION_SOUND = "res/audio/pirate_explosion.mp3";
 const string PAUSE_SOUND = "res/audio/pause.mp3";
 const string SELECT_ITEM_SOUND = "res/audio/select_item.mp3";
 const string BUFF_SPEED_UP_SOUND = "res/audio/speed_up.mp3";
+const string BUFF_APPLIED_SOUND = "res/audio/buff_applied.mp3";
 
 const std::vector<string> LEVEL_0_SOUNDS =
 {
@@ -29,5 +30,6 @@ const std::vector<string> LEVEL_1_SOUNDS =
 	PAUSE_SOUND,
 	SELECT_ITEM_SOUND,
 	ROCKET_SOUND,
-	BUFF_SPEED_UP_SOUND
+	BUFF_SPEED_UP_SOUND,
+	BUFF_APPLIED_SOUND
 };

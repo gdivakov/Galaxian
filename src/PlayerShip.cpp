@@ -104,7 +104,6 @@ void PlayerShip::accelerate()
     Uint32 time = level->getSystem()->getTimer()->getTicks();
 
     acceleratedMiles = (time - acceleratedAt) * ACCELERATION_SPEED_MP;
-    std::cout << acceleratedMiles << std::endl;
 
     BuffParams speedUpPararms = getBuffParamsByType(BUFF_SPEED_UP);
     bool isAccelerationFinished = acceleratedAt + speedUpPararms.duration < time;
@@ -113,7 +112,6 @@ void PlayerShip::accelerate()
     {
         acceleratedAt = 0;
         isAccelerated = false;
-        std::cout << "player acceleration finished" << std::endl;
     }
 }
 

@@ -24,6 +24,7 @@ public:
 	std::vector<Ship*> getEnemies() { return enemies; };
 	void removeObject(Object* object);
 	void spawnEnemy();
+	void spawnBoss();
 	void spawnPlayer();
 	void spawnBuff(Vector2 buffPos);
 	void accelerateEnemies();

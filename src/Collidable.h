@@ -16,8 +16,8 @@ public:
 	Collidable(SDL_Renderer* p_renderer, CollidableType p_type, int wrapperRadius, Colliders p_colliders = DEFAULT_RECT_COLLIDERS);
 	virtual ~Collidable();
 	virtual void handleCollided() = 0;
-	void linkTo(Collidable* enColl);
-	void unlinkFrom();
+	void linkTo(Collidable* enColl); // Todo: rename by linkWith
+	void unlinkFrom(); // Todo: rename by unlink
 	bool checkCollision();
 private:
 	Colliders colliders; // Rect colliders

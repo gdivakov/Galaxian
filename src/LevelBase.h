@@ -14,18 +14,17 @@ class Spawner;
 class LevelBase {
 public:
 	typedef std::vector<Object*> ObjectPointers;
+	LevelBase(const App* p_system, LevelManager* p_controller)
+		:
+		system(p_system),
+		renderer(system->getRenderer()),
+		controller(p_controller),
+		isPaused(false) {};
+
+	virtual ~LevelBase();
+
 	bool isPaused;
-	Spawner* spawner;
-
-	LevelBase(const App* p_system, LevelManager* p_controller, Spawner* p_spawner)
-	: 
-	system(p_system),
-	renderer(system->getRenderer()),
-	controller(p_controller),
-	isPaused(false),
-	spawner(p_spawner) {};
-
-	virtual ~LevelBase() { unload(); };
+	Spawner* spawner = NULL;
 	virtual void load() = 0;
 	virtual void initAudio() = 0;
 	virtual void accelerate() = 0;
@@ -38,6 +37,7 @@ public:
 	void deregisterListeners();
 	bool togglePaused();
 	const App* getSystem() { return system; };
+	void restart() { unload(); load(); };
 protected:
 	const App* system;
 	SDL_Renderer* renderer;

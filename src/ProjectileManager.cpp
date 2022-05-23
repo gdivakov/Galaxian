@@ -11,6 +11,7 @@ ProjectileManager::ProjectileManager(GunType p_type, const App* p_system, Ship* 
 	system = p_system;
 	gunType = p_type;
 
+	// Load ammo textures
 	textures = 
 	{
 		new Texture(system->getRenderer()),
@@ -21,11 +22,18 @@ ProjectileManager::ProjectileManager(GunType p_type, const App* p_system, Ship* 
 	textures.flying->loadFromSprite(params.texture);
 	textures.launch->loadFromSprite(params.launchTexture);
 	textures.explosion->loadFromSprite(params.explosionTexture);
-
 }
 
 ProjectileManager::~ProjectileManager()
 {
+	for (int i = 0; i < releasedPjs.size(); i++)
+	{
+		releasedPjs[i]->destroyCollidable();
+		delete releasedPjs[i];
+	}
+
+	releasedPjs.clear();
+
 	delete textures.flying;
 	delete textures.launch;
 	delete textures.explosion;
@@ -35,36 +43,6 @@ ProjectileManager::~ProjectileManager()
 	textures.explosion = NULL;
 	system = NULL;
 	ship = NULL;
-
-	for (int i = 0; i < releasedPjs.size(); i++)
-	{
-		releasedPjs[i]->destroyCollidable();
-		delete releasedPjs[i];
-	}
-
-	releasedPjs.clear();
-}
-
-void ProjectileManager::startProjectile()
-{
-	// Todo: relate x and y on gun position & rotation
-	AmmoParams params = getAmmoParamsByGunType(gunType);
-
-	ShipRect shipRect = ship->getRect();
-	Vector2 nextPos = ship->getDirection(LOCAL, false) - Vector2(0, textures.launch->getHeight() / 2);
-	nextPos = Vector2::getRotatedVector(nextPos, ship->getRotation()) + shipRect.pos;
-
-	Projectile* nextPJ = new Projectile(
-		system,
-		nextPos,
-		ship,
-		gunType,
-		params.speed,
-		textures,
-		this
-	);
-
-	releasedPjs.push_back(nextPJ);
 }
 
 void ProjectileManager::destroyProjectile(Projectile* pj)

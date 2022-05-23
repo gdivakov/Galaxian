@@ -19,6 +19,11 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\DoublePJManager.cpp" />
+    <ClCompile Include="src\DiffuserPJManager.cpp" />
+    <ClCompile Include="src\SinglePJManager.cpp" />
+    <ClCompile Include="src\BossShip.cpp" />
+    <ClCompile Include="src\GameOverView.cpp" />
     <ClCompile Include="src\AnimatedBuffManager.cpp" />
     <ClCompile Include="src\ShipSpecialsConsts.cpp" />
     <ClCompile Include="src\BuffView.cpp" />
@@ -55,6 +60,12 @@
     <ClCompile Include="src\StatusModule.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\BossShipConsts.h" />
+    <ClInclude Include="src\DoublePJManager.h" />
+    <ClInclude Include="src\DiffuserPJManager.h" />
+    <ClInclude Include="src\SinglePJManager.h" />
+    <ClInclude Include="src\BossShip.h" />
+    <ClInclude Include="src\GameOverView.h" />
     <ClInclude Include="src\AnimatedBuffManager.h" />
     <ClInclude Include="src\BuffView.h" />
     <ClInclude Include="src\Spawner.h" />

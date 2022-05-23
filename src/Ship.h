@@ -43,6 +43,7 @@ public:
     void resetAnimation() { frame = 0; };
     bool getIsPlayer() { return isPlayer; };
     bool getIsAccelerated () { return isAccelerated; };
+    WeaponModule* getGun() { return gun; };
     AnimatedBuffManager* animatedBuff;
 
     virtual void onBeforeRender() = 0;
