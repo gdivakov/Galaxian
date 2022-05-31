@@ -28,6 +28,21 @@ void Level1::load()
 	registerListeners();
 }
 
+void Level1::handleTick()
+{
+	Uint32 time = system->getTimer()->getTicks();
+
+	if (time == 2000)
+	{
+		spawner->spawnEnemy();
+	}
+
+	if (time >= 2000)
+	{
+		spawner->spawnEnemy();
+	}
+}
+
 void Level1::initObjects()
 {
 	bg = new DynamicBackground(renderer, LEVEL1_BG_PATH, this);
@@ -35,17 +50,15 @@ void Level1::initObjects()
 	Hood* hood = new Hood(this);
 
 	spawner->spawnPlayer(); // Todo: Render player above other objects (add important renderListeners to loop)
-	spawner->spawnEnemy();
-	spawner->spawnEnemy();
-	spawner->spawnBoss();
+	//spawner->spawnEnemy();
+	//spawner->spawnEnemy();
+	//spawner->spawnBoss();
 
 	ObjectPointers initObjects = { bg, spawner, hood };
 
 	eventListeners = initObjects;
 	renderListeners = initObjects;
 	objsToFree = initObjects;
-
-
 }
 
 void Level1::initAudio()

@@ -50,7 +50,10 @@ void PlayerShip::handleEvent(SDL_Event& e)
             vel.x += maxSpeed; break;
         }
     }
-    else if (e.type == SDL_KEYUP && e.key.repeat == 0)
+    else if (
+        e.type == SDL_KEYUP && 
+        e.key.repeat == 0 && 
+        (vel.y != 0 || vel.x != 0)) // Don't hande if level started w/ already pressed key
     {
         switch (e.key.keysym.sym)
         {

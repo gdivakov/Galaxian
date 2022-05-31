@@ -29,10 +29,11 @@ void BossShip::amplify()
 		}
 
 		updateGunPos(BOSS_GUN_CENTER);
-		gun->selectGun(DIFFUSER);
+		gun->selectGun(DIFFUSER); // Select diffuser gun
 
-		loadFromSprite(diffuserBossSprite);
-		addPath(BOSS_PATH_C);
+		loadFromSprite(diffuserBossSprite); // Load ship sprites for diffuser gun
+		addPath(BOSS_PATH_C); // Add new path
+		setMaxSpeed(maxSpeed * 2); // Accelerate ship
 		return;
 	}
 

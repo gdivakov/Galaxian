@@ -70,5 +70,6 @@ protected:
     SpriteParams explosion;
 
     void rotate(int r);
-    virtual void accelerate() = 0;
+    virtual void accelerate() = 0; // Todo: rename to onPlayerShipAccelerate to clarify
+    void setMaxSpeed(int nextMaxSpeed) { maxSpeed = nextMaxSpeed; };
 };

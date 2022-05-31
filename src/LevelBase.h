@@ -45,4 +45,6 @@ protected:
 	ObjectPointers renderListeners;
 	ObjectPointers objsToFree;
 	LevelManager* controller;
+
+	virtual void handleTick() = 0;
 };

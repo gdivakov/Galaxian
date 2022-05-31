@@ -15,10 +15,12 @@ const SpriteParams PIRATE_A_SHIP = { "res/sprites/ships/pirateA.png", 65, 144, 1
 const SpriteParams BOSS_A_SHIP = { "res/sprites/ships/bossA.png", 300, 195, 9 };
 
 const SpriteParams SONIC_A_SHIP_EXPLOSION = { "res/sprites/ships/explosion_sonicA.png", 165, 114, 9 };
-const SpriteParams SONIC_B_SHIP_EXPLOSION = { "res/sprites/ships/explosion_sonicB.png", 176, 94, 9 };
+const SpriteParams SONIC_B_SHIP_EXPLOSION = { "res/sprites/ships/explosion_sonicB.png", 176, 123, 9 };
+const SpriteParams SONIC_C_SHIP_EXPLOSION = { "res/sprites/ships/explosion_sonicC.png", 165, 129, 9 };
 
 const SpriteParams PIRATE_A_SHIP_EXPLOSION = { "res/sprites/ships/explosion_pirateA.png", 103, 144, 8 };
 const SpriteParams BOSS_A_SHIP_EXPLOSION = { "res/sprites/ships/explosion_bossA.png", 300, 191, 10 };
+
 
 const SpriteParams SONIC_A_SHIP_PREVIEW = { "res/sprites/ships/preview/sonicA.png", 150, 168, 10 };
 const SpriteParams SONIC_B_SHIP_PREVIEW = { "res/sprites/ships/preview/sonicB.png", 150, 182, 10 };

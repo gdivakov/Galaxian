@@ -71,13 +71,25 @@ void WeaponModule::handleEvent(SDL_Event& e)
 
 	if (!isEnemyShip) 
 	{
-		if (currentKeyStates[SDL_SCANCODE_L] || currentKeyStates[SDL_SCANCODE_SPACE])
+		//if (currentKeyStates[SDL_SCANCODE_L] || currentKeyStates[SDL_SCANCODE_SPACE])
+		//{
+		//	fire();
+		//	return;
+		//}
+
+		if (e.type == SDL_KEYDOWN)
 		{
-			fire();
-			return;
+			switch (e.key.keysym.sym)
+			{
+			case SDLK_SPACE:
+			case SDLK_l:
+				fire();
+				return;
+			}
 		}
 	}
 }
+
 void WeaponModule::onBeforeRender()
 {
 	if (isOnCooldown && cooldownTimer.getTicks() > cooldownMs)

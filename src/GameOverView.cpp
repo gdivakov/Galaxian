@@ -73,6 +73,7 @@ void GameOverView::handleEvent(SDL_Event& e)
 		level->restart();
 		break;
 	case SDL_SCANCODE_ESCAPE:
+		level->quit();
 		break;
 	}
 }

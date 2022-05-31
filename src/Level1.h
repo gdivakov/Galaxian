@@ -20,6 +20,8 @@ private:
 	void initObjects();
 
 	DynamicBackground* bg;
+protected:
+	virtual void handleTick();
 };
 
 // Todo: 

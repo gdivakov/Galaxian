@@ -307,7 +307,7 @@ ShipParams getShipParams(const ShipType type)
         {
             SONIC_C,
             SONIC_C_SHIP,               // sprite 
-            SONIC_A_SHIP_EXPLOSION,     // explosion 
+            SONIC_C_SHIP_EXPLOSION,     // explosion 
             { BLAST },                  // gunType 
             SONIC_A_SPEED,              // maxSpeed 
             THIN_SHIP_ARMOR,            // armor 
