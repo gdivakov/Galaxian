@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\SelectShipView.cpp" />
     <ClCompile Include="src\DoublePJManager.cpp" />
     <ClCompile Include="src\DiffuserPJManager.cpp" />
     <ClCompile Include="src\SinglePJManager.cpp" />
@@ -60,6 +61,7 @@
     <ClCompile Include="src\StatusModule.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\SelectShipView.h" />
     <ClInclude Include="src\BossShipConsts.h" />
     <ClInclude Include="src\DoublePJManager.h" />
     <ClInclude Include="src\DiffuserPJManager.h" />

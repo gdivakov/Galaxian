@@ -12,6 +12,7 @@ ControlPanel::ControlPanel(SDL_Renderer* p_renderer, const App* p_system, MainSc
     smallFont = TTF_OpenFont(FONT_PATH.c_str(), SMALL_FONT_SIZE);
     selectedOptionIdx = MENU_START_GAME;
     isSettingsOpened = false;
+    isActive = true;
     settingsView = new Settings(system, isSettingsOpened);
     
     loadOptions();
@@ -19,6 +20,11 @@ ControlPanel::ControlPanel(SDL_Renderer* p_renderer, const App* p_system, MainSc
 
 void ControlPanel::onBeforeRender()
 {
+    if (!isActive)
+    {
+        return;
+    }
+
     if (isSettingsOpened)
     {
         settingsView->handleRender();
@@ -66,6 +72,10 @@ void ControlPanel::renderOptions()
 
 void ControlPanel::handleEvent(SDL_Event& e)
 {
+    if (!isActive)
+    {
+        return;
+    }
 
     if (isSettingsOpened)
     {

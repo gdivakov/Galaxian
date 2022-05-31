@@ -22,7 +22,7 @@ const std::vector<std::string> SUPPORTED_LANGUAGES = {
 
 const std::string CONFIRM_BUTTON_TEXT = "Save";
 
-const enum SettingsIndexes { MUSIC_IDX, SOUNDS_IDX, FULLSCREEN_IDX, LANGUAGE_IDX };
+const enum SettingsIndexes { MUSIC_IDX, SOUNDS_IDX, FULLSCREEN_IDX, LANGUAGE_IDX, SELECTED_SHIP_IDX };
 const enum OptionStatus { DISABLED, ENABLED };
 const enum SupportedLanguages { ENGLISH, RUSSIAN };
 const enum OptionType { LANGUAGE, SWITCHABLE };
@@ -37,7 +37,7 @@ struct SettingsOption
 };
 
 const std::string SETTINGS_CONFIG_PATH = "res/store/settings.bin";
-const std::vector<int> DEFAULT_SETTINGS_CONFIG = { 1, 1, 0, 0 };
+const std::vector<int> DEFAULT_SETTINGS_CONFIG = { 1, 1, 0, 0, 0 };
 
 static void writeSettingsConfig(std::vector<int> source = DEFAULT_SETTINGS_CONFIG)
 {

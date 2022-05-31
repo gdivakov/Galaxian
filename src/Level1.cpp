@@ -35,15 +35,17 @@ void Level1::initObjects()
 	Hood* hood = new Hood(this);
 
 	spawner->spawnPlayer(); // Todo: Render player above other objects (add important renderListeners to loop)
-	//spawner->spawnEnemy();
-	//spawner->spawnEnemy();
-	//spawner->spawnBoss();
+	spawner->spawnEnemy();
+	spawner->spawnEnemy();
+	spawner->spawnBoss();
 
 	ObjectPointers initObjects = { bg, spawner, hood };
 
 	eventListeners = initObjects;
 	renderListeners = initObjects;
 	objsToFree = initObjects;
+
+
 }
 
 void Level1::initAudio()

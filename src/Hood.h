@@ -30,6 +30,5 @@ private:
 	StatusBarView* statusView;
 	BuffBarView* buffView;
 	GameOverView* gameOverView;
-
 };
 

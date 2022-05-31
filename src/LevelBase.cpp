@@ -39,13 +39,17 @@ void LevelBase::deregisterListeners()
 {
 	Loop* gameLoop = system->getGameLoop();
 
-	gameLoop->removeEventListeners(eventListeners);
-	gameLoop->removeRenderListeners(renderListeners);
+	eventListeners.clear();
+	renderListeners.clear();
+
+	gameLoop->removeEventListeners();
+	gameLoop->removeRenderListeners();
 }
 
 void LevelBase::quit()
 {
 	controller->stop();
+	system->getGameLoop()->stop();
 }
 
 bool LevelBase::togglePaused()

@@ -3,14 +3,21 @@
 #include "ControlPanel.h"
 #include "SoundConst.h"
 
+MainScreen::~MainScreen()
+{
+	panel = NULL;
+	selectShipView = NULL;
+}
+
 void MainScreen::load()
 {
 	Background* bgMain = new Background(renderer, "res/sprites/backgrounds/main_screen_bg.png");
-	ControlPanel* panel = new ControlPanel(renderer, system, this);
+	panel = new ControlPanel(renderer, system, this);
+	selectShipView = new SelectShipView(this);
 
-	eventListeners = { panel };
-	renderListeners = { bgMain, panel };
-	objsToFree = { panel, bgMain };
+	eventListeners = { selectShipView, panel };
+	renderListeners = { bgMain, panel, selectShipView };
+	objsToFree = { panel, bgMain, selectShipView };
 
 	registerListeners();
 
@@ -19,7 +26,15 @@ void MainScreen::load()
 
 void MainScreen::startGame()
 {
-	controller->start(LEVEL_1);
+	panel->setIsActive(false);
+
+	if (selectShipView->getIsShipSelected())
+	{
+		return controller->start(LEVEL_1);
+	}
+
+	// Select ship
+	selectShipView->show();
 }
 
 void MainScreen::initAudio()

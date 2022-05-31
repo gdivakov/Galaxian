@@ -204,6 +204,9 @@
     <ClCompile Include="src\SinglePJManager.cpp">
       <Filter>Source Files\Objects\Ship\Projectile</Filter>
     </ClCompile>
+    <ClCompile Include="src\SelectShipView.cpp">
+      <Filter>Source Files\Levels\General\Hood</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Texture.h">
@@ -340,6 +343,9 @@
     </ClInclude>
     <ClInclude Include="src\SinglePJManager.h">
       <Filter>Header Files\Objects\Ship\Projectile</Filter>
+    </ClInclude>
+    <ClInclude Include="src\SelectShipView.h">
+      <Filter>Header Files\Levels\General\Hood</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

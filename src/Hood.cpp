@@ -2,8 +2,6 @@
 
 #include "SoundConst.h"
 #include "Hood.h"
-#include "StatusBarView.h"
-#include "BuffBarView.h"
 
 Hood::Hood(LevelBase* p_level)
 {

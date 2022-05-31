@@ -289,6 +289,32 @@ ShipParams getShipParams(const ShipType type)
             SONIC_A_COLLIDERS_DEFAULT,  // colliders 
             GAME_OVER_SOUND             // explosionSound 
         };
+    case SONIC_B:
+        return
+        {
+            SONIC_B,
+            SONIC_B_SHIP,               // sprite 
+            SONIC_B_SHIP_EXPLOSION,     // explosion 
+            { BLAST },                  // gunType 
+            SONIC_A_SPEED,              // maxSpeed 
+            THIN_SHIP_ARMOR,            // armor 
+            THIN_SHIP_HEALTH,           // health 
+            SONIC_A_COLLIDERS_DEFAULT,  // colliders 
+            GAME_OVER_SOUND             // explosionSound 
+        };
+    case SONIC_C:
+        return
+        {
+            SONIC_C,
+            SONIC_C_SHIP,               // sprite 
+            SONIC_A_SHIP_EXPLOSION,     // explosion 
+            { BLAST },                  // gunType 
+            SONIC_A_SPEED,              // maxSpeed 
+            THIN_SHIP_ARMOR,            // armor 
+            THIN_SHIP_HEALTH,           // health 
+            SONIC_A_COLLIDERS_DEFAULT,  // colliders 
+            GAME_OVER_SOUND             // explosionSound 
+        };
     case PIRATE_A:
         return
         {

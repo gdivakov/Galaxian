@@ -117,6 +117,7 @@ void PauseView::handleEvent(SDL_Event& e)
 
         if (selectedIdx == QUIT_IDX)
         {
+            
             level->quit();
             return;
         }

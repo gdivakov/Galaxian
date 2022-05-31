@@ -67,12 +67,9 @@ void Loop::removeEventListener(const Object* ptr)
 	eventListeners.erase(removeIter, eventListeners.end());
 }
 
-void Loop::removeEventListeners(const ObjectPointers& listenObjects) // Todo: use remove_if
+void Loop::removeEventListeners()
 {
-	for (int i = 0; i < listenObjects.size(); i++)
-	{
-		removeEventListener(listenObjects[i]);
-	}
+	eventListeners.clear();
 };
 
 // Render
@@ -90,12 +87,9 @@ void Loop::removeRenderListener(const Object* ptr)
 	renderListeners.erase(removeIter, renderListeners.end());
 }
 
-void Loop::removeRenderListeners(const ObjectPointers& objects)
+void Loop::removeRenderListeners()
 {
-	for (int i = 0; i < objects.size(); i++)
-	{
-		removeRenderListener(objects[i]);
-	}
+	renderListeners.clear();
 }
 
 void Loop::handleBeforeRender() const 

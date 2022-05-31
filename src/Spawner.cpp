@@ -6,6 +6,7 @@
 #include "BossShip.h"
 #include "Vector2.h"
 #include "ShipSpecialsConsts.h"
+#include "SettingsConsts.h"
 
 // Todo: Replace by template func and move to utils
 template<typename Base, typename T>
@@ -125,7 +126,10 @@ void Spawner::spawnBoss()
 
 void Spawner::spawnPlayer()
 {
-	player = new PlayerShip(level, SONIC_A);
+	std::vector<int> config = readSettingsConfig();
+
+	ShipType selectedType = (ShipType) config[SELECTED_SHIP_IDX];
+	player = new PlayerShip(level, selectedType);
 }
 
 void Spawner::spawnBuff(Vector2 buffPos)

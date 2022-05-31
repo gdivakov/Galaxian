@@ -8,12 +8,21 @@
 #include "Texture.h"
 
 const SpriteParams SONIC_A_SHIP = { "res/sprites/ships/shipA.png", 102, 114, 10 };
+const SpriteParams SONIC_B_SHIP = { "res/sprites/ships/shipB.png", 102, 123, 10 };
+const SpriteParams SONIC_C_SHIP = { "res/sprites/ships/shipC.png", 75, 129, 10 };
+
 const SpriteParams PIRATE_A_SHIP = { "res/sprites/ships/pirateA.png", 65, 144, 10 };
 const SpriteParams BOSS_A_SHIP = { "res/sprites/ships/bossA.png", 300, 195, 9 };
 
 const SpriteParams SONIC_A_SHIP_EXPLOSION = { "res/sprites/ships/explosion_sonicA.png", 165, 114, 9 };
+const SpriteParams SONIC_B_SHIP_EXPLOSION = { "res/sprites/ships/explosion_sonicB.png", 176, 94, 9 };
+
 const SpriteParams PIRATE_A_SHIP_EXPLOSION = { "res/sprites/ships/explosion_pirateA.png", 103, 144, 8 };
-const SpriteParams BOSS_A_SHIP_EXPLOSION = { "res/sprites/ships/explosion_bossA.png", 300, 191, 10 }; // Todo: fix sprite triggering
+const SpriteParams BOSS_A_SHIP_EXPLOSION = { "res/sprites/ships/explosion_bossA.png", 300, 191, 10 };
+
+const SpriteParams SONIC_A_SHIP_PREVIEW = { "res/sprites/ships/preview/sonicA.png", 150, 168, 10 };
+const SpriteParams SONIC_B_SHIP_PREVIEW = { "res/sprites/ships/preview/sonicB.png", 150, 182, 10 };
+const SpriteParams SONIC_C_SHIP_PREVIEW = { "res/sprites/ships/preview/sonicC.png", 150, 258, 10 };
 
 const int SONIC_A_SPEED = 6;
 const int PIRATE_A_SPEED = 5;
@@ -29,7 +38,7 @@ const int AVERAGE_SHIP_ARMOR = AVERAGE_SHIP_HEALTH * ARMOR_MULTIPLIER;
 const int STRONG_SHIP_ARMOR = STRONG_SHIP_HEALTH * ARMOR_MULTIPLIER;
 
 const enum GunType { BLAST, ROCKET, ROCKET_DOUBLE, DIFFUSER, LAZER };
-const enum ShipType { SONIC_A, PIRATE_A, BOSS_A };
+const enum ShipType { SONIC_A, SONIC_B, SONIC_C, PIRATE_A, BOSS_A };
 const enum Space { WORLD, LOCAL };
 
 struct RectColliderPoint
