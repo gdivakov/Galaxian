@@ -19,8 +19,6 @@ void PlayerShip::handleEvent(SDL_Event& e)
         return;
     }
 
-    gun->handleEvent(e);
-
     if (e.type == SDL_KEYDOWN)
     {
         switch (e.key.keysym.sym)
@@ -52,9 +50,7 @@ void PlayerShip::handleEvent(SDL_Event& e)
     }
     else if (
         e.type == SDL_KEYUP && 
-        e.key.repeat == 0 && 
-        (vel.y != 0 || vel.x != 0)) // Don't hande if level started w/ already pressed key
-    {
+        e.key.repeat == 0)    {
         switch (e.key.keysym.sym)
         {
         case SDLK_UP:
@@ -71,6 +67,8 @@ void PlayerShip::handleEvent(SDL_Event& e)
             vel.x -= maxSpeed; break;
         }
     }
+
+    gun->handleEvent(e);
 }
 
 void PlayerShip::onBeforeRender()

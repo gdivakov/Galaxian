@@ -14,6 +14,9 @@ class Spawner;
 class LevelBase {
 public:
 	typedef std::vector<Object*> ObjectPointers;
+	bool isPaused;
+	Spawner* spawner = NULL;
+
 	LevelBase(const App* p_system, LevelManager* p_controller)
 		:
 		system(p_system),
@@ -21,13 +24,11 @@ public:
 		controller(p_controller),
 		isPaused(false) {};
 
-	virtual ~LevelBase();
-
-	bool isPaused;
-	Spawner* spawner = NULL;
 	virtual void load() = 0;
 	virtual void initAudio() = 0;
-	virtual void accelerate() = 0;
+	virtual void accelerate() = 0; // Todo: rename
+	virtual void handleTick() = 0;
+	virtual ~LevelBase();
 
 	Ship* getPlayer();
 	Spawner* getSpawner() { return spawner; };
@@ -45,6 +46,4 @@ protected:
 	ObjectPointers renderListeners;
 	ObjectPointers objsToFree;
 	LevelManager* controller;
-
-	virtual void handleTick() = 0;
 };

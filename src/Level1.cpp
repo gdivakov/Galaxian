@@ -28,17 +28,21 @@ void Level1::load()
 	registerListeners();
 }
 
-void Level1::handleTick()
+void Level1::handleTick() // Todo: rename
 {
 	Uint32 time = system->getTimer()->getTicks();
+	int enemiesCount = spawner->getSpawnedEnemiesCount();
 
-	if (time == 2000)
+	if (time >= 2000 && enemiesCount < 1)
 	{
+		std::cout << "spawn enemy 1" << std::endl;
 		spawner->spawnEnemy();
 	}
 
-	if (time >= 2000)
+	if (time >= 4000 && enemiesCount < 2)
 	{
+		std::cout << "spawn enemy 2" << std::endl;
+
 		spawner->spawnEnemy();
 	}
 }
@@ -54,11 +58,11 @@ void Level1::initObjects()
 	//spawner->spawnEnemy();
 	//spawner->spawnBoss();
 
-	ObjectPointers initObjects = { bg, spawner, hood };
+	ObjectPointers levelObjects = { bg, spawner, hood };
 
-	eventListeners = initObjects;
-	renderListeners = initObjects;
-	objsToFree = initObjects;
+	eventListeners = levelObjects;
+	renderListeners = levelObjects;
+	objsToFree = levelObjects;
 }
 
 void Level1::initAudio()

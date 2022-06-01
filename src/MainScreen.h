@@ -24,4 +24,6 @@ public:
 private:
 	SelectShipView* selectShipView = NULL;
 	ControlPanel* panel = NULL;
+protected:
+	virtual void handleTick() {};
 }; 

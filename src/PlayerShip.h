@@ -23,5 +23,4 @@ protected:
 private:
     Uint32 acceleratedAt;
     int acceleratedMiles;
-    bool startedMoving;
 };

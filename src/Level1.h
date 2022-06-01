@@ -15,13 +15,12 @@ public:
 	~Level1();
 	virtual void load();
 	virtual void accelerate();
+	virtual void handleTick();
 private:
 	void initAudio();
 	void initObjects();
 
 	DynamicBackground* bg;
-protected:
-	virtual void handleTick();
 };
 
 // Todo: 

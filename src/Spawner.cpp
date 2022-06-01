@@ -64,6 +64,8 @@ void Spawner::handleEvent(SDL_Event& e)
 	{
 		enemies[i]->handleEvent(e);
 	}
+
+	level->handleTick();
 }
 
 void Spawner::onBeforeRender()
@@ -114,6 +116,7 @@ void Spawner::spawnEnemy()
 
 	nextEnemy->linkTo(player);
 	enemies.push_back(nextEnemy);
+	enemiesSpawned++;
 }
 
 void Spawner::spawnBoss()
@@ -122,6 +125,7 @@ void Spawner::spawnBoss()
 
 	nextBoss->linkTo(player);
 	enemies.push_back(nextBoss);
+	enemiesSpawned++;
 }
 
 void Spawner::spawnPlayer()
