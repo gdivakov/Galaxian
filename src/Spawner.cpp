@@ -7,24 +7,9 @@
 #include "Vector2.h"
 #include "ShipSpecialsConsts.h"
 #include "SettingsConsts.h"
+#include "General.h"
 
-// Todo: Replace by template func and move to utils
-template<typename Base, typename T>
-inline bool instanceof(const T* ptr) {
-	return dynamic_cast<const Base*>(ptr) != nullptr;
-}
-
-void removeFromArray(std::vector<Ship*>& arr, Object* p)
-{
-	auto removeIter = remove(arr.begin(), arr.end(), p);
-	arr.erase(removeIter, arr.end());
-}
-
-void removeBuffsFromArray(std::vector<BuffView*>& arr, Object* p)
-{
-	auto removeIter = remove(arr.begin(), arr.end(), p);
-	arr.erase(removeIter, arr.end());
-}
+const int BUFF_SPAWN_CHANCE = 30;
 
 Spawner::Spawner(LevelBase* p_level)
 {
@@ -64,8 +49,6 @@ void Spawner::handleEvent(SDL_Event& e)
 	{
 		enemies[i]->handleEvent(e);
 	}
-
-	level->handleTick();
 }
 
 void Spawner::onBeforeRender()
@@ -84,6 +67,8 @@ void Spawner::onBeforeRender()
 	{
 		buffs[i]->onBeforeRender();
 	}
+
+	level->handleTick();
 }
 
 void Spawner::onAfterRender()
@@ -104,28 +89,29 @@ void Spawner::onAfterRender()
 	}
 }
 
-void Spawner::spawnEnemy()
+void Spawner::spawnEnemy(ShipType type)
 {
-	EnemyShip* nextEnemy = new EnemyShip
-	(
-		level, 
-		PIRATE_A, 
-		player, 
-		getEnemyPathCurves(enemies.size())
-	);
+	Ship* nextEnemy;
+
+	switch (type)
+	{
+	case PIRATE_A:
+	default:
+			nextEnemy = new EnemyShip
+			(
+				level,
+				PIRATE_A,
+				player,
+				getEnemyPathCurves(enemies.size())
+			);
+			break;
+	case BOSS_A:
+		nextEnemy = new BossShip(level, BOSS_A, player);
+		break;
+	}
 
 	nextEnemy->linkTo(player);
 	enemies.push_back(nextEnemy);
-	enemiesSpawned++;
-}
-
-void Spawner::spawnBoss()
-{
-	BossShip* nextBoss = new BossShip(level, BOSS_A, player);
-
-	nextBoss->linkTo(player);
-	enemies.push_back(nextBoss);
-	enemiesSpawned++;
 }
 
 void Spawner::spawnPlayer()
@@ -136,8 +122,17 @@ void Spawner::spawnPlayer()
 	player = new PlayerShip(level, selectedType);
 }
 
-void Spawner::spawnBuff(Vector2 buffPos)
+void Spawner::spawnBuffWithChance(Vector2 buffPos)
 {
+	srand(time(NULL));
+
+	int chance = rand() % 100;
+
+	if (chance > BUFF_SPAWN_CHANCE)
+	{
+		return;
+	}
+
 	BuffView* nextBuff = new BuffView(level, buffPos, BUFF_RANDOM);
 	buffs.push_back(nextBuff);
 
@@ -168,9 +163,9 @@ void Spawner::removeObject(Object* object)
 	if (instanceof<EnemyShip>(object))
 	{
 		Ship* enemyShip = (Ship*) object;
-		removeFromArray(enemies, object);
+		removeFromArray<Ship, Object>(enemies, object);
 		// Spawn buff w/ some chance
-		spawnBuff(enemyShip->getRect().pos);
+		spawnBuffWithChance(enemyShip->getRect().pos);
 
 		delete object;
 		return;
@@ -178,7 +173,7 @@ void Spawner::removeObject(Object* object)
 
 	if (instanceof<BuffView>(object))
 	{
-		removeBuffsFromArray(buffs, object);
+		removeFromArray<BuffView, Object>(buffs, object);
 
 		delete object;
 		return;

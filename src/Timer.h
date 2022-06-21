@@ -9,6 +9,7 @@ public:
     void stop();
     void pause();
     void unpause();
+    void restart() { stop(); start(); };
     Uint32 getTicks();
 
     bool getIsStarted();

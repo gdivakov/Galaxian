@@ -85,6 +85,9 @@
     <Filter Include="Header Files\Objects\Ship\Projectile">
       <UniqueIdentifier>{1397b70a-f018-4c3f-9ccc-c00b2a2ee6b2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\helpers">
+      <UniqueIdentifier>{cfc76c7b-39f2-4937-9f1d-f82c7cab3f67}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Main.cpp">
@@ -346,6 +349,9 @@
     </ClInclude>
     <ClInclude Include="src\SelectShipView.h">
       <Filter>Header Files\Levels\General\Hood</Filter>
+    </ClInclude>
+    <ClInclude Include="src\General.h">
+      <Filter>Header Files\helpers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

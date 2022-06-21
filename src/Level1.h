@@ -9,6 +9,12 @@
 #include "EnemyShip.h"
 #include "DynamicBackground.h"
 
+struct NextEnemy
+{
+	const int milesToSpawn;
+	const ShipType type;
+};
+
 class Level1 : public LevelBase {
 public:
 	Level1(const App* p_system, LevelManager* p_controller);
@@ -17,14 +23,25 @@ public:
 	virtual void accelerate();
 	virtual void handleTick();
 private:
-	void initAudio();
-	void initObjects();
+	const std::vector<NextEnemy> enemiesToSpawn { 
+		{ 2000, PIRATE_A }, 
+		//{ 2000, PIRATE_A },
+		{ 15000, PIRATE_A },
+		//{ 15000, PIRATE_A },
+		//{ 20000, PIRATE_A },
+		//{ 20000, PIRATE_A },
 
+		//{ 20000, BOSS_A },
+	};
+
+	void initObjects();
 	DynamicBackground* bg;
+protected:
+	virtual void initAudio();
 };
 
 // Todo: 
-// 1. Select ship before the game; ship should has params as [ health, armour, speed, weapon, buffs ]
+// 1. ->>Select ship before the game; ship should has params as [ health, armour, speed, weapon, buffs ]
 // 2. Show dialog with the task description at the begining. Implement dialog panel
 // ---> 3. Create pause menu view and mechanism to stop the level
 // ---> 4. Hood should have: [ health, armour, buffs, score, weapon ]

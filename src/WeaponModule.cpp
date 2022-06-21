@@ -47,24 +47,6 @@ void WeaponModule::selectGun(GunType nextGun)
 	}
 }
 
-bool WeaponModule::fire()
-{
-	if (isOnCooldown || ship->getIsAccelerated())
-	{
-		return false;
-	}
-
-	system->getAudioPlayer()->playSound(fireSound);
-	ammo->startProjectile();
-
-	if (cooldownMs != 0) {
-		isOnCooldown = true;
-		cooldownTimer.start();
-	}
-
-	return true;
-}
-
 void WeaponModule::handleEvent(SDL_Event& e)
 {
 	const Uint8* currentKeyStates = SDL_GetKeyboardState(NULL);
@@ -83,7 +65,18 @@ void WeaponModule::handleEvent(SDL_Event& e)
 			{
 			case SDLK_SPACE:
 			case SDLK_l:
-				fire();
+				isShooting = true;
+				return;
+			}
+		}
+
+		if (e.type == SDL_KEYUP)
+		{
+			switch (e.key.keysym.sym)
+			{
+			case SDLK_SPACE:
+			case SDLK_l:
+				isShooting = false;
 				return;
 			}
 		}
@@ -96,6 +89,17 @@ void WeaponModule::onBeforeRender()
 	{
 		isOnCooldown = false;
 		cooldownTimer.stop();
+	}
+
+	if (isShooting && !isOnCooldown && !ship->getIsAccelerated())
+	{
+		system->getAudioPlayer()->playSound(fireSound);
+		ammo->startProjectile();
+
+		if (cooldownMs != 0) {
+			isOnCooldown = true;
+			cooldownTimer.start();
+		}
 	}
 }
 

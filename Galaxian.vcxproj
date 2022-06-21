@@ -61,6 +61,7 @@
     <ClCompile Include="src\StatusModule.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\General.h" />
     <ClInclude Include="src\SelectShipView.h" />
     <ClInclude Include="src\BossShipConsts.h" />
     <ClInclude Include="src\DoublePJManager.h" />

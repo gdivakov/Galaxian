@@ -23,18 +23,15 @@ public:
 	Ship* getPlayer() { return player; };
 	std::vector<Ship*> getEnemies() { return enemies; };
 	void removeObject(Object* object);
-	void spawnEnemy();
-	void spawnBoss();
+	void spawnEnemy(ShipType type);
 	void spawnPlayer();
-	void spawnBuff(Vector2 buffPos);
+	void spawnBuffWithChance(Vector2 buffPos);
 	void accelerateEnemies();
-	int getSpawnedEnemiesCount() { return enemiesSpawned; };
 private:
 	LevelBase* level;
 
 	Ship* player = NULL;
 	std::vector<Ship*> enemies;
 	std::vector<BuffView*> buffs;
-	int enemiesSpawned = 0;
 };
 

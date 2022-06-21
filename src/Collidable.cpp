@@ -1,10 +1,11 @@
 #include "Collidable.h"
+#include "General.h"
 
-void removeFromArray(Collidable::Collidables& arr, Collidable* enColl) // Todo: Replace by Template Function
-{
-    auto removeIter = remove(arr.begin(), arr.end(), enColl);
-    arr.erase(removeIter, arr.end());
-};
+//void removeFromArray(Collidable::Collidables& arr, Collidable* enColl) // Todo: Replace by Template Function
+//{
+//    auto removeIter = remove(arr.begin(), arr.end(), enColl);
+//    arr.erase(removeIter, arr.end());
+//};
 
 Collidable::Collidable(SDL_Renderer* p_renderer, CollidableType p_type, int wrapperRadius, Colliders p_colliders)
 : colliders(p_colliders), renderer(p_renderer)
@@ -116,11 +117,11 @@ void Collidable::linkTo(Collidable* enColl)
     enColl->linkedCollidables.push_back(this);
 };
 
-void Collidable::unlinkFrom() 
+void Collidable::unlink() 
 {    
     for (int i = 0; i < linkedCollidables.size(); i++)
     {
-        removeFromArray(linkedCollidables[i]->linkedCollidables, this);
+        removeFromArray<Collidable, Collidable>(linkedCollidables[i]->linkedCollidables, this);
     }
 
     linkedCollidables.clear();

@@ -113,6 +113,17 @@ const Colliders SONIC_A_COLLIDERS_DEFAULT =
 	}
 };
 
+const Colliders SONIC_C_COLLIDERS_DEFAULT =
+{
+	SONIC_A_COLLIDERS_DEFAULT[0],
+	{
+		Vector2(-25, -25),
+		Vector2(25, -25),
+		Vector2(25, 25),
+		Vector2(-25, 25),
+	}
+};
+
 const Colliders PIRATE_A_COLLIDERS_DEFAULT =
 {
 	{
@@ -231,7 +242,12 @@ struct AmmoParams
 	CollidableType collidableType;
 };
 
-struct PJ_Textures { Texture* flying; Texture* launch; Texture* explosion; };
+struct PJ_Textures { 
+	Texture* flying; 
+	Texture* launch; 
+	Texture* explosion; 
+};
+
 struct PJ_Params {
 	Vector2 position;
 	GunType gun;
@@ -240,6 +256,8 @@ struct PJ_Params {
 	int rotation;
 	PJ_Textures textures;
 };
+
+// Todo: separate by consts and helpers
 
 void DrawCircle(SDL_Renderer* renderer, int32_t centreX, int32_t centreY, int32_t radius);
 Colliders& addVectorToCollider(Colliders& colliders, Vector2& v);

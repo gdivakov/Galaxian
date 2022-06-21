@@ -39,7 +39,7 @@ void BuffView::onAfterRender()
 
 	if (position.y >= windowHeight)
 	{
-		unlinkFrom();
+		unlink();
 		level->getSpawner()->removeObject(this);
 	}
 }
@@ -53,11 +53,11 @@ void BuffView::handleCollided()
 			collidedShip = (Ship*)collidedTo;
 			collidedShip->getSpecials()->buff->addBuff(buffType);
 
-			unlinkFrom();
+			unlink();
 			level->getSpawner()->removeObject(this);
 			break;
 		default: 
-			unlinkFrom();
+			unlink();
 			level->getSpawner()->removeObject(this);
 	};
 }

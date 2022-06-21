@@ -64,12 +64,16 @@ void BossShip::onBeforeRender()
 
 		if (inView && isActive)
 		{
-			bool isFired = gun->fire();
+			gun->isShooting = true;
 
-			if (isFired && selectedPos != BOSS_GUN_CENTER)
+			if (selectedPos != BOSS_GUN_CENTER)
 			{
 				updateGunPos(selectedPos == BOSS_GUN_LEFT ? BOSS_GUN_RIGHT : BOSS_GUN_LEFT);
 			}
+		}
+		else
+		{
+			gun->isShooting = false;
 		}
 	}
 

@@ -23,7 +23,6 @@ public:
 		Ship* p_ship,
 		bool p_isEnemyShip
 	);
-	bool fire();
 	void selectGun(GunType nextGun);
 	Vector2 getGunPos() { return pos; };
 	void setGunPos(Vector2 nextPos) { pos = nextPos; }
@@ -32,6 +31,7 @@ public:
 	virtual void handleEvent(SDL_Event& e);
 	virtual void onBeforeRender();
 	~WeaponModule();
+	bool isShooting;
 private:
 	bool isOnCooldown;
 	float cooldownMs;

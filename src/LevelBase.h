@@ -6,6 +6,7 @@
 #include "App.h"
 #include "Spawner.h"
 #include "Ship.h"
+#include "Timer.h"
 
 class LevelManager;
 class Ship;
@@ -17,15 +18,8 @@ public:
 	bool isPaused;
 	Spawner* spawner = NULL;
 
-	LevelBase(const App* p_system, LevelManager* p_controller)
-		:
-		system(p_system),
-		renderer(system->getRenderer()),
-		controller(p_controller),
-		isPaused(false) {};
-
+	LevelBase(const App* p_system, LevelManager* p_controller);
 	virtual void load() = 0;
-	virtual void initAudio() = 0;
 	virtual void accelerate() = 0; // Todo: rename
 	virtual void handleTick() = 0;
 	virtual ~LevelBase();
@@ -38,7 +32,8 @@ public:
 	void deregisterListeners();
 	bool togglePaused();
 	const App* getSystem() { return system; };
-	void restart() { unload(); load(); };
+	void restart();
+	Uint32 getTime() { return timer->getTicks(); }
 protected:
 	const App* system;
 	SDL_Renderer* renderer;
@@ -46,4 +41,7 @@ protected:
 	ObjectPointers renderListeners;
 	ObjectPointers objsToFree;
 	LevelManager* controller;
+	int nextEnemyIdx = 0;
+	Timer* timer;
+	virtual void initAudio() = 0;
 };

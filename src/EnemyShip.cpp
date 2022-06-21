@@ -75,7 +75,11 @@ void EnemyShip::onBeforeRender()
 
 		if (inView && isActive)
 		{
-			gun->fire();
+			gun->isShooting = true;
+		}
+		else
+		{
+			gun->isShooting = false;
 		}
 	}
 
@@ -138,7 +142,7 @@ void EnemyShip::startAccelerate()
 	isAccelerated = true;
 	isActive = false;
 
-	unlinkFrom();
+	unlink();
 }
 
 void EnemyShip::accelerate()

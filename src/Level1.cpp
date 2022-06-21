@@ -7,6 +7,7 @@
 #include "Hood.h"
 #include "SoundConst.h"
 #include "Spawner.h"
+#include "PlayerShip.h"
 
 class Spawner;
 
@@ -14,7 +15,7 @@ Level1::Level1(const App* p_system, LevelManager* p_controller)
 : 
 LevelBase(p_system, p_controller) 
 {
-	initAudio(); // Todo: move to basic class 
+	initAudio();
 }
 
 Level1::~Level1()
@@ -26,25 +27,32 @@ void Level1::load()
 {
 	initObjects();
 	registerListeners();
+
+	timer->restart();
 }
 
-void Level1::handleTick() // Todo: rename
+void Level1::handleTick() // Todo: this logic should be relative to specific level spawner (create Level1Spawner : public Spawner)
 {
-	Uint32 time = system->getTimer()->getTicks();
-	int enemiesCount = spawner->getSpawnedEnemiesCount();
+	PlayerShip* player = (PlayerShip*) spawner->getPlayer();
 
-	if (time >= 2000 && enemiesCount < 1)
+	if (!player) 
 	{
-		std::cout << "spawn enemy 1" << std::endl;
-		spawner->spawnEnemy();
+		return;
 	}
 
-	if (time >= 4000 && enemiesCount < 2)
-	{
-		std::cout << "spawn enemy 2" << std::endl;
+	int passedMiles = player->getMilesPassed();
 
-		spawner->spawnEnemy();
+	if (nextEnemyIdx < enemiesToSpawn.size() &&
+		enemiesToSpawn[nextEnemyIdx].milesToSpawn <= passedMiles)
+	{
+		if (!player->getIsAccelerated()) 
+		{
+			spawner->spawnEnemy(enemiesToSpawn[nextEnemyIdx].type); // Don't spawn enemies if player is accelerating (Todo: change for the boss spawn)
+		}
+
+		nextEnemyIdx++;
 	}
+
 }
 
 void Level1::initObjects()
@@ -54,9 +62,6 @@ void Level1::initObjects()
 	Hood* hood = new Hood(this);
 
 	spawner->spawnPlayer(); // Todo: Render player above other objects (add important renderListeners to loop)
-	//spawner->spawnEnemy();
-	//spawner->spawnEnemy();
-	//spawner->spawnBoss();
 
 	ObjectPointers levelObjects = { bg, spawner, hood };
 

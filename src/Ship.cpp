@@ -134,7 +134,7 @@ void Ship::destroyCollidable()
     resetAnimation();
     level->getSystem()->getAudioPlayer()->playSound(explosionSound);
 
-    unlinkFrom();
+    unlink();
 }
 
 void Ship::onAfterRender()
@@ -212,4 +212,5 @@ Ship::~Ship()
 
     delete animatedBuff;
     animatedBuff = NULL;
+    unlink();
 }

@@ -252,13 +252,6 @@ AmmoParams getAmmoParamsByGunType(GunType type)
             ROCKET_AMMO_COLLIDER,
             COLLIDABLE_PROJECTILE_ROCKET
         };
-    //case LAZER:
-    //    return 
-    //    { 
-    //        LAZER_AMMO_SPEED, 
-    //        LAZER_AMMO_TEXTURE_PARAMS, 
-    //        LAZER_AMMO_COLLIDER 
-    //    };
     default:
         return 
         { 
@@ -312,7 +305,7 @@ ShipParams getShipParams(const ShipType type)
             SONIC_A_SPEED,              // maxSpeed 
             THIN_SHIP_ARMOR,            // armor 
             THIN_SHIP_HEALTH,           // health 
-            SONIC_A_COLLIDERS_DEFAULT,  // colliders 
+            SONIC_C_COLLIDERS_DEFAULT,  // colliders 
             GAME_OVER_SOUND             // explosionSound 
         };
     case PIRATE_A:

@@ -3,7 +3,7 @@
 #include "MainScreen.h"
 #include "SettingsConsts.h"
 
-const std::string PREVIEW_TEXT = "Select the Ship";
+const std::string PREVIEW_TEXT = "Choose  the  ship";
 
 SelectShipView::SelectShipView(LevelBase* p_level)
 {
@@ -117,6 +117,7 @@ void SelectShipView::onBeforeRender()
     SDL_RenderFillRect(renderer, &bottomBlock);
 
     text->render(Vector2(rect.x + (rect.w - text->size.w)/2, rect.y));
+    text->render(Vector2(rect.x + (rect.w - text->size.w) / 2, rect.y + rect.h - text->size.h));
 }
 
 void SelectShipView::onAfterRender()

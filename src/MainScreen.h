@@ -15,15 +15,18 @@ private:
 	typedef std::vector<Object*> ObjectPointers;
 public: 
 	MainScreen(const App* p_system, LevelManager* p_controller) :
-		LevelBase(p_system, p_controller) {};
+		LevelBase(p_system, p_controller) 
+	{
+		initAudio();
+	};
 	~MainScreen();
 	virtual void load();
-	virtual void initAudio();
 	virtual void accelerate() {};
 	void startGame();
+	virtual void handleTick() {};
 private:
 	SelectShipView* selectShipView = NULL;
 	ControlPanel* panel = NULL;
 protected:
-	virtual void handleTick() {};
+	virtual void initAudio();
 }; 

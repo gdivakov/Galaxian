@@ -1,9 +1,14 @@
 #include "LevelBase.h"
 
-Ship* LevelBase::getPlayer()
+LevelBase::LevelBase(const App* p_system, LevelManager* p_controller) :
+	system(p_system),
+	renderer(system->getRenderer()),
+	controller(p_controller),
+	isPaused(false) 
 {
-	return spawner ? spawner->getPlayer() : NULL;
-}
+	timer = new Timer();
+	//initAudio();
+};
 
 LevelBase::~LevelBase()
 {
@@ -11,7 +16,15 @@ LevelBase::~LevelBase()
 
 	system->getAudioPlayer()->freeSounds();
 	system->getAudioPlayer()->freeMusic();
+
+	delete timer;
 }
+
+void LevelBase::restart() { 
+	unload(); 
+	load(); 
+	nextEnemyIdx = 0; 
+};
 
 void LevelBase::unload()
 {
@@ -26,6 +39,8 @@ void LevelBase::unload()
 
 	spawner = NULL;
 }
+
+Ship* LevelBase::getPlayer() { return spawner ? spawner->getPlayer() : NULL; };
 
 void LevelBase::registerListeners()
 {
@@ -58,11 +73,11 @@ bool LevelBase::togglePaused()
 
 	if (isPaused)
 	{
-		system->getTimer()->pause();
+		timer->pause();
 	}
 	else 
 	{
-		system->getTimer()->unpause();
+		timer->unpause();
 	}
 
 	return isPaused;

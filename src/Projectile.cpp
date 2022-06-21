@@ -155,7 +155,8 @@ void Projectile::handleCollided()
 
 void Projectile::destroyCollidable()
 {
-	unlinkFrom();
+
+	unlink();
 	resetAnimation();
 }
 
