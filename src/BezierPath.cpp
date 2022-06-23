@@ -9,7 +9,7 @@ void BezierPath::addCurve(BezierCurve nextCurve, int sampleCount)
 	samples.push_back(sampleCount);
 }
 
-void BezierPath::setPath(std::vector<Vector2>* preparedPath)
+void BezierPath::addPath(std::vector<Vector2>* preparedPath)
 {
 	for (int i = 0; i < curves.size(); i++)
 	{

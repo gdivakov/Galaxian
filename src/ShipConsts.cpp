@@ -337,6 +337,7 @@ ShipParams getShipParams(const ShipType type)
     }
 }
 
+// Todo: form dynamicly
 std::vector<BezierCurve> getEnemyPathCurves(int enemyCounter)
 {
     std::vector<BezierCurve> curves;

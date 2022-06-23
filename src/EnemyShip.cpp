@@ -35,7 +35,7 @@ void EnemyShip::addPath(std::vector<BezierCurve> pathCurves)
 		bezierPath->addCurve(pathCurves[i], WAYPOINT_NUMBER);
 	}
 
-	bezierPath->setPath(&path);
+	bezierPath->addPath(&path);
 
 	delete bezierPath;
 }
@@ -59,7 +59,23 @@ void EnemyShip::followPath(bool withDirRotation)
 	}
 	else 
 	{
-		currentWaypoint = 0; // Repeat path
+		std::string selectedMode = "easy";
+
+		if (selectedMode == "easy")
+		{
+			currentWaypoint = 0; // Repeat path
+			return;
+		}
+
+		// Chase the player
+		Vector2 pointStart(path[path.size() - 1]);
+		Vector2 pointEnd(player->getRect().pos);
+		Vector2 centerDir((pointEnd - pointStart)/2);
+
+		Vector2 circle45 = Vector2::getRotatedVector(centerDir, 45);
+
+		std::vector<BezierCurve> curves = {{ pointStart, pointStart + circle45, pointStart + circle45, pointEnd }};
+		addPath(curves);
 	}
 }
 
@@ -91,7 +107,7 @@ void EnemyShip::onBeforeRender()
 	render(pos - Vector2(size.w / 2, size.h / 2), currentClip, rotation, NULL);
 
 	//showColliders();
-	//displayPath();
+	displayPath();
 }
 
 void EnemyShip::handleEvent(SDL_Event& e)

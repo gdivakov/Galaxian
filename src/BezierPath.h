@@ -10,6 +10,6 @@ private:
 public:
 	BezierPath();
 	void addCurve(BezierCurve nextCurve, int sampleCount);
-	void setPath(std::vector<Vector2>* preparedPath);
+	void addPath(std::vector<Vector2>* preparedPath);
 };
 

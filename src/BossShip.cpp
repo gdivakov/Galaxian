@@ -81,6 +81,7 @@ void BossShip::onBeforeRender()
 	SDL_Rect* currentClip = &shipClips[frame / shipClips.size()];
 
 	render(pos - Vector2(size.w / 2, size.h / 2), currentClip, rotation, NULL);
+	//displayPath();
 }
 
 void BossShip::updateGunPos(GUN_POS nextPos)
