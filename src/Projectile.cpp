@@ -117,7 +117,9 @@ void Projectile::onAfterRender()
 		resetAnimation();
 	}
 
-	if (isOutside(position) || !isActive) // Remove projectiles
+	if (isOutside(position) || 
+		!isActive || 
+		parent->getShip()->level->getIsAccelerated()) // Remove projectiles
 	{
 		destroyCollidable();
 		parent->destroyProjectile(this);
@@ -129,12 +131,6 @@ void Projectile::move()
 	Vector2 rotatedDir = Vector2::getRotatedVector(direction, rotation);
 
 	position = position + rotatedDir * speed / SPEED_DIVIDER;
-
-	if (parent->getShip()->getIsAccelerated())
-	{
-		Vector2 addVel = Vector2(0, BG_SCROLLING_SPEED_ACCELERATED);
-		position += addVel;
-	}
 
 	shiftColliders();
 	checkCollision();

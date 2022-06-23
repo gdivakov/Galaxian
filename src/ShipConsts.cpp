@@ -332,7 +332,7 @@ ShipParams getShipParams(const ShipType type)
             STRONG_SHIP_ARMOR,
             STRONG_SHIP_HEALTH,
             BOSS_A_COLLIDERS_DEFAULT,
-            PIRATE_EXPLOSION_SOUND
+            BOSS_DEFEATED
         };
     }
 }

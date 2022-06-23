@@ -21,7 +21,6 @@ const SpriteParams SONIC_C_SHIP_EXPLOSION = { "res/sprites/ships/explosion_sonic
 const SpriteParams PIRATE_A_SHIP_EXPLOSION = { "res/sprites/ships/explosion_pirateA.png", 103, 144, 8 };
 const SpriteParams BOSS_A_SHIP_EXPLOSION = { "res/sprites/ships/explosion_bossA.png", 300, 191, 10 };
 
-
 const SpriteParams SONIC_A_SHIP_PREVIEW = { "res/sprites/ships/preview/sonicA.png", 150, 168, 10 };
 const SpriteParams SONIC_B_SHIP_PREVIEW = { "res/sprites/ships/preview/sonicB.png", 150, 182, 10 };
 const SpriteParams SONIC_C_SHIP_PREVIEW = { "res/sprites/ships/preview/sonicC.png", 150, 258, 10 };
@@ -165,7 +164,7 @@ const Colliders BOSS_A_COLLIDERS_DEFAULT =
 	}
 };
 
-const float BLAST_COOLDOWN = 150.0f;
+const float BLAST_COOLDOWN = 200.0f;
 const float ROCKET_COOLDOWN = 1000.0f;
 const float LAZER_COOLDOWN = 0.0f;
 

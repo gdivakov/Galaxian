@@ -15,6 +15,16 @@ struct NextEnemy
 	const ShipType type;
 };
 
+const std::vector<NextEnemy> SPAWNED_ENEMIES 
+{ 
+	{ 2000, PIRATE_A }, 
+	{ 3000, PIRATE_A },
+	{ 5000, PIRATE_A },
+	{ 10000, PIRATE_A },
+	{ 12000, PIRATE_A },
+	{ 15000, BOSS_A },
+};
+
 class Level1 : public LevelBase {
 public:
 	Level1(const App* p_system, LevelManager* p_controller);
@@ -22,18 +32,9 @@ public:
 	virtual void load();
 	virtual void accelerate();
 	virtual void handleTick();
+	virtual void handleCompleted();
 private:
-	const std::vector<NextEnemy> enemiesToSpawn { 
-		{ 2000, PIRATE_A }, 
-		//{ 2000, PIRATE_A },
-		{ 15000, PIRATE_A },
-		//{ 15000, PIRATE_A },
-		//{ 20000, PIRATE_A },
-		//{ 20000, PIRATE_A },
-
-		//{ 20000, BOSS_A },
-	};
-
+	const std::vector<NextEnemy> enemiesToSpawn = SPAWNED_ENEMIES;
 	void initObjects();
 	DynamicBackground* bg;
 protected:

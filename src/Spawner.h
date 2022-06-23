@@ -26,12 +26,15 @@ public:
 	void spawnEnemy(ShipType type);
 	void spawnPlayer();
 	void spawnBuffWithChance(Vector2 buffPos);
-	void accelerateEnemies();
+	void accelerate();
+	void setIsBuffSpawn(bool nextIsSpawn) { isBuffsSpawnEnabled = nextIsSpawn; };
+	int getSpawnedEnemiesCount() { return spawnedEnemiesCount; };
 private:
+	static int spawnedEnemiesCount;
 	LevelBase* level;
 
 	Ship* player = NULL;
 	std::vector<Ship*> enemies;
 	std::vector<BuffView*> buffs;
+	bool isBuffsSpawnEnabled;
 };
-

@@ -42,7 +42,6 @@ public:
     void refreshArmor();
     void resetAnimation() { frame = 0; };
     bool getIsPlayer() { return isPlayer; };
-    bool getIsAccelerated () { return isAccelerated; };
     WeaponModule* getGun() { return gun; };
     AnimatedBuffManager* animatedBuff;
 
@@ -51,12 +50,13 @@ public:
     virtual void handleEvent(SDL_Event& e) {};
     virtual void handleCollided();
     virtual void destroyCollidable();
-    virtual void startAccelerate() = 0;
+    virtual void startAcceleration() = 0;
 private:
-    virtual void shiftColliders();
+    void updatePosByVelocity();
     std::string explosionSound;
     ShipType type;
 protected:
+    virtual void shiftColliders();
     Vector2 pos;
     Vector2 vel;
     Vector2 dir;
@@ -64,12 +64,11 @@ protected:
     int frame;
     int rotation;
     bool isPlayer;
-    bool isAccelerated;
     WeaponModule* gun;
     ShipSpecials specials;
     SpriteParams explosion;
 
     void rotate(int r);
-    virtual void accelerate() = 0; // Todo: rename to onPlayerShipAccelerate to clarify
+    virtual void handleAcceleration() = 0;
     void setMaxSpeed(int nextMaxSpeed) { maxSpeed = nextMaxSpeed; };
 };

@@ -86,6 +86,11 @@ void Audio::playSound(std::string key)
 	Mix_PlayChannel(-1, sounds[key], 0);
 };
 
+void Audio::stopSounds()
+{
+	Mix_HaltChannel(-1);
+}
+
 void Audio::setMuted(bool isMuted, bool isMusic)
 {
 	if (isMusic)

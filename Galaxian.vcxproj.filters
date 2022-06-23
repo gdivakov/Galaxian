@@ -210,6 +210,9 @@
     <ClCompile Include="src\SelectShipView.cpp">
       <Filter>Source Files\Levels\General\Hood</Filter>
     </ClCompile>
+    <ClCompile Include="src\TotalView.cpp">
+      <Filter>Source Files\Levels\General\Hood</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Texture.h">
@@ -352,6 +355,9 @@
     </ClInclude>
     <ClInclude Include="src\General.h">
       <Filter>Header Files\helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="src\TotalView.h">
+      <Filter>Header Files\Levels\General\Hood</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

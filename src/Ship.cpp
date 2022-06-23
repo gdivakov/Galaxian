@@ -30,7 +30,6 @@ Ship::Ship(const App* p_system, ShipParams params, LevelBase* p_level, bool isEn
     explosion = params.explosion;
     explosionSound = params.explosionSound;
     isPlayer = !isEnemyShip;
-    isAccelerated = false;
     type = params.type;
 
     gun = new WeaponModule(params.guns, p_system, this, isEnemyShip);
@@ -56,24 +55,27 @@ void Ship::move()
         return;
     }
 
-    Vector2 prevPos = pos;
+    updatePosByVelocity();
+    checkCollision();
+}
+
+void Ship::updatePosByVelocity()
+{
     pos += vel;
     shiftColliders();
 
     // Check boundaries
-    if ((pos.x - size.w/2 < 0) || (pos.x + size.w / 2 > level->getSystem()->getWindowSize()->w))
+    if ((pos.x - size.w / 2 < 0) || (pos.x + size.w / 2 > level->getSystem()->getWindowSize()->w))
     {
         pos.x -= vel.x;
         shiftColliders();
     }
 
-    if ((pos.y - size.h/2 < 0) || (pos.y + size.h / 2 > level->getSystem()->getWindowSize()->h))
+    if ((pos.y - size.h / 2 < 0) || (pos.y + size.h / 2 > level->getSystem()->getWindowSize()->h))
     {
         pos.y -= vel.y;
         shiftColliders();
     }
-
-    checkCollision();
 }
 
 void Ship::shiftColliders()
@@ -128,11 +130,14 @@ void Ship::handleCollided()
 
 void Ship::destroyCollidable()
 {
+    Audio* audioPlayer = level->getSystem()->getAudioPlayer();
+    audioPlayer->stopSounds();
+    audioPlayer->playSound(explosionSound);
+
     isActive = false;
 
     loadFromSprite(explosion);
     resetAnimation();
-    level->getSystem()->getAudioPlayer()->playSound(explosionSound);
 
     unlink();
 }
@@ -157,7 +162,7 @@ void Ship::onAfterRender()
         resetAnimation();
     }
 
-    accelerate();
+    handleAcceleration();
 }
 
 void Ship::rotate(int r)

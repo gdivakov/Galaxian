@@ -11,9 +11,13 @@
 
 const int BUFF_SPAWN_CHANCE = 30;
 
+int Spawner::spawnedEnemiesCount = 0;
+
 Spawner::Spawner(LevelBase* p_level)
 {
 	level = p_level;
+	isBuffsSpawnEnabled = true;
+	spawnedEnemiesCount = 0;
 }
 
 Spawner::~Spawner()
@@ -112,6 +116,7 @@ void Spawner::spawnEnemy(ShipType type)
 
 	nextEnemy->linkTo(player);
 	enemies.push_back(nextEnemy);
+	spawnedEnemiesCount++;
 }
 
 void Spawner::spawnPlayer()
@@ -164,8 +169,12 @@ void Spawner::removeObject(Object* object)
 	{
 		Ship* enemyShip = (Ship*) object;
 		removeFromArray<Ship, Object>(enemies, object);
+
 		// Spawn buff w/ some chance
-		spawnBuffWithChance(enemyShip->getRect().pos);
+		if (isBuffsSpawnEnabled)
+		{
+			spawnBuffWithChance(enemyShip->getRect().pos);
+		}
 
 		delete object;
 		return;
@@ -180,12 +189,12 @@ void Spawner::removeObject(Object* object)
 	}
 }
 
-void Spawner::accelerateEnemies()
+void Spawner::accelerate()
 {
 	for (int i = 0; i < enemies.size(); i++)
 	{
-		enemies[i]->startAccelerate();
+		enemies[i]->startAcceleration();
 	}
 
-	player->startAccelerate();
+	player->startAcceleration();
 }

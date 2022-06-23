@@ -160,7 +160,7 @@ void SelectShipView::handleEvent(SDL_Event& e)
         writeSettingsConfig(config);
 
         MainScreen* mainScreenP = (MainScreen*) level;
-        mainScreenP->startGame();
+        mainScreenP->handleCompleted();
         break;
     }
 }

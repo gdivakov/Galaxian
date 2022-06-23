@@ -2,7 +2,7 @@
 
 #include "EnemyShip.h"
 
-const int WAYPOINT_NUMBER = 4; // Todo: edit here
+const int WAYPOINT_NUMBER = 4;
 
 EnemyShip::EnemyShip(
 	LevelBase* p_level,
@@ -67,13 +67,15 @@ void EnemyShip::onBeforeRender()
 {
 	gun->onBeforeRender();
 
-	if (!level->isPaused && !isAccelerated)
+	if (!level->isPaused && !level->getIsAccelerated())
 	{
-		followPath();
-		move();
-		isInView();
+		if (isActive)
+		{
+			followPath();
+			move();
+		}
 
-		if (inView && isActive)
+		if (isInView() && isActive && level->getPlayer() != nullptr)
 		{
 			gun->isShooting = true;
 		}
@@ -121,7 +123,7 @@ void EnemyShip::displayPath()
 	} while (pathIdx + 1 < path.size());
 }
 
-void EnemyShip::isInView()
+bool EnemyShip::isInView()
 {
 	ShipRect playerRect = player->getRect();
 	const float acceptableShift = 0.1;
@@ -135,19 +137,19 @@ void EnemyShip::isInView()
 
 	float coef = enemyNorm.x * playerToEnemyNorm.x + enemyNorm.y * playerToEnemyNorm.y;
 	inView = coef >= 1 - acceptableShift;
+
+	return inView;
 }
 
-void EnemyShip::startAccelerate()
+void EnemyShip::startAcceleration()
 {
-	isAccelerated = true;
 	isActive = false;
-
 	unlink();
 }
 
-void EnemyShip::accelerate()
+void EnemyShip::handleAcceleration() // handle level acceleration
 {
-	if (!isAccelerated)
+	if (!level->getIsAccelerated())
 	{
 		return;
 	}
@@ -160,41 +162,3 @@ void EnemyShip::accelerate()
 		level->getSpawner()->removeObject(this);
 	}
 }
-
-//void EnemyShip::checkDirections()
-//{ 
-//	ShipRect playerRect = player->getRect();
-// 
-//	const float acceptableShift = 0.1;
-//
-//	Vector2 pos(rect.x + rect.w / 2, rect.y + rect.h / 2);
-//	Vector2 enemyTop(rect.x + rect.w / 2, rect.y);
-//	Vector2 enemyDir = dir;
-//	Vector2	enemyNorm = enemyDir / Vector2::getDistance(enemyTop, pos);
-//
-//	Vector2 playerTop(playerRect->x + playerRect->w / 2, playerRect->y);
-//	Vector2 playerPos(playerRect->x + playerRect->w/2, playerRect->y + playerRect->h/2);
-//	Vector2 playerDir = playerTop - playerPos;
-//	Vector2 playerNorm = playerDir / Vector2::getDistance(playerTop, playerPos);
-//	
-//	float coef = enemyNorm.x* playerNorm.x + enemyNorm.y * playerNorm.y;
-//
-//	if (coef >= 1 - acceptableShift)
-//	{
-//		std::cout << "same dir" << std::endl;
-//	}
-//}
-
-//if (inView)
-//{
-
-//	ShipRect playerRect = player->getRect();
-
-//	SDL_RenderDrawLine(
-//		renderer,
-//		dirToRender.x,
-//		dirToRender.y,
-//		playerRect.pos.x,
-//		playerRect.pos.y
-//	);
-//}

@@ -59,6 +59,7 @@
     <ClCompile Include="src\Vector2.cpp" />
     <ClCompile Include="src\StatusBarView.cpp" />
     <ClCompile Include="src\StatusModule.cpp" />
+    <ClCompile Include="src\TotalView.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\General.h" />
@@ -108,6 +109,7 @@
     <ClInclude Include="src\Vector2.h" />
     <ClInclude Include="src\StatusBarView.h" />
     <ClInclude Include="src\StatusModule.h" />
+    <ClInclude Include="src\TotalView.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include=".gitignore" />

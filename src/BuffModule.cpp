@@ -58,6 +58,7 @@ void BuffModule::addBuff(BuffType nextBuff) {
             }
             break;
         default: 
+            // Other buff
             ship->animatedBuff->loadBuffAnimation(nextBuff);
             appliedBuffs[nextParams.sprite.path] = nextParams;
     }

@@ -8,8 +8,15 @@
 #include "StatusBarView.h"
 #include "BuffBarView.h"
 #include "GameOverView.h"
+#include "TotalView.h"
 
+class LevelBase;
 class PauseView;
+class MilesView;
+class StatusBarView;
+class BuffBarView;
+class GameOverView;
+class TotalView;
 
 class Hood : public Object
 {
@@ -20,6 +27,7 @@ public:
 	virtual void onBeforeRender();
 	void handlePaused();
 	void handleResumed();
+	void showTotal();
 private:
 	SDL_Renderer* renderer;
 	LevelBase* level;
@@ -30,5 +38,6 @@ private:
 	StatusBarView* statusView;
 	BuffBarView* buffView;
 	GameOverView* gameOverView;
+	TotalView* totalView;
 };
 

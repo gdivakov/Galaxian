@@ -24,12 +24,11 @@ public:
     );
     virtual ~EnemyShip();
     virtual void onBeforeRender();
-    //void checkDirections();
     virtual void handleEvent(SDL_Event& e);
-    virtual void startAccelerate();
+    virtual void startAcceleration();
 protected:
-    virtual void accelerate();
-    void isInView();
+    virtual void handleAcceleration();
+    bool isInView();
     void addPath(std::vector<BezierCurve> pathCurves);
     void followPath(bool withDirRotation = true);
     void displayPath();

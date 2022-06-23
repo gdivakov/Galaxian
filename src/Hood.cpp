@@ -14,8 +14,10 @@ Hood::Hood(LevelBase* p_level)
     statusView = new StatusBarView(level);
     buffView = new BuffBarView(level);
     gameOverView = new GameOverView(level);
+    totalView = new TotalView(level);
 
     // selectedWeaponView = new WeaponView(level);
+    // totals = new Totals(level);
 }
 
 Hood::~Hood()
@@ -31,10 +33,16 @@ Hood::~Hood()
     statusView = NULL;
     buffView = NULL;
     gameOverView = NULL;
+    totalView = NULL;
 
     renderer = NULL;
     level = NULL;
     system = NULL;
+}
+
+void Hood::showTotal()
+{
+    totalView->setIsActive(true);
 }
 
 void Hood::handleEvent(SDL_Event& e)
@@ -49,7 +57,10 @@ void Hood::handleEvent(SDL_Event& e)
         return gameOverView->handleEvent(e);
     }
 
-    if (e.key.keysym.sym == SDLK_ESCAPE && e.key.repeat == 0 && !pauseView->isSettingsOpened)
+    if (e.key.keysym.sym == SDLK_ESCAPE && 
+        e.key.repeat == 0 && 
+        !pauseView->isSettingsOpened &&
+        !level->getIsCompleted())
     {
         return level->isPaused ? handleResumed() : handlePaused();
     }
@@ -58,6 +69,8 @@ void Hood::handleEvent(SDL_Event& e)
     {
         return pauseView->handleEvent(e);
     }
+
+    totalView->handleEvent(e);
 }
 
 void Hood::onBeforeRender()
@@ -67,10 +80,15 @@ void Hood::onBeforeRender()
         gameOverView->setIsActive(true);
     }
 
-    milesView->handleRender();
-    statusView->handleRender();
-    buffView->handleRender();
-    gameOverView->handleRender();
+    if (!totalView->getIsActive())
+    {
+        milesView->handleRender();
+        statusView->handleRender();
+        buffView->handleRender();
+        gameOverView->handleRender();
+    }
+
+    totalView->handleRender();
 }
 
 void Hood::handlePaused()

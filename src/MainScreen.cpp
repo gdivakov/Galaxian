@@ -24,7 +24,7 @@ void MainScreen::load()
 	initAudio();
 }
 
-void MainScreen::startGame()
+void MainScreen::handleCompleted()
 {
 	panel->setIsActive(false);
 

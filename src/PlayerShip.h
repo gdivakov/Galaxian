@@ -17,10 +17,13 @@ public:
     int getMilesPassed();
     virtual void handleEvent(SDL_Event& e);
     virtual void onBeforeRender();
-    virtual void startAccelerate();
+    virtual void startAcceleration() {};
 protected:
-    virtual void accelerate();
+    virtual void handleAcceleration();
 private:
-    Uint32 acceleratedAt;
     int acceleratedMiles;
+    bool isMoveStarted;
+    bool hasReachedEnd = false;
+
+    void moveToFinish();
 };

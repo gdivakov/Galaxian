@@ -8,13 +8,12 @@ PlayerShip::PlayerShip(
     Ship(p_level->getSystem(), getShipParams(type), p_level, false)
 {
     rotation = 0;
-    acceleratedAt = 0;
     pos = Vector2((WINDOWED_WIDTH)/2, WINDOWED_HEIGHT - getHeight() - 20);
 }
 
 void PlayerShip::handleEvent(SDL_Event& e)
 {
-    if (level->isPaused || !specials.status->getHealth())
+    if (level->isPaused || hasReachedEnd || !specials.status->getHealth())
     {
         return;
     }
@@ -32,6 +31,11 @@ void PlayerShip::handleEvent(SDL_Event& e)
 
     if (e.type == SDL_KEYDOWN && e.key.repeat == 0)
     {
+        if (!isMoveStarted)
+        {
+            isMoveStarted = true; // To prevent cases when level starts from keyUp event
+        }
+
         switch (e.key.keysym.sym)
         {
         case SDLK_UP:
@@ -48,7 +52,8 @@ void PlayerShip::handleEvent(SDL_Event& e)
             vel.x += maxSpeed; break;
         }
     }
-    else if (e.type == SDL_KEYUP && e.key.repeat == 0 && !(vel.y == 0 && vel.x == 0))
+    
+    if (e.type == SDL_KEYUP && e.key.repeat == 0 && isMoveStarted)
     {
         switch (e.key.keysym.sym)
         {
@@ -72,9 +77,9 @@ void PlayerShip::handleEvent(SDL_Event& e)
 
 void PlayerShip::onBeforeRender()
 {
-    if (!level->isPaused)
+    if (!level->isPaused && !hasReachedEnd)
     {
-        move();
+        level->getIsCompleted() ? moveToFinish() : move();
     }
 
     gun->onBeforeRender();
@@ -83,36 +88,33 @@ void PlayerShip::onBeforeRender()
     std::vector<SDL_Rect>& shipClips = getClips();
     SDL_Rect* currentClip = &shipClips[frame / shipClips.size()];
 
-    //showColliders();
     render(pos - Vector2(size.w / 2, size.h / 2), currentClip, rotation, NULL);
 }
 
-void PlayerShip::startAccelerate()
+void PlayerShip::moveToFinish()
 {
-    isAccelerated = true;
+    if (pos.y + size.h < 0)
+    {
+        hasReachedEnd = true;
+        level->handleCompleted();
+        return;
+    }
 
-    acceleratedAt = level->getSystem()->getTimer()->getTicks();
+    rotation = 0;
+    Vector2 velToAdd = Vector2(0, -3);
+    pos += velToAdd;
+
+    shiftColliders();
 }
 
-void PlayerShip::accelerate()
+void PlayerShip::handleAcceleration()
 {
-    if (!isAccelerated)
+    if (!level->getIsAccelerated())
     {
         return;
     }
 
-    Uint32 time = level->getSystem()->getTimer()->getTicks();
-
-    acceleratedMiles = (time - acceleratedAt) * ACCELERATION_SPEED_MP;
-
-    BuffParams speedUpPararms = getBuffParamsByType(BUFF_SPEED_UP);
-    bool isAccelerationFinished = acceleratedAt + speedUpPararms.duration < time;
-
-    if (isAccelerationFinished)
-    {
-        acceleratedAt = 0;
-        isAccelerated = false;
-    }
+    acceleratedMiles = (level->getTime() - level->getAcceleratedAt()) * ACCELERATION_SPEED_MP;
 }
 
 int PlayerShip::getMilesPassed() 

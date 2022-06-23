@@ -49,49 +49,54 @@ void WeaponModule::selectGun(GunType nextGun)
 
 void WeaponModule::handleEvent(SDL_Event& e)
 {
-	const Uint8* currentKeyStates = SDL_GetKeyboardState(NULL);
-
-	if (!isEnemyShip) 
+	if (isEnemyShip)  // Todo: remove hardcode
 	{
-		//if (currentKeyStates[SDL_SCANCODE_L] || currentKeyStates[SDL_SCANCODE_SPACE])
-		//{
-		//	fire();
-		//	return;
-		//}
+		return;
+	}
 
-		if (e.type == SDL_KEYDOWN)
+	if (e.type == SDL_KEYDOWN && !ship->level->getIsCompleted())
+	{
+		switch (e.key.keysym.sym)
 		{
-			switch (e.key.keysym.sym)
-			{
-			case SDLK_SPACE:
-			case SDLK_l:
-				isShooting = true;
-				return;
-			}
+		case SDLK_SPACE:
+		case SDLK_l:
+			isShooting = true;
+			return;
 		}
+	}
 
-		if (e.type == SDL_KEYUP)
+	if (e.type == SDL_KEYUP)
+	{
+		switch (e.key.keysym.sym)
 		{
-			switch (e.key.keysym.sym)
-			{
-			case SDLK_SPACE:
-			case SDLK_l:
-				isShooting = false;
-				return;
-			}
+		case SDLK_SPACE:
+		case SDLK_l:
+			isShooting = false;
+			return;
 		}
 	}
 }
 
 void WeaponModule::onBeforeRender()
 {
+	if (ship->level->isPaused)
+	{
+		isShooting = false;
+	}
+
 	if (isOnCooldown && cooldownTimer.getTicks() > cooldownMs)
 	{
 		isOnCooldown = false;
 		cooldownTimer.stop();
 	}
 
-	if (isShooting && !isOnCooldown && !ship->getIsAccelerated())
+	// Shooting
+	if (isShooting && 
+		!isOnCooldown && 
+		!ship->level->getIsAccelerated() &&
+		!ship->level->getIsCompleted() &&
+		!ship->level->isPaused
+		)
 	{
 		system->getAudioPlayer()->playSound(fireSound);
 		ammo->startProjectile();

@@ -13,6 +13,7 @@ BossShip::BossShip(
 {
 	rotation = 180;
 	updateGunPos(BOSS_GUN_LEFT);
+	level->spawner->setIsBuffSpawn(false);
 }
 
 void BossShip::amplify()
@@ -53,16 +54,15 @@ void BossShip::onBeforeRender()
 	gun->onBeforeRender();
 	amplify();
 
-	float armor = specials.status->getArmor();
-	float health = specials.status->getHealth();
-
 	if (!level->isPaused)
 	{
-		followPath(false);
-		move();
-		isInView();
+		if (isActive)
+		{
+			followPath(false);
+			move();
+		}
 
-		if (inView && isActive)
+		if (isInView() && isActive)
 		{
 			gun->isShooting = true;
 

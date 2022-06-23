@@ -16,6 +16,7 @@ Level1::Level1(const App* p_system, LevelManager* p_controller)
 LevelBase(p_system, p_controller) 
 {
 	initAudio();
+	isCompleted = false;
 }
 
 Level1::~Level1()
@@ -33,35 +34,62 @@ void Level1::load()
 
 void Level1::handleTick() // Todo: this logic should be relative to specific level spawner (create Level1Spawner : public Spawner)
 {
-	PlayerShip* player = (PlayerShip*) spawner->getPlayer();
+	if (isAccelerated) // Update acceleration status
+	{
+		BuffParams params = getBuffParamsByType(BUFF_SPEED_UP);
 
-	if (!player) 
+		if (getTime() - acceleratedAt > params.duration)
+		{
+			stopAcceleration();
+		}
+	}
+
+	PlayerShip* player = (PlayerShip*) getPlayer();
+
+	if (player == nullptr || !player->isActive) 
 	{
 		return;
 	}
 
 	int passedMiles = player->getMilesPassed();
 
-	if (nextEnemyIdx < enemiesToSpawn.size() &&
-		enemiesToSpawn[nextEnemyIdx].milesToSpawn <= passedMiles)
+	bool isSpawnNewEnemy = nextEnemyIdx < enemiesToSpawn.size() &&
+		enemiesToSpawn[nextEnemyIdx].milesToSpawn <= passedMiles;
+
+	if (isSpawnNewEnemy)
 	{
-		if (!player->getIsAccelerated()) 
+		if (!isAccelerated) // Don't spawn enemies level is accelerated
 		{
-			spawner->spawnEnemy(enemiesToSpawn[nextEnemyIdx].type); // Don't spawn enemies if player is accelerating (Todo: change for the boss spawn)
+			spawner->spawnEnemy(enemiesToSpawn[nextEnemyIdx].type);
 		}
 
 		nextEnemyIdx++;
+
+		if (isAccelerated && nextEnemyIdx == enemiesToSpawn.size())
+		{
+			nextEnemyIdx--; // Boss should spawn after the acceleration is over
+		}
 	}
 
+	bool isLastEnemyKilled = nextEnemyIdx == enemiesToSpawn.size()
+		&& !spawner->getEnemies().size();
+
+	if (isLastEnemyKilled && !isAccelerated && !isCompleted)
+	{
+		system->getAudioPlayer()->playSound(REACH_THE_FINISH);
+		accelerate();
+		isCompleted = true;
+	}
 }
 
 void Level1::initObjects()
 {
 	bg = new DynamicBackground(renderer, LEVEL1_BG_PATH, this);
 	spawner = new Spawner(this);
-	Hood* hood = new Hood(this);
+	hood = new Hood(this);
 
-	spawner->spawnPlayer(); // Todo: Render player above other objects (add important renderListeners to loop)
+	// Todo: Render player above other objects (add important renderListeners to loop)
+	spawner->spawnPlayer();
 
 	ObjectPointers levelObjects = { bg, spawner, hood };
 
@@ -86,6 +114,15 @@ void Level1::initAudio()
 
 void Level1::accelerate()
 {
-	bg->accelerate();
-	spawner->accelerateEnemies();
+	isAccelerated = true;
+	acceleratedAt = getTime();
+
+	spawner->accelerate();
+}
+
+void Level1::handleCompleted()
+{
+	pauseTimer();
+	stopAcceleration();
+	hood->showTotal();
 }

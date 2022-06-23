@@ -44,4 +44,5 @@ private:
 	bool isEnemyShip;
 	std::string fireSound;
 	Vector2 pos; // Relative pos
+	bool isShootStarted = false;
 };

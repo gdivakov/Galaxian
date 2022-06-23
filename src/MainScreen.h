@@ -22,7 +22,7 @@ public:
 	~MainScreen();
 	virtual void load();
 	virtual void accelerate() {};
-	void startGame();
+	virtual void handleCompleted();
 	virtual void handleTick() {};
 private:
 	SelectShipView* selectShipView = NULL;

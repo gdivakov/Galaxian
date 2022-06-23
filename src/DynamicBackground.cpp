@@ -23,9 +23,17 @@ void DynamicBackground::onBeforeRender()
 {
 	if (!level->isPaused)
 	{
-		updateAcceleratedStatus();
+		int speed = scrollingSpeed;
 
-		int speed = isAccelerated ? BG_SCROLLING_SPEED_ACCELERATED : scrollingSpeed;
+		if (level->getIsAccelerated())
+		{
+			speed = BG_SCROLLING_SPEED_ACCELERATED;
+		}
+		else if (level->getIsCompleted())
+		{
+			speed = 0;
+		}
+
 		scrollingOffset += speed;
 	}
 
@@ -36,26 +44,4 @@ void DynamicBackground::onBeforeRender()
 
 	render(Vector2(0, scrollingOffset));
 	render(Vector2(0, scrollingOffset - getHeight()));
-}
-
-void DynamicBackground::accelerate()
-{
-	isAccelerated = true;
-	acceleratedAt = level->getSystem()->getTimer()->getTicks();
-}
-
-void DynamicBackground::updateAcceleratedStatus()
-{
-	if (!isAccelerated)
-	{
-		return;
-	}
-
-	Uint32 currentTime = level->getSystem()->getTimer()->getTicks();
-	BuffParams params = getBuffParamsByType(BUFF_SPEED_UP);
-
-	if (currentTime - acceleratedAt > params.duration)
-	{
-		isAccelerated = false;
-	}
 }

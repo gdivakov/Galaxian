@@ -7,20 +7,23 @@
 #include "Spawner.h"
 #include "Ship.h"
 #include "Timer.h"
+#include "Hood.h"
 
 class LevelManager;
 class Ship;
 class Spawner;
+class Hood;
 
 class LevelBase {
 public:
 	typedef std::vector<Object*> ObjectPointers;
 	bool isPaused;
 	Spawner* spawner = NULL;
+	Hood* hood = NULL;
 
 	LevelBase(const App* p_system, LevelManager* p_controller);
 	virtual void load() = 0;
-	virtual void accelerate() = 0; // Todo: rename
+	virtual void accelerate() = 0;
 	virtual void handleTick() = 0;
 	virtual ~LevelBase();
 
@@ -34,6 +37,11 @@ public:
 	const App* getSystem() { return system; };
 	void restart();
 	Uint32 getTime() { return timer->getTicks(); }
+	void pauseTimer() { timer->pause(); };
+	bool getIsCompleted() { return isCompleted; };
+	bool getIsAccelerated() { return isAccelerated; };
+	bool getAcceleratedAt() { return acceleratedAt; };
+	virtual void handleCompleted() = 0;
 protected:
 	const App* system;
 	SDL_Renderer* renderer;
@@ -41,7 +49,12 @@ protected:
 	ObjectPointers renderListeners;
 	ObjectPointers objsToFree;
 	LevelManager* controller;
-	int nextEnemyIdx = 0;
 	Timer* timer;
+	int nextEnemyIdx = 0;
+	bool isCompleted = false;
+	bool isAccelerated = false;
+	Uint32 acceleratedAt;
+
 	virtual void initAudio() = 0;
+	void stopAcceleration() { isAccelerated = false; };
 };

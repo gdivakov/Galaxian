@@ -33,6 +33,7 @@ const std::string FONT_PATH = "res/Staatliches-Regular.ttf";
 
 const int DEFAULT_FONT_SIZE = 35;
 const int SMALL_FONT_SIZE = 20;
+const int LARGE_FONT_SIZE = 45;
 
 struct Circle
 {

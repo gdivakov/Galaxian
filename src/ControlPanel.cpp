@@ -95,7 +95,7 @@ void ControlPanel::handleEvent(SDL_Event& e)
     {
         if (selectedOptionIdx == MENU_START_GAME)
         {
-            mainScreenPt->startGame();
+            mainScreenPt->handleCompleted();
             return;
         }
 
