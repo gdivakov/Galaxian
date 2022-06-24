@@ -25,7 +25,7 @@ App::App(int screenWidth, int screenHeight)
 	timer->start();
 
 	status = true;
-	windowed = !settingsConfig[FULLSCREEN_IDX];
+	windowed = !settingsConfig[SETTINGS_FIELDS::FULLSCREEN];
 
 	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) < 0)
 	{

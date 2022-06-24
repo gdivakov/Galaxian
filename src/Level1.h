@@ -44,13 +44,12 @@ protected:
 // To Add: 
 // - meteors
 // - buff description (as option for the pause menu)
-// - control description (as option for the pause menu)
-// - switch complexity (settings option)
 // - enemy ships
-// - more enemy flying trace with adapting path
+// - more enemy flying trace
 // - switch weapon mechanics
 
 // To Refactor:
 // - replace for sdl
+// - save progress when player reaches the boss
 // - some design pattern improvements
 // - other todos

@@ -59,7 +59,7 @@ void Hood::handleEvent(SDL_Event& e)
 
     if (e.key.keysym.sym == SDLK_ESCAPE && 
         e.key.repeat == 0 && 
-        !pauseView->isSettingsOpened &&
+        !pauseView->hasNestedActive() &&
         !level->getIsCompleted())
     {
         return level->isPaused ? handleResumed() : handlePaused();

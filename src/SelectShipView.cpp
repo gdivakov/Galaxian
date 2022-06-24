@@ -156,7 +156,7 @@ void SelectShipView::handleEvent(SDL_Event& e)
         
         std::vector<int> config = readSettingsConfig();
         
-        config[SELECTED_SHIP_IDX] = selectedShipIdx;
+        config[SETTINGS_FIELDS::SELECTED_SHIP] = selectedShipIdx;
         writeSettingsConfig(config);
 
         MainScreen* mainScreenP = (MainScreen*) level;

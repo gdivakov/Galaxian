@@ -1,6 +1,7 @@
 ﻿#include <math.h>
 
 #include "EnemyShip.h"
+#include "SettingsConsts.h"
 
 const int WAYPOINT_NUMBER = 4;
 
@@ -59,9 +60,10 @@ void EnemyShip::followPath(bool withDirRotation)
 	}
 	else 
 	{
-		std::string selectedMode = "easy";
+		bool hardModeSelected = readSettingsConfig()[SETTINGS_FIELDS::DIFFICULTY];
+		std::cout << "is hard mode: " << hardModeSelected << std::endl;
 
-		if (selectedMode == "easy")
+		if (!hardModeSelected)
 		{
 			currentWaypoint = 0; // Repeat path
 			return;
@@ -107,7 +109,7 @@ void EnemyShip::onBeforeRender()
 	render(pos - Vector2(size.w / 2, size.h / 2), currentClip, rotation, NULL);
 
 	//showColliders();
-	displayPath();
+	//displayPath();
 }
 
 void EnemyShip::handleEvent(SDL_Event& e)

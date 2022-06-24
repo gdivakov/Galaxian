@@ -19,6 +19,7 @@ public:
 	bool isSoundsMuted;
 	void freeSounds();
 	void stopSounds();
+	void stopMusic();
 	void freeMusic();
 private:
 	typedef std::map<std::string, Mix_Chunk*> SoundMap;

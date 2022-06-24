@@ -1,27 +1,70 @@
+#include <vector>
+
 #include "PauseView.h"
 #include "Consts.h"
 #include "Vector2.h"
 #include "SoundConst.h"
 #include "Loop.h"
 
-std::vector<std::string> PAUSE_MENU_NAMES = { "Resume", "Settings", "Quit" };
-const enum PAUSE_OPTION_IDX { RESUME_IDX, SETTINGS_IDX, QUIT_IDX };
-
 PauseView::PauseView(LevelBase* p_level, Hood* p_hood)
     : renderer(p_level->getSystem()->getRenderer()), level(p_level), system(p_level->getSystem())
 {
     font = TTF_OpenFont(FONT_PATH.c_str(), DEFAULT_FONT_SIZE);
-    selectedIdx = RESUME_IDX;
-    isSettingsOpened = false;
+    selectedIdx = PAUSE_FIELDS::RESUME;
+    isSettingsActive = false;
+    isControlActive = false;
+    isBuffDescActive = false;
     parentHood = p_hood;
 
-    settingsView = new Settings(system, isSettingsOpened);
+    settingsView = new Settings(system, isSettingsActive);
+    controlView = new ControlView(level, isControlActive);
+    buffDescView = new BuffDescView(level, isBuffDescActive);
 
     loadOptions();
 }
 
+PauseView::~PauseView()
+{
+    for (auto& el : options)
+    {
+        delete el.optionTexture;
+    }
+
+    delete settingsView;
+    delete controlView;
+
+    TTF_CloseFont(font);
+    options.clear();
+
+    font = nullptr;
+    level = nullptr;
+    parentHood = nullptr;
+    settingsView = nullptr;
+    controlView = nullptr;
+}
+
+void PauseView::loadOptions()
+{
+    using namespace PAUSE_FIELDS;
+
+    for (auto& pair : NAMES)
+    {
+        PauseOption nextOption = { new Texture(renderer), pair.first };
+
+        nextOption.optionTexture->loadFromRenderedText(
+            font,
+            pair.second,
+            pair.first == RESUME ? selectedOptionColor : textColor
+        );
+
+        options.push_back(nextOption);
+    }
+}
+
 void PauseView::onBeforeRender()
 {
+    using namespace PAUSE_FIELDS;
+
     // Render settings panel
     SDL_Rect rect = {
         WINDOWED_WIDTH / 14,
@@ -37,15 +80,15 @@ void PauseView::onBeforeRender()
 
     // Render options
     SDL_Point selectedOptionPos;
-    int margin = rect.h / (PAUSE_MENU_NAMES.size() + 3);
+    int margin = rect.h / (NAMES.size() + 3);
 
-    for (int i = 0, offset = margin * 2; i < PAUSE_MENU_NAMES.size(); i++, offset += margin)
+    for (int i = 0, offset = margin * 2; i < options.size(); i++, offset += margin)
     {
-        Texture* option = options[i];
-        std::string displayedValue = PAUSE_MENU_NAMES[i];
+        PauseOption option = options[i];
+        std::string displayedValue = NAMES.at(option.fieldType);
 
         int offsetHeight = rect.y + offset;
-        int offsetWidth = rect.x + (rect.w - option->getWidth()) / 2;
+        int offsetWidth = rect.x + (rect.w - option.optionTexture->getWidth()) / 2;
 
         // Hightlight selected option
         if (selectedIdx == i)
@@ -53,28 +96,31 @@ void PauseView::onBeforeRender()
             SDL_Rect rect = {
                 offsetWidth - 5,
                 offsetHeight,
-                option->getWidth() + 10,
-                option->getHeight() - 3,
+                option.optionTexture->getWidth() + 10,
+                option.optionTexture->getHeight() - 3,
             };
 
             SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, 0xFF);
             SDL_RenderFillRect(renderer, &rect);
         }
 
-        option->render(Vector2(offsetWidth, offsetHeight));
+        option.optionTexture->render(Vector2(offsetWidth, offsetHeight));
     }
 
-    if (isSettingsOpened)
-    {
-        settingsView->handleRender();
-    }
+    settingsView->handleRender();
+    controlView->handleRender();
+    buffDescView->handleRender();
 }
 	
 void PauseView::handleEvent(SDL_Event& e)
 {
-    if (isSettingsOpened)
+    using namespace PAUSE_FIELDS;
+
+    if (hasNestedActive())
     {
         settingsView->handleEvent(e);
+        controlView->handleEvent(e);
+        buffDescView->handleEvent(e);
         return;
     }
 
@@ -105,77 +151,44 @@ void PauseView::handleEvent(SDL_Event& e)
 
     if (e.key.keysym.scancode == SDL_SCANCODE_RETURN)
     {
-        if (selectedIdx == RESUME_IDX)
+        switch (selectedIdx)
         {
+        case RESUME:
             return parentHood->handleResumed();
-        }
-
-        if (selectedIdx == SETTINGS_IDX)
-        {
-            isSettingsOpened = true;
-        }
-
-        if (selectedIdx == QUIT_IDX)
-        {
-            
+        case SETTINGS:
+            isSettingsActive = true;
+            return;
+        case CONTROL:
+            isControlActive = true;
+            return;
+        case BUFF_DESCRIPTION:
+            isBuffDescActive = true;
+            return;
+        case QUIT:
             level->quit();
             return;
         }
     }
 }
 
-void PauseView::loadOptions()
-{
-    for (int i = 0; i < PAUSE_MENU_NAMES.size(); i++)
-    {
-        Texture* optionsTextTexture = new Texture(renderer);
-
-        optionsTextTexture->loadFromRenderedText(
-            font,
-            PAUSE_MENU_NAMES[i],
-            i == RESUME_IDX ? selectedOptionColor : textColor
-        );
-
-        options.push_back(optionsTextTexture);
-    }
-}
-
 void PauseView::updateSelectedOption(int nextIdx)
 {
-    Texture* selectedOption = options[selectedIdx];
-    Texture* nextSelectedOption = options[nextIdx];
-    std::string optionText = PAUSE_MENU_NAMES[selectedIdx];
-    std::string nextOptionText = PAUSE_MENU_NAMES[nextIdx];
+    using namespace PAUSE_FIELDS;
 
-    options[selectedIdx]->loadFromRenderedText(
+    std::string optionText = NAMES.at(options[selectedIdx].fieldType);
+    std::string nextOptionText = NAMES.at(options[nextIdx].fieldType);
+
+    options[selectedIdx].optionTexture->loadFromRenderedText(
         font,
         optionText,
         textColor
     );
 
-    options[nextIdx]->loadFromRenderedText(
+    options[nextIdx].optionTexture->loadFromRenderedText(
         font,
         nextOptionText,
         selectedOptionColor
     );
 
     selectedIdx = nextIdx;
-}
-
-PauseView::~PauseView()
-{
-    for (int i = 0; i < options.size(); i++)
-    {
-        delete options[i];
-    }
-
-    delete settingsView;
-
-    TTF_CloseFont(font);
-    options.clear();
-
-    font = NULL;
-    level = NULL;
-    parentHood = NULL;
-    settingsView = NULL;
 }

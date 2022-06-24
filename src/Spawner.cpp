@@ -9,7 +9,7 @@
 #include "SettingsConsts.h"
 #include "General.h"
 
-const int BUFF_SPAWN_CHANCE = 30;
+const int BUFF_SPAWN_CHANCE = 35;
 
 int Spawner::spawnedEnemiesCount = 0;
 
@@ -123,7 +123,7 @@ void Spawner::spawnPlayer()
 {
 	std::vector<int> config = readSettingsConfig();
 
-	ShipType selectedType = (ShipType) config[SELECTED_SHIP_IDX];
+	ShipType selectedType = (ShipType) config[SETTINGS_FIELDS::SELECTED_SHIP];
 	player = new PlayerShip(level, selectedType);
 }
 

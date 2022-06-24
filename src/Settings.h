@@ -10,18 +10,8 @@
 
 class Settings
 {
-	SDL_Renderer* renderer;
-	const App* system;
-	TTF_Font* font;
-	std::vector<SettingsOption> options;
-	int selectedIdx;
-	bool isConfirmSelected;
-	Texture* confirmButton;
-	bool& isOpened;
-	std::vector<int> config;
-	void close();
-public: 
-	Settings(const App* p_system, bool& p_isOpened);
+public:
+	Settings(const App* p_system, bool& p_isActive);
 	~Settings();
 	void loadOptions();
 	void render();
@@ -29,7 +19,19 @@ public:
 	void updateValue();
 	void renderConfirm();
 
-	virtual void handleRender();
-	virtual void handleEvent(SDL_Event& e);
+	void handleRender();
+	void handleEvent(SDL_Event& e);
+private:
+	SDL_Renderer* renderer;
+	const App* system;
+	TTF_Font* font;
+	std::vector<SETTINGS_FIELDS::SettingsOption> options;
+	int selectedIdx;
+	bool isConfirmSelected;
+	Texture* confirmButton;
+	bool& isActive;
+	std::vector<int> config;
+
+	void close();
 };
 

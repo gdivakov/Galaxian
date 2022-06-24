@@ -19,6 +19,9 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\BuffDescView.cpp" />
+    <ClCompile Include="src\ControlView.cpp" />
+    <ClCompile Include="src\SettingsConsts.cpp" />
     <ClCompile Include="src\SelectShipView.cpp" />
     <ClCompile Include="src\DoublePJManager.cpp" />
     <ClCompile Include="src\DiffuserPJManager.cpp" />
@@ -62,6 +65,8 @@
     <ClCompile Include="src\TotalView.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\BuffDescView.h" />
+    <ClInclude Include="src\ControlView.h" />
     <ClInclude Include="src\General.h" />
     <ClInclude Include="src\SelectShipView.h" />
     <ClInclude Include="src\BossShipConsts.h" />

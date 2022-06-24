@@ -30,6 +30,11 @@ void Level1::load()
 	registerListeners();
 
 	timer->restart();
+
+	Audio* audioPlayer = system->getAudioPlayer();
+
+	audioPlayer->stopMusic();
+	audioPlayer->playMusic();
 }
 
 void Level1::handleTick() // Todo: this logic should be relative to specific level spawner (create Level1Spawner : public Spawner)
@@ -108,8 +113,7 @@ void Level1::initAudio()
 		audioPlayer->loadSound(LEVEL_1_SOUNDS[i]);
 	}
 
-	audioPlayer->loadMusic("res/audio/lvl1.mp3");
-	audioPlayer->playMusic();
+	audioPlayer->loadMusic(LEVEL_1_MUSIC);
 }
 
 void Level1::accelerate()

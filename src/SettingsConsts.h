@@ -1,43 +1,41 @@
 #pragma once
 #include <SDL.h>
-#include "Texture.h"
 #include <vector>
+#include <map>
 
-const std::vector<std::string> NAMES = {
-    "Music",
-    "Sounds",
-    "Fullscreen mode",
-    "Language",
-};
+#include "Texture.h"
 
-const std::vector<std::string> STATUSES = {
-    "Disabled",
-    "Enabled"
-};
+namespace SETTINGS_FIELDS
+{
+    const enum Types { MUSIC, SOUNDS, DIFFICULTY, FULLSCREEN, LANGUAGE, SELECTED_SHIP };
 
-const std::vector<std::string> SUPPORTED_LANGUAGES = {
-    "English",
-    "Russian"
-};
+    const std::map<Types, const std::string> NAMES =
+    {
+        { MUSIC, "Music"},
+        { SOUNDS, "Sounds"},
+        { DIFFICULTY, "Difficulty"},
+        { FULLSCREEN, "Fullscreen mode"},
+        { LANGUAGE, "Language"},
+    };
+
+    std::vector<std::string> getAvailableValues(Types type);
+
+    struct SettingsOption
+    {
+        Texture* optionTexture;
+        Texture* valueTexture;
+        std::vector<std::string> availableValues;
+        Types fieldType;
+        int value;
+        bool isDisabled;
+    };
+
+    const std::vector<Types> DISABLED_OPTIONS = { FULLSCREEN, LANGUAGE };
+}
 
 const std::string CONFIRM_BUTTON_TEXT = "Save";
-
-const enum SettingsIndexes { MUSIC_IDX, SOUNDS_IDX, FULLSCREEN_IDX, LANGUAGE_IDX, SELECTED_SHIP_IDX };
-const enum OptionStatus { DISABLED, ENABLED };
-const enum SupportedLanguages { ENGLISH, RUSSIAN };
-const enum OptionType { LANGUAGE, SWITCHABLE };
-
-struct SettingsOption
-{
-    Texture* option;
-    Texture* displayedValue;
-    int value;
-    OptionType type;
-    bool isDisabled;
-};
-
 const std::string SETTINGS_CONFIG_PATH = "res/store/settings.bin";
-const std::vector<int> DEFAULT_SETTINGS_CONFIG = { 1, 1, 0, 0, 0 };
+const std::vector<int> DEFAULT_SETTINGS_CONFIG = { 1, 1, 0, 0, 0, 0 };
 
 static void writeSettingsConfig(std::vector<int> source = DEFAULT_SETTINGS_CONFIG)
 {

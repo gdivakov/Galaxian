@@ -213,6 +213,15 @@
     <ClCompile Include="src\TotalView.cpp">
       <Filter>Source Files\Levels\General\Hood</Filter>
     </ClCompile>
+    <ClCompile Include="src\SettingsConsts.cpp">
+      <Filter>Source Files\consts</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ControlView.cpp">
+      <Filter>Source Files\Levels\General\Hood</Filter>
+    </ClCompile>
+    <ClCompile Include="src\BuffDescView.cpp">
+      <Filter>Source Files\Levels\General\Hood</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Texture.h">
@@ -357,6 +366,12 @@
       <Filter>Header Files\helpers</Filter>
     </ClInclude>
     <ClInclude Include="src\TotalView.h">
+      <Filter>Header Files\Levels\General\Hood</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ControlView.h">
+      <Filter>Header Files\Levels\General\Hood</Filter>
+    </ClInclude>
+    <ClInclude Include="src\BuffDescView.h">
       <Filter>Header Files\Levels\General\Hood</Filter>
     </ClInclude>
   </ItemGroup>

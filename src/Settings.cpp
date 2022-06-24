@@ -1,12 +1,13 @@
+#include <algorithm>
 #include "Settings.h"
 #include "Vector2.h"
 #include "SoundConst.h"
 #include "Consts.h"
 
-Settings::Settings(const App* p_system, bool& p_isOpened)
+Settings::Settings(const App* p_system, bool& p_isActive)
     :system(p_system), 
     renderer(p_system->getRenderer()),
-    isOpened(p_isOpened)
+    isActive(p_isActive)
 {
     font = TTF_OpenFont(FONT_PATH.c_str(), DEFAULT_FONT_SIZE);
     selectedIdx = 0;
@@ -17,42 +18,62 @@ Settings::Settings(const App* p_system, bool& p_isOpened)
     loadOptions();
 }
 
+Settings::~Settings()
+{
+    delete confirmButton;
+
+    for (int i = 0; i < options.size(); i++)
+    {
+        delete options[i].optionTexture;
+        delete options[i].valueTexture;
+    }
+
+    TTF_CloseFont(font);
+    options.clear();
+    font = NULL;
+    confirmButton = NULL;
+}
+
 void Settings::handleRender()
 {
+    if (!isActive)
+    {
+        return;
+    }
+
     render();
     renderConfirm();
 }
 
 void Settings::loadOptions()
 {
-    for (int i = 0; i < NAMES.size(); i++)
+    using namespace SETTINGS_FIELDS;
+
+    // Load options
+    for (auto& el : NAMES)
     {
-        Texture* optionsTextTexture = new Texture(renderer);
-        Texture* valueTextTexture = new Texture(renderer);
-        OptionType type = i != LANGUAGE_IDX ? SWITCHABLE : LANGUAGE;
+        Types type = el.first;
 
-        optionsTextTexture->loadFromRenderedText(
-            font,
-            NAMES[i],
-            textColor
-        );
-
-        valueTextTexture->loadFromRenderedText(
-            font,
-            type == SWITCHABLE ?
-            STATUSES[config[i]] :
-            SUPPORTED_LANGUAGES[ENGLISH],
-            selectedIdx == i ? selectedOptionColor : textColor
-        );
+        auto it = std::find(DISABLED_OPTIONS.begin(), DISABLED_OPTIONS.end(), type);
+        bool isDisabled = it != DISABLED_OPTIONS.end();
 
         SettingsOption option =
         {
-            optionsTextTexture,
-            valueTextTexture,
-            config[i],
+            new Texture(renderer),
+            new Texture(renderer),
+            getAvailableValues(type),
             type,
-            type == LANGUAGE || i == FULLSCREEN_IDX, // isDisabled option (not supported now)
+            config[type],
+            isDisabled,
         };
+
+        option.optionTexture->loadFromRenderedText(font, el.second, textColor);
+
+        option.valueTexture->loadFromRenderedText(
+            font, 
+            option.availableValues[config[type]], 
+            selectedIdx == type ? selectedOptionColor : textColor
+        );
 
         options.push_back(option);
     }
@@ -68,6 +89,8 @@ void Settings::loadOptions()
 
 void Settings::render()
 {
+    using namespace SETTINGS_FIELDS;
+
     // Render settings panel
     SDL_Rect rect = {
         WINDOWED_WIDTH / 14, // Todo: Replace by system->getWindowSize()
@@ -85,10 +108,10 @@ void Settings::render()
     SDL_Point selectedOptionPos;
     int margin = rect.h / (NAMES.size() + 1);
 
-    for (int i = 0, offset = margin / 3; i < NAMES.size(); i++, offset += margin)
+    for (int i = 0, offset = margin / 3; i < options.size(); i++, offset += margin)
     {
-        Texture* option = options[i].option;
-        Texture* displayedValue = options[i].displayedValue;
+        Texture* option = options[i].optionTexture;
+        Texture* displayedValue = options[i].valueTexture;
 
         int offsetHeight = rect.y + offset;
         int offsetWidth = rect.x + margin / 2;
@@ -116,8 +139,10 @@ void Settings::render()
 
 void Settings::updateSelectedOption(int nextIdx)
 {
-    // Hover out confirm button
-    if (nextIdx != options.size() && isConfirmSelected)
+    using namespace SETTINGS_FIELDS;
+
+    // Handle hover out
+    if (nextIdx != options.size() && isConfirmSelected) // Confirm button
     {
         confirmButton->loadFromRenderedText(
             font,
@@ -127,23 +152,17 @@ void Settings::updateSelectedOption(int nextIdx)
 
         isConfirmSelected = false;
     }
-    else {
-        // Hover out settings option
+    else { // Settings option value
         SettingsOption selectedOption = options[selectedIdx];
-
-        std::string optionText = selectedOption.type == SWITCHABLE ?
-            STATUSES[selectedOption.value] :
-            SUPPORTED_LANGUAGES[selectedOption.value];
-
-        options[selectedIdx].displayedValue->loadFromRenderedText(
+        options[selectedIdx].valueTexture->loadFromRenderedText(
             font,
-            optionText,
+            selectedOption.availableValues[selectedOption.value],
             textColor
         );
     }
 
-    // Hover in confirm button selection
-    if (nextIdx == options.size())
+    // Handle hover in
+    if (nextIdx == options.size()) // Confirm button
     {
         confirmButton->loadFromRenderedText(
             font,
@@ -153,18 +172,11 @@ void Settings::updateSelectedOption(int nextIdx)
 
         isConfirmSelected = true;
     }
-    else {
-        // Hover out settings option
+    else { // Settings option value
         SettingsOption nextOption = options[nextIdx];
-
-        std::string optionText = nextOption.type == SWITCHABLE ?
-            STATUSES[nextOption.value] :
-            SUPPORTED_LANGUAGES[nextOption.value];
-
-        // Hover in settings option
-        options[nextIdx].displayedValue->loadFromRenderedText(
+        nextOption.valueTexture->loadFromRenderedText(
             font,
-            optionText,
+            nextOption.availableValues[nextOption.value],
             nextOption.isDisabled ? selectedDisabledOptionColor : selectedOptionColor
         );
     }
@@ -174,8 +186,8 @@ void Settings::updateSelectedOption(int nextIdx)
 
 void Settings::updateValue()
 {
-    int nextValue;
-    std::string nextTextValue;
+    using namespace SETTINGS_FIELDS;
+
     SettingsOption updatedOption = options[selectedIdx];
 
     if (updatedOption.isDisabled)
@@ -183,38 +195,27 @@ void Settings::updateValue()
         return;
     }
 
-    if (updatedOption.type == LANGUAGE)
-    {
-        nextValue = updatedOption.value + 1 >= SUPPORTED_LANGUAGES.size() ? 0 : updatedOption.value + 1;
-        nextTextValue = SUPPORTED_LANGUAGES[nextValue];
-    }
-    else {
-        bool isDisabled = options[selectedIdx].value == DISABLED;
-        nextValue = isDisabled ? ENABLED : DISABLED;
-        nextTextValue = STATUSES[nextValue];
-
-        bool isMuted;
-        switch (selectedIdx)
-        {
-        case MUSIC_IDX:
-            isMuted = system->getAudioPlayer()->isMusicMuted;
-            system->getAudioPlayer()->setMuted(!isMuted);
-            break;
-        case SOUNDS_IDX:
-            isMuted = system->getAudioPlayer()->isSoundsMuted;
-
-            system->getAudioPlayer()->setMuted(!isMuted, false);
-            break;
-        }
-    }
+    int nextValue = updatedOption.value + 1 < updatedOption.availableValues.size() ? updatedOption.value + 1 : 0;
+    std::string nextTextValue = updatedOption.availableValues[nextValue];
 
     config[selectedIdx] = nextValue;
     options[selectedIdx].value = nextValue;
-    options[selectedIdx].displayedValue->loadFromRenderedText(
-        font,
-        nextTextValue,
-        selectedOptionColor
-    );
+    options[selectedIdx].valueTexture->loadFromRenderedText(font, nextTextValue, selectedOptionColor);
+
+    bool isMuted;
+
+    switch (selectedIdx)
+    {
+    case MUSIC:
+        isMuted = system->getAudioPlayer()->isMusicMuted;
+        system->getAudioPlayer()->setMuted(!isMuted);
+        break;
+    case SOUNDS:
+        isMuted = system->getAudioPlayer()->isSoundsMuted;
+
+        system->getAudioPlayer()->setMuted(!isMuted, false);
+        break;
+    }
 }
 
 void Settings::renderConfirm()
@@ -252,7 +253,7 @@ void Settings::renderConfirm()
 
 void Settings::handleEvent(SDL_Event& e)
 {
-    if (!isOpened || e.type != SDL_KEYDOWN)
+    if (!isActive || e.type != SDL_KEYDOWN || e.key.repeat == 1)
     {
         return;
     }
@@ -264,10 +265,10 @@ void Settings::handleEvent(SDL_Event& e)
         if (isConfirmSelected)
         {
             close();
+            return;
         }
-        else {
-            updateValue();
-        }
+
+        updateValue();
 
         return;
     }
@@ -300,21 +301,6 @@ void Settings::close()
     writeSettingsConfig(config);
     updateSelectedOption(0);
 
-    isOpened = false;
+    isActive = false;
 }
 
-Settings::~Settings()
-{
-    delete confirmButton;
-
-    for (int i = 0; i < options.size(); i++)
-    {
-        delete options[i].option;
-        delete options[i].displayedValue;
-    }
-
-    TTF_CloseFont(font);
-    options.clear();
-    font = NULL;
-    confirmButton = NULL;
-}

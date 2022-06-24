@@ -8,8 +8,8 @@ Audio::Audio()
 {
 	std::vector<int> settingsConfig = readSettingsConfig();
 
-	isMusicMuted = !settingsConfig[MUSIC_IDX];
-	isSoundsMuted = !settingsConfig[SOUNDS_IDX];
+	isMusicMuted = !settingsConfig[SETTINGS_FIELDS::MUSIC];
+	isSoundsMuted = !settingsConfig[SETTINGS_FIELDS::SOUNDS];
 
 	mainTheme = NULL;
 	isPaused = false;
@@ -89,6 +89,11 @@ void Audio::playSound(std::string key)
 void Audio::stopSounds()
 {
 	Mix_HaltChannel(-1);
+}
+
+void Audio::stopMusic()
+{
+	Mix_HaltMusic();
 }
 
 void Audio::setMuted(bool isMuted, bool isMusic)
