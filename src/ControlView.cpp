@@ -1,18 +1,21 @@
 #include "ControlView.h"
 
-struct Row
+namespace control
 {
-    std::string fImagePath;
-    std::string text;
-    std::string sImagePath;
-};
+    struct Row
+    {
+        std::string fImagePath;
+        std::string text;
+        std::string sImagePath;
+    };
 
-const std::vector<Row> rowPaths
-{
-    { "res/images/arrows.png", "move", "res/images/wasd.png"},
-    { "res/images/space.png", "shoot", "res/images/l_key.png" },
-    { "res/images/q_key.png", "rotate", "res/images/e_key.png" },
-};
+    const std::vector<Row> rowPaths
+    {
+        { "res/images/arrows.png", "move", "res/images/wasd.png"},
+        { "res/images/space.png", "shoot", "res/images/l_key.png" },
+        { "res/images/q_key.png", "rotate", "res/images/e_key.png" },
+    };
+}
 
 ControlView::ControlView(LevelBase* p_level, bool& p_isActive) : isActive(p_isActive)
 {
@@ -49,7 +52,7 @@ void ControlView::initRows()
 {
     SDL_Renderer* renderer = level->getSystem()->getRenderer();
 
-    for (auto& row : rowPaths)
+    for (auto& row : control::rowPaths)
     {
         ControlRow nextRow = { new Texture(renderer), new Texture(renderer), new Texture(renderer) };
 

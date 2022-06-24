@@ -54,6 +54,11 @@ void WeaponModule::handleEvent(SDL_Event& e)
 		return;
 	}
 
+	if (!ship->isActive)
+	{
+		isShooting = false;
+	}
+
 	if (e.type == SDL_KEYDOWN && !ship->level->getIsCompleted())
 	{
 		switch (e.key.keysym.sym)

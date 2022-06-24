@@ -13,6 +13,8 @@ PlayerShip::PlayerShip(
 
 void PlayerShip::handleEvent(SDL_Event& e)
 {
+    gun->handleEvent(e);
+
     if (level->isPaused || hasReachedEnd || !specials.status->getHealth())
     {
         return;
@@ -71,8 +73,6 @@ void PlayerShip::handleEvent(SDL_Event& e)
             vel.x -= maxSpeed; break;
         }
     }
-
-    gun->handleEvent(e);
 }
 
 void PlayerShip::onBeforeRender()

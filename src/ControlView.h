@@ -1,6 +1,8 @@
 #pragma once
 #include <SDL.h>
 #include <SDL_ttf.h>
+#include <vector>
+#include <string>
 
 #include "LevelBase.h"
 #include "Consts.h"
