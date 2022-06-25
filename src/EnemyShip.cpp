@@ -83,7 +83,7 @@ void EnemyShip::followPath(bool withDirRotation)
 
 void EnemyShip::onBeforeRender()
 {
-	gun->onBeforeRender();
+	gun->handleRender();
 
 	if (!level->isPaused && !level->getIsAccelerated())
 	{
@@ -95,11 +95,11 @@ void EnemyShip::onBeforeRender()
 
 		if (isInView() && isActive && level->getPlayer() != nullptr)
 		{
-			gun->isShooting = true;
+			gun->setIsShooting(true);
 		}
 		else
 		{
-			gun->isShooting = false;
+			gun->setIsShooting(false);
 		}
 	}
 

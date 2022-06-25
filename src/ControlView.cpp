@@ -14,13 +14,14 @@ namespace control
         { "res/images/arrows.png", "move", "res/images/wasd.png"},
         { "res/images/space.png", "shoot", "res/images/l_key.png" },
         { "res/images/q_key.png", "rotate", "res/images/e_key.png" },
+        { "res/images/f_key.png", "weapon switch", "res/images/f_key.png" },
     };
 }
 
 ControlView::ControlView(LevelBase* p_level, bool& p_isActive) : isActive(p_isActive)
 {
 	level = p_level;
-    font = TTF_OpenFont(FONT_PATH.c_str(), DEFAULT_FONT_SIZE);
+    font = TTF_OpenFont(FONT_PATH.c_str(), MEDIUM_FONT_SIZE);
 
     catTexture = new Texture(level->getSystem()->getRenderer());
     catTexture->loadFromFile("res/images/cat.png");
@@ -90,7 +91,7 @@ void ControlView::handleRender()
 
     catTexture->render(Vector2(rect.x + (rect.w - catTexture->size.w)/2, marginTop));
 
-    marginTop += catTexture->size.h + shift * 1.5;
+    marginTop += catTexture->size.h + shift/2;
 
     for (auto& row : rows)
     {
@@ -98,7 +99,7 @@ void ControlView::handleRender()
         row.rightImage->render(Vector2(rect.x + rect.w - row.rightImage->size.w - 128, marginTop));
         row.text->render(Vector2(rect.x + (rect.w - row.text->size.w) / 2, marginTop + shift));
 
-        marginTop += row.leftImage->size.h + shift;
+        marginTop += row.leftImage->size.h + shift/10;
     }
 }
 

@@ -12,6 +12,7 @@
 class Ship;
 class ProjectileManager;
 
+// Todo: pj should not be deleted after the weapon switch
 class Projectile : public Collidable, public Object
 {
 private:

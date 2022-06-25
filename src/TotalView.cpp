@@ -1,11 +1,12 @@
 #include "TotalView.h"
 #include "PlayerShip.h"
 
-const std::string TITLE = "Level  passed!";
+const std::string TITLE = "Great job!";
 const std::string NEXT_LEVEL_TEXT = "Next  level  (coming soon)";
 const std::string QUIT_TEXT = "Quit";
 const std::string MILES_PASSED_TEXT = "- Miles  passed:  ";
 const std::string ENEMIES_KILLED_TEXT = "- Enemies  killed:  ";
+const std::string SHIP_UPGRADE_TEXT = "New ship upgrade installed:";
 
 std::vector<std::string> scoreTexts = 
 {
@@ -24,7 +25,7 @@ TotalView::TotalView(LevelBase* p_level)
 {
 	level = p_level;
 	fontLarge = TTF_OpenFont(FONT_PATH.c_str(), LARGE_FONT_SIZE);
-    font = TTF_OpenFont(FONT_PATH.c_str(), DEFAULT_FONT_SIZE);
+    font = TTF_OpenFont(FONT_PATH.c_str(), MEDIUM_FONT_SIZE);
     selectedOption = QUIT_TEXT;
 
     initButtons();
@@ -52,8 +53,43 @@ void TotalView::initScore()
             text = el + std::to_string(enemiesKilled);
         }
 
-        scoreTextures[el]->loadFromRenderedText(isTitle ? fontLarge : font, text, textColor);
+        scoreTextures[el]->loadFromRenderedText(isTitle ? fontLarge : font, text, isTitle ? textColor : whiteTextColor);
     }
+
+    // Prepare ship upgrade section
+    SDL_Renderer* renderer = level->getSystem()->getRenderer();
+
+    shipUpgrade = { new Texture(renderer), new Texture(renderer)};
+    shipUpgrade.text->loadFromRenderedText(font, SHIP_UPGRADE_TEXT, textColor);
+    shipUpgrade.shipPreview->loadFromSprite(SONIC_C_SHIP);
+}
+
+TotalView::~TotalView()
+{
+    for (auto& el : scoreTextures)
+    {
+        delete el.second;
+    }
+
+    for (auto& el : buttonTextures)
+    {
+        delete el.second;
+    }
+
+    delete shipUpgrade.text;
+    delete shipUpgrade.shipPreview;
+
+    scoreTextures.clear();
+    buttonTextures.clear();
+
+    TTF_CloseFont(font);
+    TTF_CloseFont(fontLarge);
+
+    shipUpgrade.text = nullptr;
+    shipUpgrade.shipPreview = nullptr;
+    font = nullptr;
+    fontLarge = nullptr;
+    level = nullptr;
 }
 
 void TotalView::initButtons()
@@ -85,30 +121,7 @@ void TotalView::initButtons()
     }
 }
 
-TotalView::~TotalView()
-{
-    for (auto& el : scoreTextures)
-    {
-        delete el.second;
-    }
-
-    for (auto& el : buttonTextures)
-    {
-        delete el.second;
-    }
-
-    scoreTextures.clear();
-    buttonTextures.clear();
-
-	TTF_CloseFont(font);
-    TTF_CloseFont(fontLarge);
-
-	font = NULL;
-    fontLarge = NULL;
-    level = NULL;
-}
-
-void TotalView::handleRender()
+void TotalView::onBeforeRender()
 {
     if (!isActive)
     {
@@ -129,7 +142,21 @@ void TotalView::handleRender()
     SDL_RenderFillRect(renderer, &rect);
     SDL_RenderDrawRect(renderer, &rect);
 
-    int marginTop = rect.h/2.5;
+    int marginTop = rect.x + 8;
+
+    SDL_Rect previewRect =
+    {
+        rect.x + 48,
+        rect.y + marginTop,
+        rect.w - 48 * 2,
+        scoreTextures.begin().operator*().second->size.h * (scoreTextures.size() - 1) + 48
+    };
+
+    marginTop += 24;
+
+    SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, 0xFF);
+    SDL_RenderFillRect(renderer, &previewRect);
+    SDL_RenderDrawRect(renderer, &previewRect);
 
     for (auto& el : scoreTextures)
     {
@@ -137,12 +164,37 @@ void TotalView::handleRender()
 
         Texture* text = el.second;
         Vector2 pos = isTitle ?
-            Vector2(rect.x + (rect.w - text->size.w) / 2, rect.y + 24) :
-            Vector2(rect.x + rect.w/3, rect.y + marginTop);
+            Vector2(rect.x + (rect.w - text->size.w) / 2, rect.y + 8) :
+            Vector2(rect.x + 48 + 24, rect.y + marginTop);
 
         text->render(pos);
         marginTop += isTitle ? 0 : 48;
     }
+
+    marginTop += 36;
+
+    // Ship upgrade section
+    std::vector<SDL_Rect>& shipClips = shipUpgrade.shipPreview->getClips();
+    SDL_Rect* currentClip = &shipClips[shipUpgrade.frame / shipClips.size()];
+
+    shipUpgrade.text->render(Vector2(rect.x + 48, rect.y + marginTop));
+    marginTop += shipUpgrade.text->size.h;
+
+    SDL_Rect previewRect2 =
+    {
+        rect.x + 48,
+        rect.y + marginTop,
+        rect.w - 48*2,
+        shipUpgrade.shipPreview->size.h + 48
+    };
+
+    marginTop += 24;
+
+    SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, 0xFF);
+    SDL_RenderFillRect(renderer, &previewRect2);
+    SDL_RenderDrawRect(renderer, &previewRect2);
+
+    shipUpgrade.shipPreview->render(Vector2(rect.x + (rect.w - shipUpgrade.shipPreview->size.w)/2, rect.y + marginTop), currentClip);
 
     bool isFirst = true;
 
@@ -170,6 +222,21 @@ void TotalView::handleRender()
         }
 
         text->render(pos);
+    }
+}
+
+void TotalView::onAfterRender()
+{
+    if (!isActive)
+    {
+        return;
+    }
+
+    int clipLength = shipUpgrade.shipPreview->getClips().size();
+
+    if (++shipUpgrade.frame / clipLength >= clipLength)
+    {
+        shipUpgrade.frame = 0;
     }
 }
 

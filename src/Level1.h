@@ -17,12 +17,12 @@ struct NextEnemy
 
 const std::vector<NextEnemy> SPAWNED_ENEMIES 
 { 
-	{ 2000, PIRATE_A }, 
-	{ 3000, PIRATE_A },
-	{ 5000, PIRATE_A },
-	{ 10000, PIRATE_A },
-	{ 12000, PIRATE_A },
-	{ 15000, BOSS_A },
+	//{ 2000, PIRATE_A }, 
+	//{ 3000, PIRATE_A },
+	//{ 5000, PIRATE_A },
+	//{ 10000, PIRATE_A },
+	//{ 12000, PIRATE_A },
+	//{ 2000, BOSS_A },
 };
 
 class Level1 : public LevelBase {
@@ -45,7 +45,7 @@ protected:
 // - meteors
 // - enemy ships
 // - more enemy flying trace
-// - switch weapon mechanics
+// - show "ship upgrade available" on totalView; 
 
 // To Refactor:
 // - replace for stl

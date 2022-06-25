@@ -38,7 +38,7 @@ const int THIN_SHIP_ARMOR = THIN_SHIP_HEALTH * ARMOR_MULTIPLIER;
 const int AVERAGE_SHIP_ARMOR = AVERAGE_SHIP_HEALTH * ARMOR_MULTIPLIER;
 const int STRONG_SHIP_ARMOR = STRONG_SHIP_HEALTH * ARMOR_MULTIPLIER;
 
-const enum GunType { BLAST, ROCKET, ROCKET_DOUBLE, DIFFUSER, LAZER };
+const enum GunType { BLAST, BLAST_DOUBLE, BLAST_DIFFUSER, ROCKET, ROCKET_DOUBLE, DIFFUSER, LAZER };
 const enum ShipType { SONIC_A, SONIC_B, SONIC_C, PIRATE_A, BOSS_A };
 const enum Space { WORLD, LOCAL };
 
@@ -257,7 +257,6 @@ struct PJ_Params {
 };
 
 // Todo: separate by consts and helpers
-
 void DrawCircle(SDL_Renderer* renderer, int32_t centreX, int32_t centreY, int32_t radius);
 Colliders& addVectorToCollider(Colliders& colliders, Vector2& v);
 Colliders& rotateColliders(Colliders& colliders, int angle);

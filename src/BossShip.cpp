@@ -51,7 +51,7 @@ void BossShip::amplify()
 
 void BossShip::onBeforeRender()
 {
-	gun->onBeforeRender();
+	gun->handleRender();
 	amplify();
 
 	if (!level->isPaused)
@@ -64,7 +64,7 @@ void BossShip::onBeforeRender()
 
 		if (isInView() && isActive)
 		{
-			gun->isShooting = true;
+			gun->setIsShooting(true);
 
 			if (selectedPos != BOSS_GUN_CENTER)
 			{
@@ -73,7 +73,7 @@ void BossShip::onBeforeRender()
 		}
 		else
 		{
-			gun->isShooting = false;
+			gun->setIsShooting(false);
 		}
 	}
 

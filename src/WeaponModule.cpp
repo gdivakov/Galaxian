@@ -14,8 +14,29 @@ WeaponModule::WeaponModule(
 	ship = p_ship;
 	isEnemyShip = p_isEnemyShip;
 	pos = Vector2();
+	
+	installedGuns = guns;
+	selectGun(installedGuns.front());
+}
 
-	selectGun(guns[0]);
+GunType WeaponModule::selectNextGun()
+{
+	auto selectedGunIt = std::find(installedGuns.begin(), installedGuns.end(), selectedGun);
+
+	if (selectedGunIt == installedGuns.end())
+	{
+		std::cout << "Selected gun is not installed!" << std::endl;
+		return *selectedGunIt;
+	}
+
+	if (selectedGunIt == installedGuns.end() - 1)
+	{
+		selectGun(installedGuns.front());
+		return selectedGun;
+	}
+
+	selectGun(*(selectedGunIt + 1));
+	return selectedGun;
 }
 
 void WeaponModule::selectGun(GunType nextGun)
@@ -31,7 +52,7 @@ void WeaponModule::selectGun(GunType nextGun)
 	fireSound = params.soundPath;
 	isOnCooldown = false;
 
-	// Todo: refactor here (Ammo constructor class should be part of constant)
+	// Todo: refactor here (Ammo constructor class should be part of constant) // Todo: maybe move to separate class
 	switch (selectedGun)
 	{
 	case ROCKET: 
@@ -39,50 +60,17 @@ void WeaponModule::selectGun(GunType nextGun)
 		ammo = new SinglePJManager(selectedGun, system, ship);
 		break;
 	case DIFFUSER:
+	case BLAST_DIFFUSER:
 		ammo = new DiffuserPJManager(selectedGun, system, ship);
 		break;
 	case ROCKET_DOUBLE:
+	case BLAST_DOUBLE:
 		ammo = new DoublePJManager(selectedGun, system, ship);
 		break;
 	}
 }
 
-void WeaponModule::handleEvent(SDL_Event& e)
-{
-	if (isEnemyShip)  // Todo: remove hardcode
-	{
-		return;
-	}
-
-	if (!ship->isActive)
-	{
-		isShooting = false;
-	}
-
-	if (e.type == SDL_KEYDOWN && !ship->level->getIsCompleted())
-	{
-		switch (e.key.keysym.sym)
-		{
-		case SDLK_SPACE:
-		case SDLK_l:
-			isShooting = true;
-			return;
-		}
-	}
-
-	if (e.type == SDL_KEYUP)
-	{
-		switch (e.key.keysym.sym)
-		{
-		case SDLK_SPACE:
-		case SDLK_l:
-			isShooting = false;
-			return;
-		}
-	}
-}
-
-void WeaponModule::onBeforeRender()
+void WeaponModule::handleRender()
 {
 	if (ship->level->isPaused)
 	{

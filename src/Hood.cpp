@@ -15,9 +15,7 @@ Hood::Hood(LevelBase* p_level)
     buffView = new BuffBarView(level);
     gameOverView = new GameOverView(level);
     totalView = new TotalView(level);
-
-    // selectedWeaponView = new WeaponView(level);
-    // totals = new Totals(level);
+    weaponView = new WeaponView(level);
 }
 
 Hood::~Hood()
@@ -27,17 +25,20 @@ Hood::~Hood()
     delete statusView;
     delete buffView;
     delete gameOverView;
+    delete totalView;
+    delete weaponView;
 
-    pauseView = NULL;
-    milesView = NULL;
-    statusView = NULL;
-    buffView = NULL;
-    gameOverView = NULL;
-    totalView = NULL;
+    pauseView = nullptr;
+    milesView = nullptr;
+    statusView = nullptr;
+    buffView = nullptr;
+    gameOverView = nullptr;
+    totalView = nullptr;
+    weaponView = nullptr;
 
-    renderer = NULL;
-    level = NULL;
-    system = NULL;
+    renderer = nullptr;
+    level = nullptr;
+    system = nullptr;
 }
 
 void Hood::showTotal()
@@ -80,15 +81,25 @@ void Hood::onBeforeRender()
         gameOverView->setIsActive(true);
     }
 
-    if (!totalView->getIsActive())
+    if (gameOverView->getIsActive())
     {
-        milesView->handleRender();
-        statusView->handleRender();
-        buffView->handleRender();
-        gameOverView->handleRender();
+        return gameOverView->handleRender();
     }
 
-    totalView->handleRender();
+    if (totalView->getIsActive())
+    {
+        return totalView->onBeforeRender();
+    }
+
+    milesView->handleRender();
+    statusView->handleRender();
+    buffView->handleRender();
+    weaponView->handleRender();
+}
+
+void Hood::onAfterRender()
+{
+    totalView->onAfterRender();
 }
 
 void Hood::handlePaused()

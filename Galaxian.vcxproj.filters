@@ -222,6 +222,9 @@
     <ClCompile Include="src\BuffDescView.cpp">
       <Filter>Source Files\Levels\General\Hood</Filter>
     </ClCompile>
+    <ClCompile Include="src\WeaponView.cpp">
+      <Filter>Source Files\Levels\General\Hood</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Texture.h">
@@ -372,6 +375,9 @@
       <Filter>Header Files\Levels\General\Hood</Filter>
     </ClInclude>
     <ClInclude Include="src\BuffDescView.h">
+      <Filter>Header Files\Levels\General\Hood</Filter>
+    </ClInclude>
+    <ClInclude Include="src\WeaponView.h">
       <Filter>Header Files\Levels\General\Hood</Filter>
     </ClInclude>
   </ItemGroup>

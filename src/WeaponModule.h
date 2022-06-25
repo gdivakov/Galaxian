@@ -23,15 +23,16 @@ public:
 		Ship* p_ship,
 		bool p_isEnemyShip
 	);
+	~WeaponModule();
+
 	void selectGun(GunType nextGun);
+	GunType selectNextGun();
 	Vector2 getGunPos() { return pos; };
 	void setGunPos(Vector2 nextPos) { pos = nextPos; }
 	GunType getSelectedGun() { return selectedGun; };
-
-	virtual void handleEvent(SDL_Event& e);
-	virtual void onBeforeRender();
-	~WeaponModule();
-	bool isShooting;
+	bool getIsShooting() { return isShooting; };
+	void setIsShooting(bool nextIsShooting) { isShooting = nextIsShooting; }
+	void handleRender();
 private:
 	bool isOnCooldown;
 	float cooldownMs;
@@ -45,4 +46,6 @@ private:
 	std::string fireSound;
 	Vector2 pos; // Relative pos
 	bool isShootStarted = false;
+	bool isShooting;
+	std::vector<GunType> installedGuns;
 };

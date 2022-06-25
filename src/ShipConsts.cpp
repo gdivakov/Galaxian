@@ -233,6 +233,7 @@ AmmoParams getAmmoParamsByGunType(GunType type)
     switch (type)
     {
     case BLAST:
+    case BLAST_DOUBLE:
         return 
         { 
             BLAST_AMMO_SPEED, 
@@ -241,6 +242,16 @@ AmmoParams getAmmoParamsByGunType(GunType type)
             BLAST_AMMO_EXPLOSION_TEXTURE_PARAMS,
             BLAST_AMMO_COLLIDER,
             COLLIDABLE_PROJECTILE_BLAST,
+        };
+    case BLAST_DIFFUSER:
+        return
+        {
+            BLAST_AMMO_SPEED,
+            BLAST_AMMO_TEXTURE_PARAMS,
+            BLAST_AMMO_TEXTURE_PARAMS,
+            BLAST_AMMO_EXPLOSION_TEXTURE_PARAMS,
+            BLAST_AMMO_COLLIDER,
+            COLLIDABLE_PROJECTILE_BLAST
         };
     case DIFFUSER:
         return
@@ -252,6 +263,8 @@ AmmoParams getAmmoParamsByGunType(GunType type)
             ROCKET_AMMO_COLLIDER,
             COLLIDABLE_PROJECTILE_ROCKET
         };
+    case ROCKET_DOUBLE:
+    case ROCKET:
     default:
         return 
         { 
@@ -275,7 +288,7 @@ ShipParams getShipParams(const ShipType type)
             SONIC_A,
             SONIC_A_SHIP,               // sprite 
             SONIC_A_SHIP_EXPLOSION,     // explosion 
-            { BLAST },                  // gunType 
+            { BLAST, BLAST_DOUBLE, BLAST_DIFFUSER }, // gunType 
             SONIC_A_SPEED,              // maxSpeed 
             THIN_SHIP_ARMOR,            // armor 
             THIN_SHIP_HEALTH,           // health 
@@ -286,27 +299,27 @@ ShipParams getShipParams(const ShipType type)
         return
         {
             SONIC_B,
-            SONIC_B_SHIP,               // sprite 
-            SONIC_B_SHIP_EXPLOSION,     // explosion 
-            { BLAST },                  // gunType 
-            SONIC_A_SPEED,              // maxSpeed 
-            THIN_SHIP_ARMOR,            // armor 
-            THIN_SHIP_HEALTH,           // health 
-            SONIC_A_COLLIDERS_DEFAULT,  // colliders 
-            GAME_OVER_SOUND             // explosionSound 
+            SONIC_B_SHIP,               
+            SONIC_B_SHIP_EXPLOSION,     
+            { BLAST, BLAST_DOUBLE, BLAST_DIFFUSER },
+            SONIC_A_SPEED,              
+            THIN_SHIP_ARMOR,            
+            THIN_SHIP_HEALTH,           
+            SONIC_A_COLLIDERS_DEFAULT,
+            GAME_OVER_SOUND             
         };
     case SONIC_C:
         return
         {
             SONIC_C,
-            SONIC_C_SHIP,               // sprite 
-            SONIC_C_SHIP_EXPLOSION,     // explosion 
-            { BLAST },                  // gunType 
-            SONIC_A_SPEED,              // maxSpeed 
-            THIN_SHIP_ARMOR,            // armor 
-            THIN_SHIP_HEALTH,           // health 
-            SONIC_C_COLLIDERS_DEFAULT,  // colliders 
-            GAME_OVER_SOUND             // explosionSound 
+            SONIC_C_SHIP,               
+            SONIC_C_SHIP_EXPLOSION,     
+            { BLAST, BLAST_DOUBLE, BLAST_DIFFUSER},
+            SONIC_A_SPEED,              
+            THIN_SHIP_ARMOR,            
+            THIN_SHIP_HEALTH,           
+            SONIC_C_COLLIDERS_DEFAULT,  
+            GAME_OVER_SOUND             
         };
     case PIRATE_A:
         return

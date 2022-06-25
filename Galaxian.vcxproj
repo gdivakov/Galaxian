@@ -63,6 +63,7 @@
     <ClCompile Include="src\StatusBarView.cpp" />
     <ClCompile Include="src\StatusModule.cpp" />
     <ClCompile Include="src\TotalView.cpp" />
+    <ClCompile Include="src\WeaponView.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\BuffDescView.h" />
@@ -115,6 +116,7 @@
     <ClInclude Include="src\StatusBarView.h" />
     <ClInclude Include="src\StatusModule.h" />
     <ClInclude Include="src\TotalView.h" />
+    <ClInclude Include="src\WeaponView.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include=".gitignore" />

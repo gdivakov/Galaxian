@@ -8,7 +8,9 @@ class DiffuserPJManager : public ProjectileManager
 {
 public:
 	DiffuserPJManager(GunType type, const App* system, Ship* ship)
-		: ProjectileManager(type, system, ship) {};
+		: ProjectileManager(type, system, ship) {
+		std::cout << "hello" << std::endl;
+	};
 	virtual void startProjectile();
 private:
 	PJ_Params getParamsByAngle(int angle);

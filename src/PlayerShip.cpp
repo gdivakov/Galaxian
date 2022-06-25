@@ -1,6 +1,10 @@
 #include "PlayerShip.h"
 #include "ShipSpecialsConsts.h"
 
+const Vector2 DEFAULT_GUN_POS = Vector2();
+const Vector2 DIFFUSER_GUN_POS = Vector2(0, 25);
+const Vector2 BLAST_DOUBLE_GUN_POS = Vector2(-10, 0);
+
 PlayerShip::PlayerShip(
     LevelBase* p_level,
     ShipType type) 
@@ -13,8 +17,56 @@ PlayerShip::PlayerShip(
 
 void PlayerShip::handleEvent(SDL_Event& e)
 {
-    gun->handleEvent(e);
+    // Gun events
+    if (!isActive)
+    {
+        gun->setIsShooting(false);
+    }
 
+    bool isNotRepeat = e.key.repeat == 0;
+
+    if (e.type == SDL_KEYDOWN && !level->getIsCompleted())
+    {
+        switch (e.key.keysym.sym)
+        {
+        case SDLK_SPACE:
+        case SDLK_l:
+            gun->setIsShooting(true);
+            return;
+        case SDLK_f:
+            if (!isNotRepeat || !isActive || level->isPaused)
+            {
+                break;
+            }
+
+            GunType selectedGun = gun->selectNextGun();
+
+            gun->setGunPos(DEFAULT_GUN_POS); // Todo: Move to config
+
+            if (selectedGun == BLAST_DOUBLE)
+            {
+                gun->setGunPos(BLAST_DOUBLE_GUN_POS);
+            }
+
+            if (selectedGun == BLAST_DIFFUSER)
+            {
+                gun->setGunPos(DIFFUSER_GUN_POS);
+            }
+        }
+    }
+
+    if (e.type == SDL_KEYUP)
+    {
+        switch (e.key.keysym.sym)
+        {
+        case SDLK_SPACE:
+        case SDLK_l:
+            gun->setIsShooting(false);
+            return;
+        }
+    }
+
+    // Ship events
     if (level->isPaused || hasReachedEnd || !specials.status->getHealth())
     {
         return;
@@ -31,7 +83,7 @@ void PlayerShip::handleEvent(SDL_Event& e)
         }
     }
 
-    if (e.type == SDL_KEYDOWN && e.key.repeat == 0)
+    if (e.type == SDL_KEYDOWN && isNotRepeat)
     {
         if (!isMoveStarted)
         {
@@ -55,7 +107,7 @@ void PlayerShip::handleEvent(SDL_Event& e)
         }
     }
     
-    if (e.type == SDL_KEYUP && e.key.repeat == 0 && isMoveStarted)
+    if (e.type == SDL_KEYUP && isNotRepeat && isMoveStarted)
     {
         switch (e.key.keysym.sym)
         {
@@ -82,7 +134,7 @@ void PlayerShip::onBeforeRender()
         level->getIsCompleted() ? moveToFinish() : move();
     }
 
-    gun->onBeforeRender();
+    gun->handleRender();
     specials.buff->updateBuffs();
 
     std::vector<SDL_Rect>& shipClips = getClips();

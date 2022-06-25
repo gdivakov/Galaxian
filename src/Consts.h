@@ -17,6 +17,7 @@ const float RAD_TO_DEG = 180.0f / M_PI;
 const float DEG_TO_RAD = M_PI / 180;
 
 const SDL_Color textColor = { 0, 0, 0 };
+const SDL_Color whiteTextColor = { 255, 255, 255 };
 const SDL_Color selectedOptionColor = { 1, 98, 177 };
 const SDL_Color selectedDisabledOptionColor = { 153, 153, 153 };
 
@@ -33,6 +34,7 @@ const std::string FONT_PATH = "res/Staatliches-Regular.ttf";
 
 const int DEFAULT_FONT_SIZE = 35;
 const int SMALL_FONT_SIZE = 20;
+const int MEDIUM_FONT_SIZE = 30;
 const int LARGE_FONT_SIZE = 45;
 
 struct Circle

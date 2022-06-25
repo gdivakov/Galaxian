@@ -8,16 +8,24 @@
 #include "Texture.h"
 #include "LevelBase.h"
 
+struct ShipUpgrade
+{
+	Texture* text;
+	Texture* shipPreview;
+	int frame;
+};
+
 class TotalView
 {
 public:
 	TotalView(LevelBase* p_level);
 	~TotalView();
 
-	void handleRender();
-	void handleEvent(SDL_Event& e);
 	bool getIsActive() { return isActive; };
 	void setIsActive(bool nextIsActive) { initScore(); isActive = nextIsActive; };
+	void onBeforeRender();
+	void onAfterRender();
+	void handleEvent(SDL_Event& e);
 private:
 	typedef std::map<std::string, Texture*> TextureMap;
 	
@@ -29,6 +37,7 @@ private:
 	TextureMap scoreTextures;
 	TextureMap buttonTextures;
 	std::string selectedOption;
+	ShipUpgrade shipUpgrade;
 
 	void initScore();
 	void initButtons();
