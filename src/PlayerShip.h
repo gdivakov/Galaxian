@@ -15,15 +15,14 @@ public:
     );
 
     int getMilesPassed();
+
     virtual void handleEvent(SDL_Event& e);
     virtual void onBeforeRender();
-    virtual void startAcceleration() {};
-protected:
-    virtual void handleAcceleration();
 private:
-    int acceleratedMiles;
-    bool isMoveStarted;
+    int acceleratedMiles = 0;
+    bool isMoveStarted = false;
     bool hasReachedEnd = false;
 
     void moveToFinish();
+    virtual void handleAcceleration();
 };

@@ -288,6 +288,7 @@ ShipParams getShipParams(const ShipType type)
             SONIC_A,
             SONIC_A_SHIP,               // sprite 
             SONIC_A_SHIP_EXPLOSION,     // explosion 
+            SONIC_A_SHIP_ACCELERATE,    // accelerate
             { BLAST, BLAST_DOUBLE, BLAST_DIFFUSER }, // gunType 
             SONIC_A_SPEED,              // maxSpeed 
             THIN_SHIP_ARMOR,            // armor 
@@ -300,7 +301,8 @@ ShipParams getShipParams(const ShipType type)
         {
             SONIC_B,
             SONIC_B_SHIP,               
-            SONIC_B_SHIP_EXPLOSION,     
+            SONIC_B_SHIP_EXPLOSION,  
+            SONIC_B_SHIP_ACCELERATE,
             { BLAST, BLAST_DOUBLE, BLAST_DIFFUSER },
             SONIC_A_SPEED,              
             THIN_SHIP_ARMOR,            
@@ -313,7 +315,8 @@ ShipParams getShipParams(const ShipType type)
         {
             SONIC_C,
             SONIC_C_SHIP,               
-            SONIC_C_SHIP_EXPLOSION,     
+            SONIC_C_SHIP_EXPLOSION,   
+            SONIC_C_SHIP_ACCELERATE,
             { BLAST, BLAST_DOUBLE, BLAST_DIFFUSER},
             SONIC_A_SPEED,              
             THIN_SHIP_ARMOR,            
@@ -327,6 +330,7 @@ ShipParams getShipParams(const ShipType type)
             PIRATE_A,
             PIRATE_A_SHIP, 
             PIRATE_A_SHIP_EXPLOSION, 
+            PIRATE_A_SHIP,
             { ROCKET },
             PIRATE_A_SPEED, 
             THIN_SHIP_ARMOR, 
@@ -340,6 +344,7 @@ ShipParams getShipParams(const ShipType type)
             BOSS_A,
             BOSS_A_SHIP,
             BOSS_A_SHIP_EXPLOSION,
+            BOSS_A_SHIP,
             { ROCKET, DIFFUSER, ROCKET_DOUBLE },
             BOSS_A_SPEED,
             STRONG_SHIP_ARMOR,

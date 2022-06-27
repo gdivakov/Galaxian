@@ -133,10 +133,10 @@ void Spawner::spawnBuffWithChance(Vector2 buffPos)
 
 	int chance = rand() % 100;
 
-	if (chance > BUFF_SPAWN_CHANCE)
-	{
-		return;
-	}
+	//if (chance > BUFF_SPAWN_CHANCE)
+	//{
+	//	return;
+	//}
 
 	BuffView* nextBuff = new BuffView(level, buffPos, BUFF_RANDOM);
 	buffs.push_back(nextBuff);
@@ -193,8 +193,18 @@ void Spawner::accelerate()
 {
 	for (int i = 0; i < enemies.size(); i++)
 	{
-		enemies[i]->startAcceleration();
+		enemies[i]->onAccelerate();
 	}
 
-	player->startAcceleration();
+	player->onAccelerate();
+}
+
+void Spawner::stopAcceleration()
+{
+	for (int i = 0; i < enemies.size(); i++)
+	{
+		enemies[i]->onAccelerateEnd();
+	}
+
+	player->onAccelerateEnd();
 }

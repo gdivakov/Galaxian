@@ -19,13 +19,13 @@ public:
     EnemyShip(
         LevelBase* p_level, 
         ShipType type, 
-        Ship* playerShip,
+        Ship* playerShip, // Todo: replace by level->getPlayer();
         std::vector<BezierCurve> pathCurves
     );
     virtual ~EnemyShip();
     virtual void onBeforeRender();
     virtual void handleEvent(SDL_Event& e);
-    virtual void startAcceleration();
+    void onAccelerate();
 protected:
     virtual void handleAcceleration();
     bool isInView();

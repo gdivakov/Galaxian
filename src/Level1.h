@@ -17,12 +17,12 @@ struct NextEnemy
 
 const std::vector<NextEnemy> SPAWNED_ENEMIES 
 { 
-	//{ 2000, PIRATE_A }, 
+	{ 2000, PIRATE_A }, 
 	//{ 3000, PIRATE_A },
 	//{ 5000, PIRATE_A },
 	//{ 10000, PIRATE_A },
 	//{ 12000, PIRATE_A },
-	//{ 2000, BOSS_A },
+	{ 10000, BOSS_A },
 };
 
 class Level1 : public LevelBase {
@@ -30,7 +30,6 @@ public:
 	Level1(const App* p_system, LevelManager* p_controller);
 	~Level1();
 	virtual void load();
-	virtual void accelerate();
 	virtual void handleTick();
 	virtual void handleCompleted();
 private:
@@ -45,7 +44,9 @@ protected:
 // - meteors
 // - enemy ships
 // - more enemy flying trace
-// - show "ship upgrade available" on totalView; 
+// - update hit animation
+// - make only one gun available for hard mode
+// - flying pj should not be removed when gun changed
 
 // To Refactor:
 // - replace for stl

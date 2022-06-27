@@ -13,6 +13,16 @@ Texture::Texture(SDL_Renderer* p_renderer)
 	size.h = 0;
 }
 
+Texture::Texture(SDL_Renderer* p_renderer, SpriteParams sprite) : Texture(p_renderer)
+{
+	loadFromSprite(sprite);
+}
+
+Texture::Texture(SDL_Renderer* p_renderer, std::string path) : Texture(p_renderer)
+{
+	loadFromFile(path);
+}
+
 Texture::~Texture()
 {
 	free();

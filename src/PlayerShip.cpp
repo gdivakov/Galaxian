@@ -12,7 +12,7 @@ PlayerShip::PlayerShip(
     Ship(p_level->getSystem(), getShipParams(type), p_level, false)
 {
     rotation = 0;
-    pos = Vector2((WINDOWED_WIDTH)/2, WINDOWED_HEIGHT - getHeight() - 20);
+    pos = Vector2((WINDOWED_WIDTH)/2, WINDOWED_HEIGHT - getTexture()->getHeight() - 20);
 }
 
 void PlayerShip::handleEvent(SDL_Event& e)
@@ -137,15 +137,17 @@ void PlayerShip::onBeforeRender()
     gun->handleRender();
     specials.buff->updateBuffs();
 
-    std::vector<SDL_Rect>& shipClips = getClips();
+    std::vector<SDL_Rect>& shipClips = getTexture()->getClips();
     SDL_Rect* currentClip = &shipClips[frame / shipClips.size()];
 
-    render(pos - Vector2(size.w / 2, size.h / 2), currentClip, rotation, NULL);
+    Size& size = getTexture()->size;
+
+    getTexture()->render(pos - Vector2(size.w / 2, size.h / 2), currentClip, rotation, NULL);
 }
 
 void PlayerShip::moveToFinish()
 {
-    if (pos.y + size.h < 0)
+    if (pos.y + getTexture()->size.h < 0)
     {
         hasReachedEnd = true;
         level->handleCompleted();

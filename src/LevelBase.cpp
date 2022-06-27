@@ -20,6 +20,20 @@ LevelBase::~LevelBase()
 	delete timer;
 }
 
+void LevelBase::accelerate()
+{
+	isAccelerated = true;
+	acceleratedAt = getTime();
+
+	spawner->accelerate();
+}
+
+void LevelBase::stopAcceleration()
+{ 
+	isAccelerated = false; 
+	spawner->stopAcceleration();
+};
+
 void LevelBase::restart() { 
 	unload(); 
 	load(); 

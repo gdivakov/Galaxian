@@ -27,6 +27,7 @@ public:
 	void spawnPlayer();
 	void spawnBuffWithChance(Vector2 buffPos);
 	void accelerate();
+	void stopAcceleration();
 	void setIsBuffSpawn(bool nextIsSpawn) { isBuffsSpawnEnabled = nextIsSpawn; };
 	int getSpawnedEnemiesCount() { return spawnedEnemiesCount; };
 private:

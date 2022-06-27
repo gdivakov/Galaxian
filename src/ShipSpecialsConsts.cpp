@@ -12,7 +12,8 @@ BuffParams getBuffParamsByType(BuffType type, Uint32 startTime)
     {
     case BUFF_RANDOM:
         srand(time(NULL));
-        nextBuff = *availableBuffParams[rand() % availableBuffParams.size()];
+        //nextBuff = *availableBuffParams[rand() % availableBuffParams.size()];
+        nextBuff = speedUp;
         break;
     case BUFF_ARMOR_UP:
         nextBuff = armorUp; break;

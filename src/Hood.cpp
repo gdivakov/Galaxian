@@ -58,10 +58,14 @@ void Hood::handleEvent(SDL_Event& e)
         return gameOverView->handleEvent(e);
     }
 
+    Ship* player = level->getPlayer();
+
     if (e.key.keysym.sym == SDLK_ESCAPE && 
         e.key.repeat == 0 && 
         !pauseView->hasNestedActive() &&
-        !level->getIsCompleted())
+        !level->getIsCompleted() &&
+        player != nullptr &&
+        player->isActive)
     {
         return level->isPaused ? handleResumed() : handlePaused();
     }

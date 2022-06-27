@@ -1,10 +1,9 @@
 #include "BossShip.h"
 #include "BossShipConsts.h"
 
-// Todo: Boss should drop one of his weapons (double rocket or diffuser)
-// Todo: Speed up level to finish the level
 // Todo: Spawn some enemies when boss health is low and at the beginning of the fight
 // Todo: Add different sounds and PJ sprites to boss
+
 BossShip::BossShip(
     LevelBase* p_level,
     ShipType type,
@@ -32,7 +31,7 @@ void BossShip::amplify()
 		updateGunPos(BOSS_GUN_CENTER);
 		gun->selectGun(DIFFUSER); // Select diffuser gun
 
-		loadFromSprite(diffuserBossSprite); // Load ship sprites for diffuser gun
+		getTexture()->loadFromSprite(diffuserBossSprite); // Load ship sprites for diffuser gun
 		addPath(BOSS_PATH_C); // Add new path
 		setMaxSpeed(maxSpeed * 2); // Accelerate ship
 		return;
@@ -43,7 +42,7 @@ void BossShip::amplify()
 		updateGunPos(BOSS_GUN_LEFT);
 		gun->selectGun(ROCKET_DOUBLE);
 
-		loadFromSprite(doubledBossSprite);
+		getTexture()->loadFromSprite(doubledBossSprite);
 		addPath(BOSS_PATH_B);
 		return;
 	}
@@ -77,11 +76,11 @@ void BossShip::onBeforeRender()
 		}
 	}
 
-	std::vector<SDL_Rect>& shipClips = getClips();
+	std::vector<SDL_Rect>& shipClips = getTexture()->getClips();
 	SDL_Rect* currentClip = &shipClips[frame / shipClips.size()];
+	Size& size = getTexture()->size;
 
-	render(pos - Vector2(size.w / 2, size.h / 2), currentClip, rotation, NULL);
-	//displayPath();
+	getTexture()->render(pos - Vector2(size.w / 2, size.h / 2), currentClip, rotation, NULL);
 }
 
 void BossShip::updateGunPos(GUN_POS nextPos)

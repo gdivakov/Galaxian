@@ -16,7 +16,10 @@ class Texture: public Object
 {
 public: 
 	typedef std::vector<SDL_Rect> Clips;
+
 	Texture(SDL_Renderer* p_renderer);
+	Texture(SDL_Renderer* p_renderer, SpriteParams sprite);
+	Texture(SDL_Renderer* p_renderer, std::string path);
 	virtual ~Texture();
 
 	bool loadFromFile(std::string path, RGB* colorKeyRGB = NULL);

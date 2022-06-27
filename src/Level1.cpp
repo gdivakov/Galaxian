@@ -116,14 +116,6 @@ void Level1::initAudio()
 	audioPlayer->loadMusic(LEVEL_1_MUSIC);
 }
 
-void Level1::accelerate()
-{
-	isAccelerated = true;
-	acceleratedAt = getTime();
-
-	spawner->accelerate();
-}
-
 void Level1::handleCompleted()
 {
 	pauseTimer();

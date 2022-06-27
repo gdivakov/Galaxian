@@ -11,8 +11,10 @@
 struct ShipUpgrade
 {
 	Texture* text;
-	Texture* shipPreview;
-	int frame;
+	Texture* prevState;
+	Texture* nextState;
+	Texture* trasnformTo;
+	int frame; // One frame instance as they have equal amount of sprite length
 };
 
 class TotalView

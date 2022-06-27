@@ -21,7 +21,6 @@ public:
 	};
 	~MainScreen();
 	virtual void load();
-	virtual void accelerate() {};
 	virtual void handleCompleted();
 	virtual void handleTick() {};
 private:

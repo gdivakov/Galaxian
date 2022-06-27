@@ -63,7 +63,7 @@ void EnemyShip::followPath(bool withDirRotation)
 		bool hardModeSelected = readSettingsConfig()[SETTINGS_FIELDS::DIFFICULTY];
 		std::cout << "is hard mode: " << hardModeSelected << std::endl;
 
-		if (!hardModeSelected)
+		if (!hardModeSelected || level->getPlayer() == nullptr)
 		{
 			currentWaypoint = 0; // Repeat path
 			return;
@@ -103,13 +103,11 @@ void EnemyShip::onBeforeRender()
 		}
 	}
 
-	std::vector<SDL_Rect>& shipClips = getClips();
+	std::vector<SDL_Rect>& shipClips = getTexture()->getClips();
 	SDL_Rect* currentClip = &shipClips[frame / shipClips.size()];
+	Size& size = getTexture()->size;
 
-	render(pos - Vector2(size.w / 2, size.h / 2), currentClip, rotation, NULL);
-
-	//showColliders();
-	//displayPath();
+	getTexture()->render(pos - Vector2(size.w / 2, size.h / 2), currentClip, rotation, NULL);
 }
 
 void EnemyShip::handleEvent(SDL_Event& e)
@@ -127,11 +125,12 @@ void EnemyShip::displayPath()
 {
 	int pathIdx = 0;
 
-	SDL_SetRenderDrawColor(Texture::renderer, 0xFF, 0xFF, 0xFF, 0xFF);
+	SDL_Renderer* renderer = level->getSystem()->getRenderer();
+	SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
 
 	do {
 		SDL_RenderDrawLine(
-			Texture::renderer,
+			renderer,
 			path[pathIdx].x,
 			path[pathIdx].y,
 			path[pathIdx + 1].x,
@@ -143,6 +142,10 @@ void EnemyShip::displayPath()
 
 bool EnemyShip::isInView()
 {
+	if (level->getPlayer() == nullptr)
+	{
+		return false;
+	}
 	ShipRect playerRect = player->getRect();
 	const float acceptableShift = 0.1;
 
@@ -159,13 +162,15 @@ bool EnemyShip::isInView()
 	return inView;
 }
 
-void EnemyShip::startAcceleration()
+void EnemyShip::onAccelerate()
 {
+	Ship::onAccelerate();
+
 	isActive = false;
 	unlink();
 }
 
-void EnemyShip::handleAcceleration() // handle level acceleration
+void EnemyShip::handleAcceleration()
 {
 	if (!level->getIsAccelerated())
 	{

@@ -1,5 +1,6 @@
 #include "TotalView.h"
 #include "PlayerShip.h"
+#include "ShipConsts.h"
 
 const std::string TITLE = "Great job!";
 const std::string NEXT_LEVEL_TEXT = "Next  level  (coming soon)";
@@ -7,6 +8,7 @@ const std::string QUIT_TEXT = "Quit";
 const std::string MILES_PASSED_TEXT = "- Miles  passed:  ";
 const std::string ENEMIES_KILLED_TEXT = "- Enemies  killed:  ";
 const std::string SHIP_UPGRADE_TEXT = "New ship upgrade installed:";
+const std::string TRANSFORM_TO_PATH = "res/images/transform_to.png";
 
 std::vector<std::string> scoreTexts = 
 {
@@ -20,6 +22,19 @@ std::vector<std::string> buttonTexts =
    NEXT_LEVEL_TEXT,
    QUIT_TEXT
 };
+
+std::vector<SpriteParams> getSelectedShipSprites(ShipType type)
+{
+    switch (type)
+    {
+    case SONIC_A:
+        return { SONIC_A_SHIP, SONIC_A2_SHIP};
+    case SONIC_B:
+        return { SONIC_B_SHIP, SONIC_B2_SHIP };
+    case SONIC_C:
+        return { SONIC_C_SHIP, SONIC_C2_SHIP };
+    }
+}
 
 TotalView::TotalView(LevelBase* p_level)
 {
@@ -59,9 +74,15 @@ void TotalView::initScore()
     // Prepare ship upgrade section
     SDL_Renderer* renderer = level->getSystem()->getRenderer();
 
-    shipUpgrade = { new Texture(renderer), new Texture(renderer)};
+    shipUpgrade = { new Texture(renderer), new Texture(renderer), new Texture(renderer), new Texture(renderer) };
+
     shipUpgrade.text->loadFromRenderedText(font, SHIP_UPGRADE_TEXT, textColor);
-    shipUpgrade.shipPreview->loadFromSprite(SONIC_C_SHIP);
+    shipUpgrade.trasnformTo->loadFromFile(TRANSFORM_TO_PATH);
+
+    std::vector<SpriteParams> params = getSelectedShipSprites(player->getType());
+
+    shipUpgrade.prevState->loadFromSprite(params.front());
+    shipUpgrade.nextState->loadFromSprite(params.back());
 }
 
 TotalView::~TotalView()
@@ -77,7 +98,8 @@ TotalView::~TotalView()
     }
 
     delete shipUpgrade.text;
-    delete shipUpgrade.shipPreview;
+    delete shipUpgrade.prevState;
+    delete shipUpgrade.nextState;
 
     scoreTextures.clear();
     buttonTextures.clear();
@@ -86,7 +108,8 @@ TotalView::~TotalView()
     TTF_CloseFont(fontLarge);
 
     shipUpgrade.text = nullptr;
-    shipUpgrade.shipPreview = nullptr;
+    shipUpgrade.prevState = nullptr;
+    shipUpgrade.nextState = nullptr;
     font = nullptr;
     fontLarge = nullptr;
     level = nullptr;
@@ -174,9 +197,6 @@ void TotalView::onBeforeRender()
     marginTop += 36;
 
     // Ship upgrade section
-    std::vector<SDL_Rect>& shipClips = shipUpgrade.shipPreview->getClips();
-    SDL_Rect* currentClip = &shipClips[shipUpgrade.frame / shipClips.size()];
-
     shipUpgrade.text->render(Vector2(rect.x + 48, rect.y + marginTop));
     marginTop += shipUpgrade.text->size.h;
 
@@ -185,7 +205,7 @@ void TotalView::onBeforeRender()
         rect.x + 48,
         rect.y + marginTop,
         rect.w - 48*2,
-        shipUpgrade.shipPreview->size.h + 48
+        shipUpgrade.nextState->size.h + 48
     };
 
     marginTop += 24;
@@ -194,7 +214,17 @@ void TotalView::onBeforeRender()
     SDL_RenderFillRect(renderer, &previewRect2);
     SDL_RenderDrawRect(renderer, &previewRect2);
 
-    shipUpgrade.shipPreview->render(Vector2(rect.x + (rect.w - shipUpgrade.shipPreview->size.w)/2, rect.y + marginTop), currentClip);
+    std::vector<SDL_Rect>& shipClips = shipUpgrade.prevState->getClips();
+    SDL_Rect* currentClip = &shipClips[shipUpgrade.frame / shipClips.size()];
+
+    shipUpgrade.prevState->render(Vector2(previewRect2.x + previewRect2.w / 4, previewRect2.y + (previewRect2.h - shipUpgrade.prevState->size.h)/2), currentClip);
+
+    shipUpgrade.trasnformTo->render(Vector2(previewRect2.x + (previewRect2.w - shipUpgrade.trasnformTo->size.w)/2, previewRect2.y + (previewRect2.h - shipUpgrade.trasnformTo->size.h) / 2));
+
+    std::vector<SDL_Rect>& shipClips2 = shipUpgrade.nextState->getClips();
+    SDL_Rect* currentClip2 = &shipClips2[shipUpgrade.frame / shipClips2.size()];
+
+    shipUpgrade.nextState->render(Vector2(previewRect2.x + previewRect2.w - previewRect2.w / 4 - shipUpgrade.prevState->size.w, previewRect2.y + (previewRect2.h - shipUpgrade.nextState->size.h) / 2), currentClip2);
 
     bool isFirst = true;
 
@@ -232,7 +262,7 @@ void TotalView::onAfterRender()
         return;
     }
 
-    int clipLength = shipUpgrade.shipPreview->getClips().size();
+    int clipLength = shipUpgrade.nextState->getClips().size();
 
     if (++shipUpgrade.frame / clipLength >= clipLength)
     {

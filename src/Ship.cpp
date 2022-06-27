@@ -8,44 +8,83 @@
 
 class BuffModule;
 
-Extrems getExtrems(std::vector<float> values);
+Extrems getExtrems(std::vector<float> values); // Todo: replace by stl
 
 Ship::Ship(const App* p_system, ShipParams params, LevelBase* p_level, bool isEnemyShip)
     :
-    Texture(p_system->getRenderer()),
     Collidable(
         p_system->getRenderer(),
         COLLIDABLE_SHIP,
         params.sprite.imageH > params.sprite.imageW
         ? params.sprite.imageH / 2
         : params.sprite.imageW / 2,
-        params.colliders
-    ),
-    level(p_level)
+        params.colliders)
 {
-    resetAnimation();
     rotation = 0;
     vel = Vector2();
+    level = p_level;
     maxSpeed = params.maxSpeed;
-    explosion = params.explosion;
     explosionSound = params.explosionSound;
     isPlayer = !isEnemyShip;
     type = params.type;
+    resetAnimation();
+    SDL_Renderer* renderer = p_system->getRenderer();
+    textures = 
+    { 
+        new Texture(renderer, params.sprite),
+        new Texture(renderer, params.explosion),
+        new Texture(renderer, params.accelerate)
+    };
+
+    textures.selected = textures.common;
 
     gun = new WeaponModule(params.guns, p_system, this, isEnemyShip);
+
     specials.status = new StatusModule(params.health, params.armor);
     specials.buff = new BuffModule(this);
 
-    loadFromSprite(params.sprite);
     
     Vector2 top(pos.x, pos.y);
-    Vector2 center = pos + Vector2(0, size.h / 2);
+    Vector2 center = pos + Vector2(0, textures.selected->size.h / 2);
 
     dir = top - center;
 
     shiftColliders();
 
     animatedBuff = new AnimatedBuffManager(this);
+}
+
+Ship::~Ship()
+{
+    unlink();
+
+    delete gun;
+    delete specials.buff;
+    delete specials.status;
+    delete textures.common;
+    delete textures.accelerate;
+    delete textures.explosion;
+    delete animatedBuff;
+
+    gun = nullptr;
+    level = nullptr;
+    specials.buff = nullptr;
+    specials.status = nullptr;
+    textures.common = nullptr;
+    textures.accelerate = nullptr;
+    textures.explosion = nullptr;
+    textures.selected = nullptr;
+    animatedBuff = nullptr;
+}
+
+void Ship::onAccelerate()
+{
+    textures.selected = textures.accelerate;
+}
+
+void Ship::onAccelerateEnd()
+{
+    textures.selected = textures.common;
 }
 
 void Ship::move()
@@ -65,13 +104,13 @@ void Ship::updatePosByVelocity()
     shiftColliders();
 
     // Check boundaries
-    if ((pos.x - size.w / 2 < 0) || (pos.x + size.w / 2 > level->getSystem()->getWindowSize()->w))
+    if ((pos.x - textures.selected->size.w / 2 < 0) || (pos.x + textures.selected->size.w / 2 > level->getSystem()->getWindowSize()->w))
     {
         pos.x -= vel.x;
         shiftColliders();
     }
 
-    if ((pos.y - size.h / 2 < 0) || (pos.y + size.h / 2 > level->getSystem()->getWindowSize()->h))
+    if ((pos.y - textures.selected->size.h / 2 < 0) || (pos.y + textures.selected->size.h / 2 > level->getSystem()->getWindowSize()->h))
     {
         pos.y -= vel.y;
         shiftColliders();
@@ -136,7 +175,7 @@ void Ship::destroyCollidable()
 
     isActive = false;
 
-    loadFromSprite(explosion);
+    textures.selected = textures.explosion;
     resetAnimation();
 
     unlink();
@@ -144,7 +183,7 @@ void Ship::destroyCollidable()
 
 void Ship::onAfterRender()
 {
-    int clipLength = getClips().size();
+    int clipLength = textures.selected->getClips().size();
 
     gun->onAfterRender();
     specials.buff->updateBuffs();
@@ -202,20 +241,4 @@ void Ship::refreshHealth()
 void Ship::refreshArmor()
 {
     specials.status->refreshArmor();
-}
-
-Ship::~Ship()
-{
-    delete gun;
-    delete specials.buff;
-    delete specials.status;
-
-    gun = NULL;
-    level = NULL;
-    specials.buff = NULL;
-    specials.status = NULL;
-
-    delete animatedBuff;
-    animatedBuff = NULL;
-    unlink();
 }

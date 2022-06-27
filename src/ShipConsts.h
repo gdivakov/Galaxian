@@ -7,16 +7,24 @@
 #include "SoundConst.h"
 #include "Texture.h"
 
-const SpriteParams SONIC_A_SHIP = { "res/sprites/ships/shipA.png", 102, 114, 10 };
-const SpriteParams SONIC_B_SHIP = { "res/sprites/ships/shipB.png", 102, 123, 10 };
-const SpriteParams SONIC_C_SHIP = { "res/sprites/ships/shipC.png", 75, 129, 10 };
+const SpriteParams SONIC_A_SHIP = { "res/sprites/ships/shipA.png", 102, 122, 10 };
+const SpriteParams SONIC_B_SHIP = { "res/sprites/ships/shipB.png", 96, 124, 10 };
+const SpriteParams SONIC_C_SHIP = { "res/sprites/ships/shipC.png", 75, 137, 10 };
+
+const SpriteParams SONIC_A2_SHIP = { "res/sprites/ships/shipA2.png", 98, 132, 10 };
+const SpriteParams SONIC_B2_SHIP = { "res/sprites/ships/shipB2.png", 120, 129, 10 };
+const SpriteParams SONIC_C2_SHIP = { "res/sprites/ships/shipC2.png", 95, 123, 10 };
 
 const SpriteParams PIRATE_A_SHIP = { "res/sprites/ships/pirateA.png", 65, 144, 10 };
 const SpriteParams BOSS_A_SHIP = { "res/sprites/ships/bossA.png", 300, 195, 9 };
 
-const SpriteParams SONIC_A_SHIP_EXPLOSION = { "res/sprites/ships/explosion_sonicA.png", 165, 114, 9 };
-const SpriteParams SONIC_B_SHIP_EXPLOSION = { "res/sprites/ships/explosion_sonicB.png", 176, 123, 9 };
-const SpriteParams SONIC_C_SHIP_EXPLOSION = { "res/sprites/ships/explosion_sonicC.png", 165, 129, 9 };
+const SpriteParams SONIC_A_SHIP_ACCELERATE = { "res/sprites/ships/acceleration_sonicA.png", 102, 122, 10 };
+const SpriteParams SONIC_B_SHIP_ACCELERATE = { "res/sprites/ships/acceleration_sonicB.png", 96, 124, 10 };
+const SpriteParams SONIC_C_SHIP_ACCELERATE = { "res/sprites/ships/acceleration_sonicC.png", 75, 137, 10 };
+
+const SpriteParams SONIC_A_SHIP_EXPLOSION = { "res/sprites/ships/explosion_sonicA.png", 165, 122, 9 };
+const SpriteParams SONIC_B_SHIP_EXPLOSION = { "res/sprites/ships/explosion_sonicB.png", 166, 128, 9 };
+const SpriteParams SONIC_C_SHIP_EXPLOSION = { "res/sprites/ships/explosion_sonicC.png", 165, 137, 9 };
 
 const SpriteParams PIRATE_A_SHIP_EXPLOSION = { "res/sprites/ships/explosion_pirateA.png", 103, 144, 8 };
 const SpriteParams BOSS_A_SHIP_EXPLOSION = { "res/sprites/ships/explosion_bossA.png", 300, 191, 10 };
@@ -61,6 +69,8 @@ struct ShipParams {
 	ShipType type;
 	SpriteParams sprite;
 	SpriteParams explosion;
+	SpriteParams accelerate;
+
 	std::vector<GunType >guns;
 	int maxSpeed;
 	int armor;

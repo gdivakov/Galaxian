@@ -22,14 +22,13 @@ public:
 	Hood* hood = NULL;
 
 	LevelBase(const App* p_system, LevelManager* p_controller);
-	virtual void load() = 0;
-	virtual void accelerate() = 0;
-	virtual void handleTick() = 0;
 	virtual ~LevelBase();
 
 	Ship* getPlayer();
 	Spawner* getSpawner() { return spawner; };
 	void unload();
+	void accelerate();
+	void stopAcceleration();
 	void quit();
 	void registerListeners();
 	void deregisterListeners();
@@ -42,6 +41,8 @@ public:
 	bool getIsAccelerated() { return isAccelerated; };
 	bool getAcceleratedAt() { return acceleratedAt; };
 	virtual void handleCompleted() = 0;
+	virtual void load() = 0;
+	virtual void handleTick() = 0;
 protected:
 	const App* system;
 	SDL_Renderer* renderer;
@@ -56,5 +57,4 @@ protected:
 	Uint32 acceleratedAt;
 
 	virtual void initAudio() = 0;
-	void stopAcceleration() { isAccelerated = false; };
 };
