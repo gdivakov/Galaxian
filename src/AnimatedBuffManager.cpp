@@ -77,7 +77,6 @@ AnimatedBuff::~AnimatedBuff()
 	ship = NULL;
 }
 
-
 void AnimatedBuff::onBeforeRender()
 {
 	if (!isActive)

@@ -99,16 +99,11 @@ void Spawner::spawnEnemy(ShipType type)
 
 	switch (type)
 	{
-	case PIRATE_B:
-		nextEnemy = new EnemyShip(level, PIRATE_B, getEnemyPathCurves(enemies.size()));
-		break;
-	case PIRATE_A:
-	default:
-			nextEnemy = new EnemyShip(level, PIRATE_A, getEnemyPathCurves(enemies.size()));
-			break;
 	case BOSS_A:
 		nextEnemy = new BossShip(level, BOSS_A);
 		break;
+	default: // Pirate
+		nextEnemy = new EnemyShip(level, type, getEnemyPathCurves(enemies.size()));
 	}
 
 	nextEnemy->linkTo(player);

@@ -90,16 +90,50 @@ const Colliders PIRATE_A_COLLIDERS =
 const Colliders PIRATE_B_COLLIDERS =
 {
 	{
-		Vector2(-9, -21 - 50),
-		Vector2(9, -21 - 50),
-		Vector2(9, 21 - 50),
-		Vector2(-9, 21 - 50),
-	},
+		Vector2(-13, -55),
+		Vector2(13, -55),
+		Vector2(13, 10),
+		Vector2(-13, 10),
+	}
+};
+
+const Colliders PIRATE_C_COLLIDERS =
+{
 	{
-		Vector2(-32, -28),
-		Vector2(32, -28),
-		Vector2(32, 28),
-		Vector2(-32, 28),
+		Vector2(-17, -43),
+		Vector2(17, -43),
+		Vector2(17, 10),
+		Vector2(-17, 10),
+	}
+};
+
+const Colliders PIRATE_D_COLLIDERS =
+{
+	{
+		Vector2(-30, -47),
+		Vector2(30, -47),
+		Vector2(30, 7),
+		Vector2(-30, 7),
+	}
+};
+
+const Colliders PIRATE_E_COLLIDERS =
+{
+	{
+		Vector2(-33, -60),
+		Vector2(33, -60),
+		Vector2(33, 7),
+		Vector2(-33, 7),
+	}
+};
+
+const Colliders PIRATE_F_COLLIDERS =
+{
+	{
+		Vector2(-30, -60),
+		Vector2(30, -60),
+		Vector2(30, 7),
+		Vector2(-30, 7),
 	}
 };
 

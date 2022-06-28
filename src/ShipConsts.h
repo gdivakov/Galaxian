@@ -27,8 +27,14 @@ const enum ShipType
 	SONIC_A, 
 	SONIC_B, 
 	SONIC_C, 
+
 	PIRATE_A, 
 	PIRATE_B, 
+	PIRATE_C,
+	PIRATE_D,
+	PIRATE_E,
+	PIRATE_F,
+	
 	BOSS_A 
 };
 
@@ -81,6 +87,10 @@ const std::map<ShipType, ShipParams> SHIP_PARAMS =
 
 	{ PIRATE_A, PIRATE_A_PARAMS },
 	{ PIRATE_B, PIRATE_B_PARAMS },
+	{ PIRATE_C, PIRATE_C_PARAMS },
+	{ PIRATE_D, PIRATE_D_PARAMS },
+	{ PIRATE_E, PIRATE_E_PARAMS },
+	{ PIRATE_F, PIRATE_F_PARAMS },
 
 	{ BOSS_A, BOSS_A_PARAMS },
 };

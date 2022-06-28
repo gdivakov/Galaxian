@@ -80,7 +80,7 @@ void EnemyShip::onBeforeRender()
 	{
 		if (isActive)
 		{
-			//followPath();
+			followPath();
 			move();
 		}
 
@@ -99,7 +99,7 @@ void EnemyShip::onBeforeRender()
 	Size& size = getTexture()->size;
 
 	getTexture()->render(pos - Vector2(size.w / 2, size.h / 2), currentClip, rotation, NULL);
-	showColliders();
+	//showColliders();
 }
 
 void EnemyShip::handleEvent(SDL_Event& e)

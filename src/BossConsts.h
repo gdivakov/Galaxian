@@ -6,8 +6,8 @@ const Vector2 gunPos1(-47, 40);
 const Vector2 gunPos2(47, 40);
 const Vector2 gunPos3(0, 40);
 
-const SpriteParams diffuserBossSprite = { "res/sprites/ships/bossAdiffuser.png", 300, 195, 10 };
-const SpriteParams doubledBossSprite = { "res/sprites/ships/bossAdoubled.png", 300, 195, 10 };
+const SpriteParams diffuserBossSprite = { "res/sprites/ships/weaponDependent/boss/bossAdiffuser.png", 300, 195, 10 };
+const SpriteParams doubledBossSprite = { "res/sprites/ships/weaponDependent/boss/bossAdoubled.png", 300, 195, 10 };
 
 const float DOUBLE_ROCKET_ARM_THRESHOLD = 0.6;
 const float DIFFUSER_ARM_THRESHOLD = 0.1;

@@ -19,7 +19,6 @@ PJ_Params DiffuserPJManager::getParamsByAngle(int angle)
 
 void DiffuserPJManager::startProjectile()
 {
-	std::cout << "hello 2" << std::endl;
 	releasedPjs.push_back(new Projectile(getParamsByAngle(0), this));
 	releasedPjs.push_back(new Projectile(getParamsByAngle(20), this));
 	releasedPjs.push_back(new Projectile(getParamsByAngle(-20), this));

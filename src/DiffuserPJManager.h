@@ -9,7 +9,6 @@ class DiffuserPJManager : public ProjectileManager
 public:
 	DiffuserPJManager(GunType type, const App* system, Ship* ship)
 		: ProjectileManager(type, system, ship) {
-		std::cout << "hello" << std::endl;
 	};
 	virtual void startProjectile();
 private:

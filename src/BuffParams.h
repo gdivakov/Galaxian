@@ -1,13 +1,13 @@
 #pragma once
 #include "SpecialsConsts.h"
 
-const SpriteParams SPRITE_BUFF_SHIELD = { "res/sprites/ships/sonicA/buffs/shield.png", 114, 114, 11 };
-const SpriteParams SPRITE_BUFF_ARMOR_UP = { "res/sprites/ships/sonicA/buffs/armorUp.png", 114, 114, 9 };
-const SpriteParams SPRITE_BUFF_BREAK_HAND = { "res/sprites/ships/sonicA/buffs/breakHand.png", 114, 114, 8 };
-const SpriteParams SPRITE_BUFF_HEALTH_UP = { "res/sprites/ships/sonicA/buffs/healthUp.png", 114, 114, 9 };
-const SpriteParams SPRITE_BUFF_SAVE_HAND = { "res/sprites/ships/sonicA/buffs/saveHand.png", 114, 114, 9 };
-const SpriteParams SPRITE_BUFF_SPEED_UP = { "res/sprites/ships/sonicA/buffs/speedUp.png", 114, 114, 9 };
-const SpriteParams SPRITE_BUFF_SUPERPOWER = { "res/sprites/ships/sonicA/buffs/superpower.png", 114, 114, 9 };
+const SpriteParams SPRITE_BUFF_SHIELD = { "res/sprites/buffs/shield.png", 114, 114, 11 };
+const SpriteParams SPRITE_BUFF_ARMOR_UP = { "res/sprites/buffs/armorUp.png", 114, 114, 9 };
+const SpriteParams SPRITE_BUFF_BREAK_HAND = { "res/sprites/buffs/breakHand.png", 114, 114, 8 };
+const SpriteParams SPRITE_BUFF_HEALTH_UP = { "res/sprites/buffs/healthUp.png", 114, 114, 9 };
+const SpriteParams SPRITE_BUFF_SAVE_HAND = { "res/sprites/buffs/saveHand.png", 114, 114, 9 };
+const SpriteParams SPRITE_BUFF_SPEED_UP = { "res/sprites/buffs/speedUp.png", 114, 114, 9 };
+const SpriteParams SPRITE_BUFF_SUPERPOWER = { "res/sprites/buffs/superpower.png", 114, 114, 9 };
 
 const BuffParams ARMOR_UP_BUFF_PARAMS = 
 { 

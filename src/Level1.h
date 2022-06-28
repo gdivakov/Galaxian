@@ -17,14 +17,14 @@ struct NextEnemy
 
 const std::vector<NextEnemy> SPAWNED_ENEMIES 
 { 
-	{ 2000, PIRATE_B }, 
-	{ 3000, PIRATE_B },
-	{ 4000, PIRATE_B },
-	{ 5000, PIRATE_A },
+	{ 2000, PIRATE_F }, 
+	//{ 3000, PIRATE_B },
+	//{ 4000, PIRATE_B },
+	//{ 5000, PIRATE_A },
 	//{ 5000, PIRATE_A },
 	//{ 10000, PIRATE_A },
 	//{ 12000, PIRATE_A },
-	//{ 10000, BOSS_A },
+	//{ 3000, BOSS_A },
 };
 
 class Level1 : public LevelBase {
@@ -49,6 +49,7 @@ protected:
 // - update hit animation
 // - make only one gun available for hard mode
 // - flying pj should not be removed when gun changed
+// - gun pos params to config
 
 // To Refactor:
 // - replace for stl

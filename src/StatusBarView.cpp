@@ -68,22 +68,23 @@ void StatusBarView::handleRender()
 	healthBar.w *= healthBarValue;
 	armorBar.w *= armorBarValue;
 
-	SDL_SetRenderDrawColor(renderer, 0xF7, 0x00, 0x00, 0xFF);
+	SDL_SetRenderDrawColor(renderer, 0x01, 0x63, 0xb1, 0xFF);
 	SDL_RenderFillRect(renderer, &healthBar);
 
 	SDL_SetRenderDrawColor(renderer, 0xa1, 0xa1, 0xa1, 0xFF);
 	SDL_RenderFillRect(renderer, &armorBar);
-	
-	SDL_SetRenderDrawColor(renderer, 0xa1, 0xa1, 0xa1, 0xFF);
+	//#db912b
 
 	if (healthBar.w)
 	{
+		SDL_SetRenderDrawColor(renderer, 0x01, 0x63, 0xb1, 0xFF);
 		SDL_RenderDrawRect(renderer, &healthBar);
 		health->render(Vector2(healthBar.x - health->size.w - 8, healthBar.y - (health->size.h - STATUS_BAR_HEIGHT) / 2));
 	}
 
 	if (armorBar.w)
 	{
+		SDL_SetRenderDrawColor(renderer, 0xa1, 0xa1, 0xa1, 0xFF);
 		SDL_RenderDrawRect(renderer, &armorBar);
 		armor->render(Vector2(armorBar.x - health->size.w - 8, armorBar.y - (armor->size.h - STATUS_BAR_HEIGHT) / 2));
 	}
