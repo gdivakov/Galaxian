@@ -88,6 +88,12 @@
     <Filter Include="Header Files\helpers">
       <UniqueIdentifier>{cfc76c7b-39f2-4937-9f1d-f82c7cab3f67}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\consts\Ship">
+      <UniqueIdentifier>{49cb90c8-0463-45ad-a5b2-4e6a3a97ba03}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\consts\Ship">
+      <UniqueIdentifier>{d81b08f0-f90c-4079-bcd2-7fedb5d6e3d5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Main.cpp">
@@ -138,9 +144,6 @@
     <ClCompile Include="src\LevelManager.cpp">
       <Filter>Source Files\Levels\General</Filter>
     </ClCompile>
-    <ClCompile Include="src\ShipConsts.cpp">
-      <Filter>Source Files\consts</Filter>
-    </ClCompile>
     <ClCompile Include="src\Collidable.cpp">
       <Filter>Source Files\Objects</Filter>
     </ClCompile>
@@ -179,9 +182,6 @@
     </ClCompile>
     <ClCompile Include="src\BuffView.cpp">
       <Filter>Source Files\Objects</Filter>
-    </ClCompile>
-    <ClCompile Include="src\ShipSpecialsConsts.cpp">
-      <Filter>Source Files\consts</Filter>
     </ClCompile>
     <ClCompile Include="src\AnimatedBuffManager.cpp">
       <Filter>Source Files\Objects\Ship\Specials</Filter>
@@ -224,6 +224,18 @@
     </ClCompile>
     <ClCompile Include="src\WeaponView.cpp">
       <Filter>Source Files\Levels\General\Hood</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ShipConsts.cpp">
+      <Filter>Source Files\consts\Ship</Filter>
+    </ClCompile>
+    <ClCompile Include="src\SpecialsConsts.cpp">
+      <Filter>Source Files\consts\Ship</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CollidersConsts.cpp">
+      <Filter>Source Files\consts\Ship</Filter>
+    </ClCompile>
+    <ClCompile Include="src\AmmoConsts.cpp">
+      <Filter>Source Files\consts\Ship</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -278,9 +290,6 @@
     <ClInclude Include="src\Consts.h">
       <Filter>Header Files\consts</Filter>
     </ClInclude>
-    <ClInclude Include="src\ShipConsts.h">
-      <Filter>Header Files\consts</Filter>
-    </ClInclude>
     <ClInclude Include="src\Collidable.h">
       <Filter>Header Files\Objects</Filter>
     </ClInclude>
@@ -323,9 +332,6 @@
     <ClInclude Include="src\BuffModule.h">
       <Filter>Header Files\Objects\Ship\Specials</Filter>
     </ClInclude>
-    <ClInclude Include="src\ShipSpecialsConsts.h">
-      <Filter>Header Files\consts</Filter>
-    </ClInclude>
     <ClInclude Include="src\Spawner.h">
       <Filter>Header Files\Objects</Filter>
     </ClInclude>
@@ -343,9 +349,6 @@
     </ClInclude>
     <ClInclude Include="src\BossShip.h">
       <Filter>Header Files\Objects\Ship</Filter>
-    </ClInclude>
-    <ClInclude Include="src\BossShipConsts.h">
-      <Filter>Header Files\consts</Filter>
     </ClInclude>
     <ClInclude Include="src\DiffuserPJManager.h">
       <Filter>Header Files\Objects\Ship\Projectile</Filter>
@@ -379,6 +382,36 @@
     </ClInclude>
     <ClInclude Include="src\WeaponView.h">
       <Filter>Header Files\Levels\General\Hood</Filter>
+    </ClInclude>
+    <ClInclude Include="src\PlayerConsts.h">
+      <Filter>Header Files\consts\Ship</Filter>
+    </ClInclude>
+    <ClInclude Include="src\EnemyConsts.h">
+      <Filter>Header Files\consts\Ship</Filter>
+    </ClInclude>
+    <ClInclude Include="src\AmmoConsts.h">
+      <Filter>Header Files\consts\Ship</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ShipConsts.h">
+      <Filter>Header Files\consts\Ship</Filter>
+    </ClInclude>
+    <ClInclude Include="src\BossConsts.h">
+      <Filter>Header Files\consts\Ship</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CollidersConsts.h">
+      <Filter>Header Files\consts\Ship</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ShipParams.h">
+      <Filter>Header Files\consts\Ship</Filter>
+    </ClInclude>
+    <ClInclude Include="src\AmmoParams.h">
+      <Filter>Header Files\consts\Ship</Filter>
+    </ClInclude>
+    <ClInclude Include="src\SpecialsConsts.h">
+      <Filter>Header Files\consts\Ship</Filter>
+    </ClInclude>
+    <ClInclude Include="src\BuffParams.h">
+      <Filter>Header Files\consts\Ship</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

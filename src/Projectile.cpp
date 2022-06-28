@@ -8,9 +8,9 @@ Projectile::Projectile(
 ) 
 : Collidable(
 	p_parent->getShip()->level->getSystem()->getRenderer(),
-	getAmmoParamsByGunType(params.gun).collidableType,
+	AMMO_PARAMS.at(params.gun).collidableType,
 	getRadius(params.gun),
-	getAmmoParamsByGunType(params.gun).colliders
+	AMMO_PARAMS.at(params.gun).colliders
 )
 {
 	rotation = params.rotation;

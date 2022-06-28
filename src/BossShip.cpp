@@ -1,14 +1,11 @@
 #include "BossShip.h"
-#include "BossShipConsts.h"
-
 // Todo: Spawn some enemies when boss health is low and at the beginning of the fight
 // Todo: Add different sounds and PJ sprites to boss
 
 BossShip::BossShip(
     LevelBase* p_level,
-    ShipType type,
-    Ship* playerShip
-) : EnemyShip(p_level, type, playerShip, BOSS_PATH_A)
+    ShipType type
+) : EnemyShip(p_level, type, BOSS_PATH_A)
 {
 	rotation = 180;
 	updateGunPos(BOSS_GUN_LEFT);
@@ -23,13 +20,13 @@ void BossShip::amplify()
 
 	if (threshold <= DIFFUSER_ARM_THRESHOLD)
 	{
-		if (gun->getSelectedGun() == DIFFUSER)
+		if (gun->getSelectedGun() == ROCKET_DIFFUSER)
 		{
 			return;
 		}
 
 		updateGunPos(BOSS_GUN_CENTER);
-		gun->selectGun(DIFFUSER); // Select diffuser gun
+		gun->selectGun(ROCKET_DIFFUSER); // Select diffuser gun
 
 		getTexture()->loadFromSprite(diffuserBossSprite); // Load ship sprites for diffuser gun
 		addPath(BOSS_PATH_C); // Add new path
@@ -83,7 +80,7 @@ void BossShip::onBeforeRender()
 	getTexture()->render(pos - Vector2(size.w / 2, size.h / 2), currentClip, rotation, NULL);
 }
 
-void BossShip::updateGunPos(GUN_POS nextPos)
+void BossShip::updateGunPos(BOSS_GUN_POS nextPos)
 {
 	selectedPos = nextPos;
 

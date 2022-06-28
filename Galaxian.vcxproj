@@ -19,6 +19,8 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\AmmoConsts.cpp" />
+    <ClCompile Include="src\CollidersConsts.cpp" />
     <ClCompile Include="src\BuffDescView.cpp" />
     <ClCompile Include="src\ControlView.cpp" />
     <ClCompile Include="src\SettingsConsts.cpp" />
@@ -29,7 +31,7 @@
     <ClCompile Include="src\BossShip.cpp" />
     <ClCompile Include="src\GameOverView.cpp" />
     <ClCompile Include="src\AnimatedBuffManager.cpp" />
-    <ClCompile Include="src\ShipSpecialsConsts.cpp" />
+    <ClCompile Include="src\SpecialsConsts.cpp" />
     <ClCompile Include="src\BuffView.cpp" />
     <ClCompile Include="src\Spawner.cpp" />
     <ClCompile Include="src\BuffModule.cpp" />
@@ -66,11 +68,18 @@
     <ClCompile Include="src\WeaponView.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\BuffParams.h" />
+    <ClInclude Include="src\AmmoParams.h" />
+    <ClInclude Include="src\ShipParams.h" />
+    <ClInclude Include="src\AmmoConsts.h" />
+    <ClInclude Include="src\EnemyConsts.h" />
+    <ClInclude Include="src\PlayerConsts.h" />
+    <ClInclude Include="src\CollidersConsts.h" />
     <ClInclude Include="src\BuffDescView.h" />
     <ClInclude Include="src\ControlView.h" />
     <ClInclude Include="src\General.h" />
     <ClInclude Include="src\SelectShipView.h" />
-    <ClInclude Include="src\BossShipConsts.h" />
+    <ClInclude Include="src\BossConsts.h" />
     <ClInclude Include="src\DoublePJManager.h" />
     <ClInclude Include="src\DiffuserPJManager.h" />
     <ClInclude Include="src\SinglePJManager.h" />
@@ -79,7 +88,7 @@
     <ClInclude Include="src\AnimatedBuffManager.h" />
     <ClInclude Include="src\BuffView.h" />
     <ClInclude Include="src\Spawner.h" />
-    <ClInclude Include="src\ShipSpecialsConsts.h" />
+    <ClInclude Include="src\SpecialsConsts.h" />
     <ClInclude Include="src\BuffModule.h" />
     <ClInclude Include="src\BuffBarView.h" />
     <ClInclude Include="src\MilesView.h" />

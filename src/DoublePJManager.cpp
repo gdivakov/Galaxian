@@ -2,7 +2,7 @@
 
 void DoublePJManager::startProjectile()
 {
-	AmmoParams ammoParams = getAmmoParamsByGunType(gunType);
+	AmmoParams ammoParams = AMMO_PARAMS.at(gunType);
 	// In order to display double rocket correctly gunPos must differs from 0
 	Vector2 gunPos = ship->getGun()->getGunPos();
 

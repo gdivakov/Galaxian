@@ -3,22 +3,21 @@
 #include <map>
 
 #include "Texture.h"
-#include "ShipSpecialsConsts.h"
+#include "SpecialsConsts.h"
 #include "ShipConsts.h"
 #include "Ship.h"
 #include "LevelBase.h"
 
 class Ship;
 class LevelBase;
+class AnimatedBuff;
 
-struct AnimBuffParams 
+struct AnimBuffParams
 {
-	Uint32 startedAt; 
+	Uint32 startedAt;
 	int duration;
 	BuffType type;
 };
-
-class AnimatedBuff;
 
 class AnimatedBuffManager
 {

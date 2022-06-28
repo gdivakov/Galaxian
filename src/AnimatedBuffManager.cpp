@@ -1,25 +1,6 @@
 #include "AnimatedBuffManager.h"
 #include "Loop.h"
 
-const SpriteParams SPRITE_BUFF_SHIELD = { "res/sprites/ships/sonicA/buffs/shield.png", 114, 114, 11 };
-const SpriteParams SPRITE_BUFF_ARMOR_UP = { "res/sprites/ships/sonicA/buffs/armorUp.png", 114, 114, 9 };
-const SpriteParams SPRITE_BUFF_BREAK_HAND = { "res/sprites/ships/sonicA/buffs/breakHand.png", 114, 114, 8 };
-const SpriteParams SPRITE_BUFF_HEALTH_UP = { "res/sprites/ships/sonicA/buffs/healthUp.png", 114, 114, 9 };
-const SpriteParams SPRITE_BUFF_SAVE_HAND = { "res/sprites/ships/sonicA/buffs/saveHand.png", 114, 114, 9 };
-const SpriteParams SPRITE_BUFF_SPEED_UP = { "res/sprites/ships/sonicA/buffs/speedUp.png", 114, 114, 9 };
-const SpriteParams SPRITE_BUFF_SUPERPOWER = { "res/sprites/ships/sonicA/buffs/superpower.png", 114, 114, 9 };
-
-SpriteParams getBuffSpriteParams(BuffType type)
-{
-	if (type == BUFF_SHIELD) return SPRITE_BUFF_SHIELD;
-	if (type == BUFF_ARMOR_UP) return SPRITE_BUFF_ARMOR_UP;
-	if (type == BUFF_BREAK_HAND) return SPRITE_BUFF_BREAK_HAND;
-	if (type == BUFF_SAVE_HAND) return SPRITE_BUFF_SAVE_HAND;
-	if (type == BUFF_SPEED_UP) return SPRITE_BUFF_SPEED_UP;
-	if (type == BUFF_SUPERPOWER) return SPRITE_BUFF_SUPERPOWER;
-	if (type == BUFF_HEALTH_UP) return SPRITE_BUFF_HEALTH_UP;
-}
-
 AnimatedBuffManager::~AnimatedBuffManager()
 {
 	for (AnimatedBuffs::iterator i = animatedBuffs.begin(); i != animatedBuffs.end(); i++)
@@ -83,7 +64,7 @@ AnimatedBuff::AnimatedBuff(LevelBase* p_level, BuffType p_buffType, Ship* p_ship
 	level = p_level;
 	manager = p_manager;
 
-	loadFromSprite(getBuffSpriteParams(type));
+	loadFromSprite(BUFF_SPRITE_PARAMS.at(type));
 	gameLoop->addRenderListener(this);
 }
 

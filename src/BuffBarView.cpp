@@ -7,10 +7,9 @@ BuffBarView::BuffBarView(LevelBase* p_level)
 	level = p_level;
 };
 
-
 BuffBarView::~BuffBarView()
 {
-	level = NULL;
+	level = nullptr;
 
 	for (BuffSprites::iterator i = sprites.begin(); i != sprites.end(); i++)
 	{

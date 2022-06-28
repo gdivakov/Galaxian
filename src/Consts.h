@@ -54,3 +54,10 @@ struct RGB {
 	Uint8 g;
 	Uint8 b;
 };
+
+struct Extrems {
+	float min;
+	float max;
+};
+
+const enum Space { WORLD, LOCAL };

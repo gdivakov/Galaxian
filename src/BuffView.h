@@ -4,7 +4,7 @@
 #include "Texture.h"
 #include "LevelBase.h"
 #include "Vector2.h"
-#include "ShipSpecialsConsts.h"
+#include "SpecialsConsts.h"
 #include "Consts.h"
 #include "Collidable.h"
 

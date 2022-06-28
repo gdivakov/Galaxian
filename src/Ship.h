@@ -4,7 +4,7 @@
 #include "Texture.h"
 #include "Consts.h"
 #include "ShipConsts.h"
-#include "ShipSpecialsConsts.h"
+#include "SpecialsConsts.h"
 #include "WeaponModule.h"
 #include "App.h"
 #include "LevelBase.h"

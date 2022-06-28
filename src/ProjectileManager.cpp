@@ -5,7 +5,7 @@
 
 ProjectileManager::ProjectileManager(GunType p_type, const App* p_system, Ship* p_ship)
 {	
-	AmmoParams params = getAmmoParamsByGunType(p_type);
+	AmmoParams params = AMMO_PARAMS.at(p_type);
 
 	ship = p_ship;
 	system = p_system;

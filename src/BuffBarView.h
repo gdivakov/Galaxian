@@ -2,7 +2,7 @@
 #include <map>
 
 #include "LevelBase.h"
-#include "ShipSpecialsConsts.h"
+#include "SpecialsConsts.h"
 #include "Texture.h"
 
 class BuffBarView

@@ -26,3 +26,5 @@ public:
 	friend Vector2 operator*(float n, Vector2& v) { return v * n; };
 	friend float operator*(Vector2& v1, Vector2& v2) { return v1.x * v2.x + v1.y * v2.y; };
 };
+
+bool isOutside(Vector2 pos);

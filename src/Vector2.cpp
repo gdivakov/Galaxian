@@ -59,3 +59,13 @@ Vector2 Vector2::getRotatedVector(Vector2& v, int angle)
 
 	return nextVector;
 }
+
+bool isOutside(Vector2 pos)
+{
+	bool isOutside = pos.y < 0
+		|| pos.x < 0
+		|| pos.y > WINDOWED_HEIGHT
+		|| pos.x > WINDOWED_WIDTH;
+
+	return isOutside;
+};

@@ -3,8 +3,9 @@
 #include <map>
 
 #include "Consts.h"
-#include "ShipSpecialsConsts.h"
+#include "SpecialsConsts.h"
 #include "Ship.h"
+#include "SoundConst.h"
 
 struct BuffParams;
 const enum BuffType;

@@ -2,15 +2,17 @@
 #include "Vector2.h"
 #include "ShipConsts.h"
 
-Vector2 gunPos1(-47, 40);
-Vector2 gunPos2(47, 40);
-Vector2 gunPos3(0, 40);
+const Vector2 gunPos1(-47, 40);
+const Vector2 gunPos2(47, 40);
+const Vector2 gunPos3(0, 40);
 
-SpriteParams diffuserBossSprite = { "res/sprites/ships/bossAdiffuser.png", 300, 195, 10 };
-SpriteParams doubledBossSprite = { "res/sprites/ships/bossAdoubled.png", 300, 195, 10 };
+const SpriteParams diffuserBossSprite = { "res/sprites/ships/bossAdiffuser.png", 300, 195, 10 };
+const SpriteParams doubledBossSprite = { "res/sprites/ships/bossAdoubled.png", 300, 195, 10 };
 
 const float DOUBLE_ROCKET_ARM_THRESHOLD = 0.6;
 const float DIFFUSER_ARM_THRESHOLD = 0.1;
+
+const enum BOSS_GUN_POS { BOSS_GUN_LEFT, BOSS_GUN_RIGHT, BOSS_GUN_CENTER };
 
 const std::vector<BezierCurve> BOSS_PATH_A =
 {

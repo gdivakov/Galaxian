@@ -5,11 +5,11 @@
 #include "EnemyShip.h"
 #include "BossShip.h"
 #include "Vector2.h"
-#include "ShipSpecialsConsts.h"
+#include "SpecialsConsts.h"
 #include "SettingsConsts.h"
 #include "General.h"
 
-const int BUFF_SPAWN_CHANCE = 35;
+const int BUFF_SPAWN_CHANCE = 100;
 
 int Spawner::spawnedEnemiesCount = 0;
 
@@ -99,18 +99,15 @@ void Spawner::spawnEnemy(ShipType type)
 
 	switch (type)
 	{
+	case PIRATE_B:
+		nextEnemy = new EnemyShip(level, PIRATE_B, getEnemyPathCurves(enemies.size()));
+		break;
 	case PIRATE_A:
 	default:
-			nextEnemy = new EnemyShip
-			(
-				level,
-				PIRATE_A,
-				player,
-				getEnemyPathCurves(enemies.size())
-			);
+			nextEnemy = new EnemyShip(level, PIRATE_A, getEnemyPathCurves(enemies.size()));
 			break;
 	case BOSS_A:
-		nextEnemy = new BossShip(level, BOSS_A, player);
+		nextEnemy = new BossShip(level, BOSS_A);
 		break;
 	}
 
@@ -133,10 +130,10 @@ void Spawner::spawnBuffWithChance(Vector2 buffPos)
 
 	int chance = rand() % 100;
 
-	//if (chance > BUFF_SPAWN_CHANCE)
-	//{
-	//	return;
-	//}
+	if (chance > BUFF_SPAWN_CHANCE)
+	{
+		return;
+	}
 
 	BuffView* nextBuff = new BuffView(level, buffPos, BUFF_RANDOM);
 	buffs.push_back(nextBuff);

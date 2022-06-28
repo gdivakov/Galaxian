@@ -2,7 +2,7 @@
 
 #include "DynamicBackground.h"
 #include "Vector2.h"
-#include "ShipSpecialsConsts.h"
+#include "SpecialsConsts.h"
 
 DynamicBackground::DynamicBackground(SDL_Renderer* p_renderer, std::string path, LevelBase* p_level)
 	: Texture(p_renderer)
@@ -16,7 +16,7 @@ DynamicBackground::DynamicBackground(SDL_Renderer* p_renderer, std::string path,
 
 DynamicBackground::~DynamicBackground()
 {
-	level = NULL;
+	level = nullptr;
 }
 
 void DynamicBackground::onBeforeRender()

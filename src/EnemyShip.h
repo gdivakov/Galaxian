@@ -6,7 +6,6 @@
 #include "Ship.h"
 #include "BezierPath.h"
 #include "LevelBase.h"
-#include "Consts.h"
 #include "ShipConsts.h"
 
 class EnemyShip : public Ship
@@ -14,18 +13,16 @@ class EnemyShip : public Ship
 private:
     std::vector<Vector2> path;
     const float EPSILON = 5.0f;
-    Ship* player;
 public:
     EnemyShip(
         LevelBase* p_level, 
         ShipType type, 
-        Ship* playerShip, // Todo: replace by level->getPlayer();
         std::vector<BezierCurve> pathCurves
     );
-    virtual ~EnemyShip();
+    void onAccelerate();
+
     virtual void onBeforeRender();
     virtual void handleEvent(SDL_Event& e);
-    void onAccelerate();
 protected:
     virtual void handleAcceleration();
     bool isInView();

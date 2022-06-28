@@ -2,7 +2,7 @@
 
 void SinglePJManager::startProjectile()
 {
-	AmmoParams ammoParams = getAmmoParamsByGunType(gunType);
+	AmmoParams ammoParams = AMMO_PARAMS.at(gunType);
 
 	Vector2 gunPos = ship->getGun()->getGunPos();
 	Vector2 position = ship->getDirection(LOCAL, false) - Vector2(0, textures.launch->getHeight() / 2) + gunPos;

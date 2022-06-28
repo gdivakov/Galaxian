@@ -4,7 +4,6 @@
 #include "LevelBase.h"
 #include "Ship.h"
 #include "ShipConsts.h"
-#include "Consts.h"
 
 class PlayerShip : public Ship
 {

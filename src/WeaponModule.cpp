@@ -46,20 +46,21 @@ void WeaponModule::selectGun(GunType nextGun)
 		delete ammo;
 	}
 
-	GunParams params = getGunParamsByType(nextGun);
+	GunParams params = GUN_PARAMS.at(nextGun);
 	selectedGun = nextGun;
 	cooldownMs = params.cooldownMs;
 	fireSound = params.soundPath;
 	isOnCooldown = false;
 
-	// Todo: refactor here (Ammo constructor class should be part of constant) // Todo: maybe move to separate class
+	// Todo: refactor here (Ammo constructor class should be part of constant) 
+	// Todo: maybe move to separate class
 	switch (selectedGun)
 	{
 	case ROCKET: 
 	case BLAST:
 		ammo = new SinglePJManager(selectedGun, system, ship);
 		break;
-	case DIFFUSER:
+	case ROCKET_DIFFUSER:
 	case BLAST_DIFFUSER:
 		ammo = new DiffuserPJManager(selectedGun, system, ship);
 		break;
@@ -105,8 +106,8 @@ WeaponModule::~WeaponModule()
 {
 	delete ammo;
 
-	ship = NULL;
-	ammo = NULL;
-	system = NULL;
+	ship = nullptr;
+	ammo = nullptr;
+	system = nullptr;
 }
 

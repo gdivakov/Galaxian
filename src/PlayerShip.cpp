@@ -1,5 +1,5 @@
 #include "PlayerShip.h"
-#include "ShipSpecialsConsts.h"
+#include "SpecialsConsts.h"
 
 const Vector2 DEFAULT_GUN_POS = Vector2();
 const Vector2 DIFFUSER_GUN_POS = Vector2(0, 25);
@@ -9,7 +9,7 @@ PlayerShip::PlayerShip(
     LevelBase* p_level,
     ShipType type) 
     :
-    Ship(p_level->getSystem(), getShipParams(type), p_level, false)
+    Ship(p_level->getSystem(), SHIP_PARAMS.at(type), p_level, false)
 {
     rotation = 0;
     pos = Vector2((WINDOWED_WIDTH)/2, WINDOWED_HEIGHT - getTexture()->getHeight() - 20);
