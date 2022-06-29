@@ -5,7 +5,7 @@ PlayerShip::PlayerShip(
     LevelBase* p_level,
     ShipType type) 
     :
-    Ship(p_level->getSystem(), SHIP_PARAMS.at(type), p_level, false)
+    Ship(p_level->getSystem(), SHIP_PARAMS.at(type), p_level)
 {
     rotation = 0;
     pos = Vector2((WINDOWED_WIDTH)/2, WINDOWED_HEIGHT - getTexture()->getHeight() - 20);
@@ -147,8 +147,6 @@ void PlayerShip::onBeforeRender()
     {
         rotate(rotation + 4);
     }
-
-    std::cout << isRotatingRight << ":" << isRotatingLeft << std::endl;
 
     gun->handleRender();
     specials.buff->updateBuffs();

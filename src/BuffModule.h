@@ -19,7 +19,7 @@ public:
 	BuffModule(Ship* p_ship);
 	~BuffModule();
 
-	std::map<std::string, BuffParams>* getBuffs() { return &appliedBuffs; };
+	Buffs* getBuffs() { return &appliedBuffs; };
 	void updateBuffs();
 	void addBuff(BuffType nextBuff);
 	void removeBuff(BuffType buff);

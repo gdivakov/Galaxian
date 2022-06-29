@@ -1,5 +1,7 @@
 #include "BuffModule.h"
 #include "Audio.h"
+#include "General.h"
+#include "PlayerShip.h"
 
 BuffModule::BuffModule(Ship* p_ship) 
 { 
@@ -48,7 +50,7 @@ void BuffModule::addBuff(BuffType nextBuff) {
             ship->animatedBuff->loadBuffAnimation(nextBuff);
             break;
         case BUFF_SPEED_UP:
-            if (ship->getIsPlayer()) // Todo: prevent from speed up while fighting w/ boss
+            if (instanceof<PlayerShip>(ship))
             {
                 audio->playSound(BUFF_SPEED_UP_SOUND);
 
@@ -58,7 +60,7 @@ void BuffModule::addBuff(BuffType nextBuff) {
             }
             break;
         default: 
-            // Other buff
+            // Other buffs
             ship->animatedBuff->loadBuffAnimation(nextBuff);
             appliedBuffs[nextParams.sprite.path] = nextParams;
     }
@@ -80,5 +82,5 @@ bool BuffModule::hasBuff(BuffType buff)
 
 BuffModule::~BuffModule() 
 { 
-    ship = NULL;
+    ship = nullptr;
 };

@@ -22,7 +22,6 @@ public:
     void onAccelerate();
 
     virtual void onBeforeRender();
-    virtual void handleEvent(SDL_Event& e);
 protected:
     virtual void handleAcceleration();
     bool isPlayerInView();

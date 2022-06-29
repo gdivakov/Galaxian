@@ -7,76 +7,77 @@
 WeaponModule::WeaponModule(
 	std::vector<GunType> guns,
 	const App* p_system,
-	Ship* p_ship,
-	bool p_isEnemyShip
-) : Texture(p_system->getRenderer()), system(p_system)
+	Ship* p_ship
+)
 {
+	system = p_system;
 	ship = p_ship;
-	isEnemyShip = p_isEnemyShip;
 	pos = Vector2();
+	isShootStarted = false;
 	
 	installedGuns = guns;
 	selectGun(installedGuns.front());
+	cooldownTimer = new Timer();
 }
 
 GunType WeaponModule::selectNextGun()
 {
-	auto selectedGunIt = std::find(installedGuns.begin(), installedGuns.end(), selectedGun);
+	auto selectedGunIt = std::find(installedGuns.begin(), installedGuns.end(), type);
 
 	if (selectedGunIt == installedGuns.end())
 	{
-		std::cout << "Selected gun is not installed!" << std::endl;
+		std::cout << "Selected gun is not installed!" << std::endl; // Todo: add debug var and throw an exception here
 		return *selectedGunIt;
 	}
 
 	if (selectedGunIt == installedGuns.end() - 1)
 	{
 		selectGun(installedGuns.front());
-		return selectedGun;
+		return type;
 	}
 
 	selectGun(*(selectedGunIt + 1));
-	return selectedGun;
+	return type;
 }
 
 void WeaponModule::selectGun(GunType nextGun)
 {
-	if (ammo)
-	{
-		delete ammo;
-	}
+	GunParams gunParams = GUN_PARAMS.at(nextGun);
 
-	GunParams params = GUN_PARAMS.at(nextGun);
-
-	selectedGun = nextGun;
-	cooldownMs = params.cooldownMs;
-	fireSound = params.soundPath;
+	type = nextGun;
 	isOnCooldown = false;
 
+	// Set selected gun position dependent on Ship type
 	ShipParams sParams = SHIP_PARAMS.at(ship->getType());
 
-	if (sParams.gunPosition.find(selectedGun) != sParams.gunPosition.end())
+	if (sParams.gunPosition.find(type) != sParams.gunPosition.end())
 	{
-		setGunPos(sParams.gunPosition.at(selectedGun));
+		setGunPos(sParams.gunPosition.at(type));
 	}
 	else
 	{
 		setGunPos(Vector2());
 	}
 
-	switch (selectedGun)
+	// Create gun if needed
+	if (ammo[gunParams.pjManager])
+	{
+		return;
+	}
+
+	switch (type)
 	{
 	case ROCKET: 
 	case BLAST:
-		ammo = new SinglePJManager(selectedGun, system, ship);
+		ammo[SINGLE_PJ] = new SinglePJManager(type, system, ship);
 		break;
 	case ROCKET_DIFFUSER:
 	case BLAST_DIFFUSER:
-		ammo = new DiffuserPJManager(selectedGun, system, ship);
+		ammo[DIFFUSER_PJ] = new DiffuserPJManager(type, system, ship);
 		break;
 	case ROCKET_DOUBLE:
 	case BLAST_DOUBLE:
-		ammo = new DoublePJManager(selectedGun, system, ship);
+		ammo[DOUBLE_PJ] = new DoublePJManager(type, system, ship);
 		break;
 	}
 }
@@ -88,36 +89,44 @@ void WeaponModule::handleRender()
 		isShooting = false;
 	}
 
-	if (isOnCooldown && cooldownTimer.getTicks() > cooldownMs)
+	GunParams gunParams = GUN_PARAMS.at(type);
+
+	if (isOnCooldown && cooldownTimer->getTicks() > gunParams.cooldownMs)
 	{
 		isOnCooldown = false;
-		cooldownTimer.stop();
+		cooldownTimer->stop();
 	}
-
-	// Shooting
+	
+	// Handle shooting
 	if (isShooting && 
 		!isOnCooldown && 
 		!ship->level->getIsAccelerated() &&
 		!ship->level->getIsCompleted() &&
-		!ship->level->isPaused
-		)
+		!ship->level->isPaused)
 	{
-		system->getAudioPlayer()->playSound(fireSound);
-		ammo->startProjectile();
+		system->getAudioPlayer()->playSound(gunParams.soundPath);
 
-		if (cooldownMs != 0) {
+		ammo[gunParams.pjManager]->startProjectile();
+
+		if (gunParams.cooldownMs != 0) {
 			isOnCooldown = true;
-			cooldownTimer.start();
+			cooldownTimer->start();
 		}
 	}
 }
 
 WeaponModule::~WeaponModule()
 {
-	delete ammo;
+	for (auto& pjM : ammo)
+	{
+		delete pjM.second;
+		pjM.second = nullptr;
+	}
 
+	delete cooldownTimer;
+
+	cooldownTimer = nullptr;
 	ship = nullptr;
-	ammo = nullptr;
 	system = nullptr;
 }
 

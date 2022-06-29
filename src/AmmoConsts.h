@@ -34,10 +34,18 @@ const enum GunType
 	ROCKET_DIFFUSER,
 };
 
+const enum SUPPORTED_PJ_MANAGERS
+{
+	DOUBLE_PJ,
+	DIFFUSER_PJ,
+	SINGLE_PJ
+};
+
 struct GunParams
 {
 	float cooldownMs;
 	std::string soundPath;
+	SUPPORTED_PJ_MANAGERS pjManager;
 };
 
 #include "CollidersConsts.h"
@@ -75,12 +83,12 @@ struct PJ_Params {
 const std::map<GunType, GunParams> GUN_PARAMS =
 {
 	{ BLAST, BLAST_GUN_PARAMS },
-	{ BLAST_DOUBLE, BLAST_GUN_PARAMS },
-	{ BLAST_DIFFUSER, BLAST_GUN_PARAMS },
+	{ BLAST_DOUBLE, BLAST_DOUBLE_GUN_PARAMS },
+	{ BLAST_DIFFUSER, BLAST_DIFFUSER_GUN_PARAMS },
 
 	{ ROCKET, ROCKET_GUN_PARAMS },
-	{ ROCKET_DOUBLE, ROCKET_GUN_PARAMS },
-	{ ROCKET_DIFFUSER, ROCKET_GUN_PARAMS },
+	{ ROCKET_DOUBLE, ROCKET_DOUBLE_GUN_PARAMS },
+	{ ROCKET_DIFFUSER, ROCKET_DIFFUSER_GUN_PARAMS },
 };
 
 const std::map<GunType, AmmoParams> AMMO_PARAMS

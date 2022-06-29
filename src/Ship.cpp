@@ -10,7 +10,7 @@ class BuffModule;
 
 Extrems getExtrems(std::vector<float> values); // Todo: replace by stl
 
-Ship::Ship(const App* p_system, ShipParams params, LevelBase* p_level, bool isEnemyShip)
+Ship::Ship(const App* p_system, ShipParams params, LevelBase* p_level)
     :
     Collidable(
         p_system->getRenderer(),
@@ -25,7 +25,6 @@ Ship::Ship(const App* p_system, ShipParams params, LevelBase* p_level, bool isEn
     level = p_level;
     maxSpeed = params.maxSpeed;
     explosionSound = params.explosionSound;
-    isPlayer = !isEnemyShip;
     type = params.type;
     resetAnimation();
     SDL_Renderer* renderer = p_system->getRenderer();
@@ -38,7 +37,7 @@ Ship::Ship(const App* p_system, ShipParams params, LevelBase* p_level, bool isEn
 
     textures.selected = textures.common;
 
-    gun = new WeaponModule(params.guns, p_system, this, isEnemyShip);
+    gun = new WeaponModule(params.guns, p_system, this);
 
     specials.status = new StatusModule(params.health, params.armor);
     specials.buff = new BuffModule(this);
@@ -185,7 +184,6 @@ void Ship::onAfterRender()
 {
     int clipLength = textures.selected->getClips().size();
 
-    gun->onAfterRender();
     specials.buff->updateBuffs();
     
     ++frame;

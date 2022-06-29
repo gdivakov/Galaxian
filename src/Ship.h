@@ -37,7 +37,7 @@ struct ShipTextures
 class Ship : public Collidable, public Object
 {
 public:
-    Ship(const App* system, ShipParams params, LevelBase* p_level, bool isEnemyShip);
+    Ship(const App* system, ShipParams params, LevelBase* p_level);
     ~Ship();
 
     LevelBase* level;
@@ -52,7 +52,6 @@ public:
     Vector2 getDirection(Space space = WORLD, bool isRotated = true);
     int getRotation() { return rotation; };
     ShipSpecials* getSpecials() { return &specials; };
-    bool getIsPlayer() { return isPlayer; };
     WeaponModule* getGun() { return gun; };
     void resetAnimation() { frame = 0; };
     void onAccelerate();
@@ -77,7 +76,6 @@ protected:
     int maxSpeed;
     int frame;
     int rotation;
-    bool isPlayer;
     WeaponModule* gun;
     ShipSpecials specials;
     SpriteParams explosion;

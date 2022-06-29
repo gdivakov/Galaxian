@@ -9,7 +9,7 @@ EnemyShip::EnemyShip(
 	ShipType type, 
 	std::vector<BezierCurve> pathCurves
 ) :
-	Ship(p_level->getSystem(), SHIP_PARAMS.at(type), p_level, true)
+	Ship(p_level->getSystem(), SHIP_PARAMS.at(type), p_level)
 {
 	currentWaypoint = 0;
 	inView = false;
@@ -100,17 +100,6 @@ void EnemyShip::onBeforeRender()
 	getTexture()->render(pos - Vector2(size.w / 2, size.h / 2), currentClip, rotation, NULL);
 	//showColliders();
 	//displayPath();
-}
-
-void EnemyShip::handleEvent(SDL_Event& e)
-{
-
-	if (level->isPaused)
-	{
-		return;
-	}
-
-	gun->handleEvent(e);
 }
 
 void EnemyShip::displayPath()

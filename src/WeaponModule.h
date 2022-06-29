@@ -13,39 +13,37 @@
 class Ship;
 class ProjectileManager;
 
-// Todo: refactor
-class WeaponModule : public Texture
+class WeaponModule
 {
 public:
 	WeaponModule(
 		std::vector<GunType> guns, 
 		const App* p_system,
-		Ship* p_ship,
-		bool p_isEnemyShip
+		Ship* p_ship
 	);
 	~WeaponModule();
 
-	void selectGun(GunType nextGun);
-	GunType selectNextGun();
 	Vector2 getGunPos() { return pos; };
 	void setGunPos(Vector2 nextPos) { pos = nextPos; }
-	GunType getSelectedGun() { return selectedGun; };
 	bool getIsShooting() { return isShooting; };
 	void setIsShooting(bool nextIsShooting) { isShooting = nextIsShooting; }
+
+	void selectGun(GunType nextGun);
+	GunType selectNextGun();
+	GunType getSelectedGun() { return type; };
+
 	void handleRender();
 private:
-	bool isOnCooldown;
-	float cooldownMs;
-	short fireSoundId;
-	GunType selectedGun;
-	Timer cooldownTimer;
-	Ship* ship;
-	ProjectileManager* ammo;
 	const App* system;
-	bool isEnemyShip;
-	std::string fireSound;
+	Ship* ship;
+
 	Vector2 pos; // Relative pos
-	bool isShootStarted = false;
-	bool isShooting;
+	GunType type;
+	std::map<SUPPORTED_PJ_MANAGERS, ProjectileManager*> ammo;
 	std::vector<GunType> installedGuns;
+
+	Timer* cooldownTimer;
+	bool isShootStarted;
+	bool isShooting;
+	bool isOnCooldown;
 };

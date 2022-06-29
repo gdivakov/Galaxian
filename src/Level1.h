@@ -9,6 +9,17 @@
 #include "EnemyShip.h"
 #include "DynamicBackground.h"
 
+// To Add: 
+// - meteors
+// - update hit animation
+// - center the preview ship image on totalView
+
+// To Refactor:
+// - replace for stl
+// - save progress when player reaches the boss
+// - some design pattern improvements
+// - other todos
+
 struct NextEnemy
 {
 	const int milesToSpawn;
@@ -17,18 +28,18 @@ struct NextEnemy
 
 const std::vector<NextEnemy> SPAWNED_ENEMIES 
 { 
-	//{ 1000, PIRATE_C }, 
-	//{ 1500, PIRATE_C },
-	//{ 2000, PIRATE_C },
-	//{ 2500, PIRATE_C },
-	//{ 3000, PIRATE_C },
-	//{ 3500, PIRATE_C },
+	{ 1000, PIRATE_C }, 
+	{ 1500, PIRATE_C },
+	{ 2000, PIRATE_C },
+	{ 2500, PIRATE_C },
+	{ 3000, PIRATE_C },
+	{ 3500, PIRATE_C },
 
-	//{ 15000, PIRATE_E },
-	//{ 15500, PIRATE_F },
+	{ 15000, PIRATE_E },
+	{ 15500, PIRATE_F },
 	{ 16000, PIRATE_B },
 
-	//{ 16600, BOSS_A },
+	{ 16600, BOSS_A },
 };
 
 class Level1 : public LevelBase {
@@ -45,16 +56,3 @@ private:
 protected:
 	virtual void initAudio();
 };
-
-// To Add: 
-// - meteors
-// - update hit animation
-// - make only one gun available for hard mode
-// - flying pj should not be removed when gun changed
-// - center the preview ship image on totalView
-
-// To Refactor:
-// - replace for stl
-// - save progress when player reaches the boss
-// - some design pattern improvements
-// - other todos
