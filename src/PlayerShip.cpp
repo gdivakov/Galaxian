@@ -16,6 +16,15 @@ PlayerShip::PlayerShip(
     acceleratedMiles = 0;
 }
 
+void PlayerShip::onAccelerate()
+{
+    Ship::onAccelerate();
+    isRotatingLeft = false;
+    isRotatingRight = false;
+
+    rotation = 0;
+}
+
 void PlayerShip::handleEvent(SDL_Event& e)
 {
     // Gun events
@@ -61,7 +70,7 @@ void PlayerShip::handleEvent(SDL_Event& e)
         return;
     }
 
-    if (e.type == SDL_KEYDOWN && isNotRepeat)
+    if (e.type == SDL_KEYDOWN && isNotRepeat && !level->getIsAccelerated())
     {
         switch (e.key.keysym.sym)
         {
@@ -136,13 +145,13 @@ void PlayerShip::onBeforeRender()
     {
         level->getIsCompleted() ? moveToFinish() : move();
     }
-
+    
     // handle rotation
     if (isRotatingLeft)
     {
         rotate(rotation - 4);
     }
-    
+
     if (isRotatingRight)
     {
         rotate(rotation + 4);

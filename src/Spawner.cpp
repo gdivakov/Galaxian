@@ -39,7 +39,7 @@ Spawner::~Spawner()
 	if (player)
 	{
 		delete player;
-		player = NULL;
+		player = nullptr;
 	}
 }
 
@@ -187,7 +187,8 @@ void Spawner::accelerate()
 		enemies[i]->onAccelerate();
 	}
 
-	player->onAccelerate();
+	PlayerShip* playerP = (PlayerShip*) player;
+	playerP->onAccelerate();
 }
 
 void Spawner::stopAcceleration()

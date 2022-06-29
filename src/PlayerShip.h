@@ -17,6 +17,7 @@ public:
 
     virtual void handleEvent(SDL_Event& e);
     virtual void onBeforeRender();
+    void onAccelerate();
 private:
     int acceleratedMiles;
     bool hasReachedEnd;
