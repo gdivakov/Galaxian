@@ -2,6 +2,8 @@
 #include <SDL_image.h>
 #include <SDL_mixer.h>
 #include <SDL_ttf.h>
+#include <time.h>
+#include<stdlib.h>   
 
 #include "App.h"
 #include "SettingsConsts.h"
@@ -101,12 +103,11 @@ App::App(int screenWidth, int screenHeight)
 		return;
 	}
 
-	//audioPlayer->setMuted(!settingsConfig[MUSIC_IDX]);
-	//audioPlayer->setMuted(!settingsConfig[SOUNDS_IDX], false);
-
 	windowSize = { screenWidth, screenHeight };
 
 	//SDL_SetRelativeMouseMode(SDL_TRUE);
+
+	srand(time(NULL));
 
 	if (!windowed)
 	{

@@ -1,10 +1,6 @@
 #include "PlayerShip.h"
 #include "SpecialsConsts.h"
 
-const Vector2 DEFAULT_GUN_POS = Vector2();
-const Vector2 DIFFUSER_GUN_POS = Vector2(0, 25);
-const Vector2 BLAST_DOUBLE_GUN_POS = Vector2(-10, 0);
-
 PlayerShip::PlayerShip(
     LevelBase* p_level,
     ShipType type) 
@@ -13,6 +9,11 @@ PlayerShip::PlayerShip(
 {
     rotation = 0;
     pos = Vector2((WINDOWED_WIDTH)/2, WINDOWED_HEIGHT - getTexture()->getHeight() - 20);
+    isMoveStarted = false;
+    isRotatingLeft = false;
+    isRotatingRight = false;
+    hasReachedEnd = false;
+    acceleratedMiles = 0;
 }
 
 void PlayerShip::handleEvent(SDL_Event& e)
@@ -39,19 +40,7 @@ void PlayerShip::handleEvent(SDL_Event& e)
                 break;
             }
 
-            GunType selectedGun = gun->selectNextGun();
-
-            gun->setGunPos(DEFAULT_GUN_POS); // Todo: Move to config
-
-            if (selectedGun == BLAST_DOUBLE)
-            {
-                gun->setGunPos(BLAST_DOUBLE_GUN_POS);
-            }
-
-            if (selectedGun == BLAST_DIFFUSER)
-            {
-                gun->setGunPos(DIFFUSER_GUN_POS);
-            }
+            gun->selectNextGun();
         }
     }
 
@@ -72,14 +61,28 @@ void PlayerShip::handleEvent(SDL_Event& e)
         return;
     }
 
-    if (e.type == SDL_KEYDOWN)
+    if (e.type == SDL_KEYDOWN && isNotRepeat)
     {
         switch (e.key.keysym.sym)
         {
         case SDLK_e:
-            rotate(rotation + 10); break;
+            isRotatingLeft = false;
+            isRotatingRight = true;
+            break;
         case SDLK_q:
-            rotate(rotation - 10); break;
+            isRotatingLeft = true;
+            isRotatingRight = false;
+        }
+    }
+
+    if (e.type == SDL_KEYUP)
+    {
+        switch (e.key.keysym.sym)
+        {
+        case SDLK_e:
+            isRotatingRight = false;
+        case SDLK_q:
+            isRotatingLeft = false;
         }
     }
 
@@ -133,6 +136,19 @@ void PlayerShip::onBeforeRender()
     {
         level->getIsCompleted() ? moveToFinish() : move();
     }
+
+    // handle rotation
+    if (isRotatingLeft)
+    {
+        rotate(rotation - 4);
+    }
+    
+    if (isRotatingRight)
+    {
+        rotate(rotation + 4);
+    }
+
+    std::cout << isRotatingRight << ":" << isRotatingLeft << std::endl;
 
     gun->handleRender();
     specials.buff->updateBuffs();

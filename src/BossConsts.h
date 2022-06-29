@@ -2,10 +2,6 @@
 #include "Vector2.h"
 #include "ShipConsts.h"
 
-const Vector2 gunPos1(-47, 40);
-const Vector2 gunPos2(47, 40);
-const Vector2 gunPos3(0, 40);
-
 const SpriteParams diffuserBossSprite = { "res/sprites/ships/weaponDependent/boss/bossAdiffuser.png", 300, 195, 10 };
 const SpriteParams doubledBossSprite = { "res/sprites/ships/weaponDependent/boss/bossAdoubled.png", 300, 195, 10 };
 

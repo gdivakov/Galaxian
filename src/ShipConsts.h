@@ -7,6 +7,7 @@
 #include "Vector2.h"
 
 const int SHIP_SPEED_FAST = 6;
+const int SHIP_SPEED_SUPERFAST = 8;
 const int SHIP_SPEED_AVERAGE = 5;
 
 const int THIN_SHIP_HEALTH = 100;
@@ -53,6 +54,7 @@ struct ShipParams {
 	int health;
 	const std::vector<RectColliderPoint>& colliders;
 	std::string explosionSound;
+	std::map<GunType, Vector2> gunPosition;
 };
 
 const struct BezierCurve {
@@ -96,4 +98,4 @@ const std::map<ShipType, ShipParams> SHIP_PARAMS =
 };
 
 void DrawCircle(SDL_Renderer* renderer, int32_t centreX, int32_t centreY, int32_t radius);
-std::vector<BezierCurve> getEnemyPathCurves(int enemyCounter);
+std::vector<BezierCurve> getEnemyPathCurves();

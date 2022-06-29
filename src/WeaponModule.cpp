@@ -47,13 +47,23 @@ void WeaponModule::selectGun(GunType nextGun)
 	}
 
 	GunParams params = GUN_PARAMS.at(nextGun);
+
 	selectedGun = nextGun;
 	cooldownMs = params.cooldownMs;
 	fireSound = params.soundPath;
 	isOnCooldown = false;
 
-	// Todo: refactor here (Ammo constructor class should be part of constant) 
-	// Todo: maybe move to separate class
+	ShipParams sParams = SHIP_PARAMS.at(ship->getType());
+
+	if (sParams.gunPosition.find(selectedGun) != sParams.gunPosition.end())
+	{
+		setGunPos(sParams.gunPosition.at(selectedGun));
+	}
+	else
+	{
+		setGunPos(Vector2());
+	}
+
 	switch (selectedGun)
 	{
 	case ROCKET: 

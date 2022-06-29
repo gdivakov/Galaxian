@@ -61,3 +61,8 @@ struct Extrems {
 };
 
 const enum Space { WORLD, LOCAL };
+
+inline int getRandom(int max)
+{
+	return rand() % max;
+}

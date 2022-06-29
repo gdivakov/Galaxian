@@ -2,6 +2,14 @@
 #include "ShipConsts.h"
 #include "SoundConst.h"
 
+const Vector2 SONIC_DIFFUSER_GUN_POS(0, 25);
+const Vector2 SONIC_DOUBLE_GUN_POS(-10, 0);
+
+const Vector2 BOSS_DOUBLE_GUN_POS(-47, 40);
+const Vector2 BOSS_DIFFUSER_GUN_POS(0, 40);
+
+const Vector2 PIRATE_E_DOUBLE_GUN_POS(-30, 0);
+
 const ShipParams SONIC_A_PARAMS =
 {
     SONIC_A,
@@ -13,7 +21,11 @@ const ShipParams SONIC_A_PARAMS =
     THIN_SHIP_ARMOR,                            // armor 
     THIN_SHIP_HEALTH,                           // health 
     SONIC_A_COLLIDERS,                          // colliders 
-    GAME_OVER_SOUND                             // explosionSound 
+    GAME_OVER_SOUND,                            // explosionSound 
+    {                                           // gun positions
+        { BLAST_DIFFUSER, SONIC_DIFFUSER_GUN_POS },
+        { BLAST_DOUBLE, SONIC_DOUBLE_GUN_POS }
+    }
 };
 
 const ShipParams SONIC_B_PARAMS =
@@ -27,7 +39,11 @@ const ShipParams SONIC_B_PARAMS =
     THIN_SHIP_ARMOR,
     THIN_SHIP_HEALTH,
     SONIC_A_COLLIDERS,
-    GAME_OVER_SOUND
+    GAME_OVER_SOUND,
+    {
+        { BLAST_DIFFUSER, SONIC_DIFFUSER_GUN_POS }, 
+        { BLAST_DOUBLE, SONIC_DOUBLE_GUN_POS }
+    }
 };
 
 const ShipParams SONIC_C_PARAMS =
@@ -41,7 +57,11 @@ const ShipParams SONIC_C_PARAMS =
     THIN_SHIP_ARMOR,
     THIN_SHIP_HEALTH,
     SONIC_C_COLLIDERS,
-    GAME_OVER_SOUND
+    GAME_OVER_SOUND,
+    {
+        { BLAST_DIFFUSER, SONIC_DIFFUSER_GUN_POS },
+        { BLAST_DOUBLE, SONIC_DOUBLE_GUN_POS }
+    }
 };
 
 const ShipParams PIRATE_A_PARAMS =
@@ -79,7 +99,7 @@ const ShipParams PIRATE_C_PARAMS =
     PIRATE_C_SHIP_EXPLOSION,
     PIRATE_C_SHIP,
     { ROCKET },
-    SHIP_SPEED_FAST,
+    SHIP_SPEED_SUPERFAST,
     THIN_SHIP_ARMOR,
     THIN_SHIP_HEALTH,
     PIRATE_C_COLLIDERS,
@@ -111,7 +131,10 @@ const ShipParams PIRATE_E_PARAMS =
     THIN_SHIP_ARMOR,
     AVERAGE_SHIP_HEALTH,
     PIRATE_E_COLLIDERS,
-    PIRATE_EXPLOSION_SOUND
+    PIRATE_EXPLOSION_SOUND,
+    {
+        { ROCKET_DOUBLE, PIRATE_E_DOUBLE_GUN_POS }
+    }
 };
 
 const ShipParams PIRATE_F_PARAMS =
@@ -139,5 +162,9 @@ const ShipParams BOSS_A_PARAMS =
     STRONG_SHIP_ARMOR,
     STRONG_SHIP_HEALTH,
     BOSS_A_COLLIDERS,
-    BOSS_DEFEATED
+    BOSS_DEFEATED_SOUND,
+    {
+        { ROCKET_DIFFUSER, BOSS_DIFFUSER_GUN_POS },
+        { ROCKET_DOUBLE, BOSS_DOUBLE_GUN_POS }
+    }
 };

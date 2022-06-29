@@ -9,6 +9,7 @@
 class LevelBase;
 class EnemyShip;
 class BuffView;
+class Ship;
 
 class Spawner : public Object
 {

@@ -15,7 +15,7 @@ EnemyShip::EnemyShip(
 	inView = false;
 
 	addPath(pathCurves);
-	pos = path[2];
+	pos = path[0];
 }
 
 void EnemyShip::addPath(std::vector<BezierCurve> pathCurves)
@@ -52,7 +52,6 @@ void EnemyShip::followPath(bool withDirRotation)
 	else 
 	{
 		bool hardModeSelected = readSettingsConfig()[SETTINGS_FIELDS::DIFFICULTY];
-		std::cout << "is hard mode: " << hardModeSelected << std::endl;
 
 		if (!hardModeSelected || level->getPlayer() == nullptr)
 		{
@@ -84,7 +83,7 @@ void EnemyShip::onBeforeRender()
 			move();
 		}
 
-		if (isInView() && isActive && level->getPlayer() != nullptr)
+		if (isPlayerInView() && isActive && level->getPlayer() != nullptr)
 		{
 			gun->setIsShooting(true);
 		}
@@ -100,6 +99,7 @@ void EnemyShip::onBeforeRender()
 
 	getTexture()->render(pos - Vector2(size.w / 2, size.h / 2), currentClip, rotation, NULL);
 	//showColliders();
+	//displayPath();
 }
 
 void EnemyShip::handleEvent(SDL_Event& e)
@@ -132,7 +132,7 @@ void EnemyShip::displayPath()
 	} while (pathIdx + 1 < path.size());
 }
 
-bool EnemyShip::isInView()
+bool EnemyShip::isPlayerInView()
 {
 	if (level->getPlayer() == nullptr)
 	{

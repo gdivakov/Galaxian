@@ -8,7 +8,9 @@ BossShip::BossShip(
 ) : EnemyShip(p_level, type, BOSS_PATH_A)
 {
 	rotation = 180;
-	updateGunPos(BOSS_GUN_LEFT);
+	selectedPos = BOSS_GUN_RIGHT;
+
+	toggleRocketGunPos();
 	level->spawner->setIsBuffSpawn(false);
 }
 
@@ -25,7 +27,6 @@ void BossShip::amplify()
 			return;
 		}
 
-		updateGunPos(BOSS_GUN_CENTER);
 		gun->selectGun(ROCKET_DIFFUSER); // Select diffuser gun
 
 		getTexture()->loadFromSprite(diffuserBossSprite); // Load ship sprites for diffuser gun
@@ -36,7 +37,6 @@ void BossShip::amplify()
 
 	if (threshold <= DOUBLE_ROCKET_ARM_THRESHOLD && gun->getSelectedGun() != ROCKET_DOUBLE)
 	{
-		updateGunPos(BOSS_GUN_LEFT);
 		gun->selectGun(ROCKET_DOUBLE);
 
 		getTexture()->loadFromSprite(doubledBossSprite);
@@ -45,33 +45,42 @@ void BossShip::amplify()
 	}
 }
 
+void BossShip::handleActions()
+{
+	if (level->isPaused)
+	{
+		return;
+	}
+
+	// Move 
+	if (isActive)
+	{
+		followPath(false);
+		move();
+	}
+
+	// Shoot at player
+	if (isPlayerInView() && isActive)
+	{
+		gun->setIsShooting(true);
+
+		if (gun->getSelectedGun() == ROCKET)
+		{
+			// Manual update pos for ROCKET in order to alternate left and right guns
+			toggleRocketGunPos();
+		}
+		return;
+	}
+
+	gun->setIsShooting(false);
+}
+
 void BossShip::onBeforeRender()
 {
 	gun->handleRender();
 	amplify();
 
-	if (!level->isPaused)
-	{
-		if (isActive)
-		{
-			followPath(false);
-			move();
-		}
-
-		if (isInView() && isActive)
-		{
-			gun->setIsShooting(true);
-
-			if (selectedPos != BOSS_GUN_CENTER)
-			{
-				updateGunPos(selectedPos == BOSS_GUN_LEFT ? BOSS_GUN_RIGHT : BOSS_GUN_LEFT);
-			}
-		}
-		else
-		{
-			gun->setIsShooting(false);
-		}
-	}
+	handleActions();
 
 	std::vector<SDL_Rect>& shipClips = getTexture()->getClips();
 	SDL_Rect* currentClip = &shipClips[frame / shipClips.size()];
@@ -80,17 +89,15 @@ void BossShip::onBeforeRender()
 	getTexture()->render(pos - Vector2(size.w / 2, size.h / 2), currentClip, rotation, NULL);
 }
 
-void BossShip::updateGunPos(BOSS_GUN_POS nextPos)
+void BossShip::toggleRocketGunPos()
 {
-	selectedPos = nextPos;
+	selectedPos = selectedPos == BOSS_GUN_LEFT ? BOSS_GUN_RIGHT : BOSS_GUN_LEFT;
 
-	switch (nextPos)
+	switch (selectedPos)
 	{
-	case BOSS_GUN_CENTER:
-		return getGun()->setGunPos(gunPos3);
 	case BOSS_GUN_LEFT:
-		return getGun()->setGunPos(gunPos1);
+		return getGun()->setGunPos(BOSS_DOUBLE_GUN_POS);
 	case BOSS_GUN_RIGHT:
-		return getGun()->setGunPos(gunPos2);
+		return getGun()->setGunPos(Vector2(BOSS_DOUBLE_GUN_POS.x * -1, BOSS_DOUBLE_GUN_POS.y));
 	}
 }

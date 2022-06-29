@@ -15,7 +15,8 @@ public:
     );
     void onBeforeRender();
 private:
-    void updateGunPos(BOSS_GUN_POS nextPos);
+    void toggleRocketGunPos();
+    void handleActions();
     void amplify();
     BOSS_GUN_POS selectedPos;
 };

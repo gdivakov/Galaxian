@@ -18,9 +18,11 @@ public:
     virtual void handleEvent(SDL_Event& e);
     virtual void onBeforeRender();
 private:
-    int acceleratedMiles = 0;
-    bool isMoveStarted = false;
-    bool hasReachedEnd = false;
+    int acceleratedMiles;
+    bool hasReachedEnd;
+    bool isRotatingLeft;
+    bool isRotatingRight;
+    bool isMoveStarted;
 
     void moveToFinish();
     virtual void handleAcceleration();

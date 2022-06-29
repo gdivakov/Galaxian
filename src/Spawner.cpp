@@ -8,8 +8,9 @@
 #include "SpecialsConsts.h"
 #include "SettingsConsts.h"
 #include "General.h"
+#include "Consts.h"
 
-const int BUFF_SPAWN_CHANCE = 100;
+const int BUFF_SPAWN_CHANCE = 35;
 
 int Spawner::spawnedEnemiesCount = 0;
 
@@ -103,7 +104,7 @@ void Spawner::spawnEnemy(ShipType type)
 		nextEnemy = new BossShip(level, BOSS_A);
 		break;
 	default: // Pirate
-		nextEnemy = new EnemyShip(level, type, getEnemyPathCurves(enemies.size()));
+		nextEnemy = new EnemyShip(level, type, getEnemyPathCurves());
 	}
 
 	nextEnemy->linkTo(player);
@@ -121,9 +122,7 @@ void Spawner::spawnPlayer()
 
 void Spawner::spawnBuffWithChance(Vector2 buffPos)
 {
-	srand(time(NULL));
-
-	int chance = rand() % 100;
+	int chance = getRandom(100);
 
 	if (chance > BUFF_SPAWN_CHANCE)
 	{

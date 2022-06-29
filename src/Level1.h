@@ -17,14 +17,18 @@ struct NextEnemy
 
 const std::vector<NextEnemy> SPAWNED_ENEMIES 
 { 
-	{ 2000, PIRATE_F }, 
-	//{ 3000, PIRATE_B },
-	//{ 4000, PIRATE_B },
-	//{ 5000, PIRATE_A },
-	//{ 5000, PIRATE_A },
-	//{ 10000, PIRATE_A },
-	//{ 12000, PIRATE_A },
-	//{ 3000, BOSS_A },
+	//{ 1000, PIRATE_C }, 
+	//{ 1500, PIRATE_C },
+	//{ 2000, PIRATE_C },
+	//{ 2500, PIRATE_C },
+	//{ 3000, PIRATE_C },
+	//{ 3500, PIRATE_C },
+
+	//{ 15000, PIRATE_E },
+	//{ 15500, PIRATE_F },
+	{ 16000, PIRATE_B },
+
+	//{ 16600, BOSS_A },
 };
 
 class Level1 : public LevelBase {
@@ -44,12 +48,10 @@ protected:
 
 // To Add: 
 // - meteors
-// - enemy ships
-// - more enemy flying trace
 // - update hit animation
 // - make only one gun available for hard mode
 // - flying pj should not be removed when gun changed
-// - gun pos params to config
+// - center the preview ship image on totalView
 
 // To Refactor:
 // - replace for stl

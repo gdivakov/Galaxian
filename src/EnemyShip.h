@@ -25,7 +25,7 @@ public:
     virtual void handleEvent(SDL_Event& e);
 protected:
     virtual void handleAcceleration();
-    bool isInView();
+    bool isPlayerInView();
     void addPath(std::vector<BezierCurve> pathCurves);
     void followPath(bool withDirRotation = true);
     void displayPath();
