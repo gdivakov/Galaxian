@@ -93,7 +93,6 @@ void Level1::initObjects()
 	spawner = new Spawner(this);
 	hood = new Hood(this);
 
-	// Todo: Render player above other objects (add important renderListeners to loop)
 	spawner->spawnPlayer();
 
 	ObjectPointers levelObjects = { bg, spawner, hood };

@@ -10,13 +10,11 @@
 #include "DynamicBackground.h"
 
 // To Add: 
-// - meteors
-// - update hit animation
 // - center the preview ship image on totalView
+// - meteors
 
 // To Refactor:
 // - replace for stl
-// - save progress when player reaches the boss
 // - some design pattern improvements
 // - other todos
 

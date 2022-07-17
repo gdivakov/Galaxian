@@ -1,12 +1,6 @@
 #include "Collidable.h"
 #include "General.h"
 
-//void removeFromArray(Collidable::Collidables& arr, Collidable* enColl) // Todo: Replace by Template Function
-//{
-//    auto removeIter = remove(arr.begin(), arr.end(), enColl);
-//    arr.erase(removeIter, arr.end());
-//};
-
 Collidable::Collidable(SDL_Renderer* p_renderer, CollidableType p_type, int wrapperRadius, Colliders p_colliders)
 : colliders(p_colliders), renderer(p_renderer)
 {
