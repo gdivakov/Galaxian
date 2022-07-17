@@ -137,16 +137,6 @@ void Texture::render(
 	SDL_RenderCopyEx(renderer, texture, clip, &renderQuad, angle, center, flip);
 }
 
-int Texture::getWidth()
-{
-	return size.w;
-}
-
-int Texture::getHeight()
-{
-	return size.h;
-}
-
 bool Texture::loadFromSprite(SpriteParams params, RGB* colorKeyRGB)
 {
 	free();

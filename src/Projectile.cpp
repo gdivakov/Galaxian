@@ -65,7 +65,7 @@ void Projectile::selectTexture()
 
 Vector2 Projectile::getNextPos()
 {
-	Vector2 center(selectedTexture->getWidth() / 2, selectedTexture->getHeight() / 2);
+	Vector2 center(selectedTexture->size.w / 2, selectedTexture->size.h / 2);
 	Vector2 nextPos = position - center;
 
 	if (isCollided && collidedTo->type == COLLIDABLE_SHIP)
@@ -74,7 +74,7 @@ Vector2 Projectile::getNextPos()
 		nextPos =
 			position +
 			Vector2::getRotatedVector(direction, rotation) -
-			Vector2(selectedTexture->getWidth() / 2, 0);
+			Vector2(selectedTexture->size.w / 2, 0);
 	}
 
 	return nextPos;

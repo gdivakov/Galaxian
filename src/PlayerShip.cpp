@@ -8,7 +8,7 @@ PlayerShip::PlayerShip(
     Ship(p_level->getSystem(), SHIP_PARAMS.at(type), p_level)
 {
     rotation = 0;
-    pos = Vector2((WINDOWED_WIDTH)/2, WINDOWED_HEIGHT - getTexture()->getHeight() - 20);
+    pos = Vector2((WINDOWED_WIDTH)/2, WINDOWED_HEIGHT - getTexture()->size.h - 20);
     isMoveStarted = false;
     isRotatingLeft = false;
     isRotatingRight = false;

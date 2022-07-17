@@ -90,13 +90,15 @@ void Settings::loadOptions()
 void Settings::render()
 {
     using namespace SETTINGS_FIELDS;
+    
+    const Size* wSize = system->getWindowSize();
 
     // Render settings panel
     SDL_Rect rect = {
-        WINDOWED_WIDTH / 14, // Todo: Replace by system->getWindowSize()
-        WINDOWED_HEIGHT / 14,
-        WINDOWED_WIDTH - WINDOWED_WIDTH / 7,
-        WINDOWED_HEIGHT - WINDOWED_HEIGHT / 7
+        wSize->w / 14,
+        wSize->h / 14,
+        wSize->w - wSize->w / 7,
+        wSize->h - wSize->h / 7
     };
 
     SDL_SetRenderDrawColor(renderer, 0x01, 0x62, 0xb1, 0xFF);
@@ -119,13 +121,13 @@ void Settings::render()
         // Hightlight selected option
         if (selectedIdx == i && !isConfirmSelected)
         {
-            SDL_Point selectedOptionPos = { rect.x + rect.w - displayedValue->getWidth() - margin / 2, offsetHeight };
+            SDL_Point selectedOptionPos = { rect.x + rect.w - displayedValue->size.w - margin / 2, offsetHeight };
 
             SDL_Rect rect = {
                 selectedOptionPos.x - 5,
                 selectedOptionPos.y,
-                displayedValue->getWidth() + 10,
-                displayedValue->getHeight() - 3,
+                displayedValue->size.w + 10,
+                displayedValue->size.h - 3,
             };
 
             SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, 0xFF);
@@ -133,7 +135,7 @@ void Settings::render()
         }
 
         option->render(Vector2(offsetWidth, offsetHeight));
-        displayedValue->render(Vector2(rect.x + rect.w - displayedValue->getWidth() - margin / 2, offsetHeight));
+        displayedValue->render(Vector2(rect.x + rect.w - displayedValue->size.w - margin / 2, offsetHeight));
     }
 }
 
@@ -227,8 +229,8 @@ void Settings::renderConfirm()
         WINDOWED_HEIGHT - WINDOWED_HEIGHT / 7
     };
 
-    int buttonWidth = confirmButton->getWidth();
-    int buttonHeight = confirmButton->getHeight();
+    int buttonWidth = confirmButton->size.w;
+    int buttonHeight = confirmButton->size.h;
     int offsetWidth = rect.x + (rect.w - buttonWidth) / 2;
     int offsetHeight = rect.y + rect.h - buttonHeight - 16;
 

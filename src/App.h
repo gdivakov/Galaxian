@@ -8,7 +8,7 @@
 #include "Consts.h"
 #include "Timer.h"
 
-class App
+class App // Todo: Make singleton
 {
 public: 
 	App(int screenWidth, int screenHeight);

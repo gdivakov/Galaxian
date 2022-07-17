@@ -8,7 +8,7 @@
 
 class BuffModule;
 
-Extrems getExtrems(std::vector<float> values); // Todo: replace by stl
+Extrems getExtrems(std::vector<float> values);
 
 Ship::Ship(const App* p_system, ShipParams params, LevelBase* p_level)
     :

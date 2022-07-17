@@ -28,8 +28,6 @@ public:
 	void render(Vector2 pos, SDL_Rect* clip = NULL, double angle = 0.0, SDL_Point* center = NULL, SDL_RendererFlip flip = SDL_FLIP_NONE);
 	void free();
 
-	int getWidth();
-	int getHeight(); // Todo: replace these functs by size using
 	Size size;
 
 	Clips& getClips();

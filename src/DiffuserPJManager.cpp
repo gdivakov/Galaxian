@@ -4,7 +4,7 @@ PJ_Params DiffuserPJManager::getParamsByAngle(int angle)
 {
 	AmmoParams ammoParams = AMMO_PARAMS.at(gunType);
 
-	Vector2 position = ship->getDirection(LOCAL, false) - Vector2(0, textures.launch->getHeight() / 2) + ship->getGun()->getGunPos();
+	Vector2 position = ship->getDirection(LOCAL, false) - Vector2(0, textures.launch->size.h / 2) + ship->getGun()->getGunPos();
 	position = Vector2::getRotatedVector(position, ship->getRotation()) + ship->getRect().pos;
 
 	return {

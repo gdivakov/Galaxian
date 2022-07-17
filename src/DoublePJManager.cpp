@@ -6,7 +6,7 @@ void DoublePJManager::startProjectile()
 	// In order to display double rocket correctly gunPos must differs from 0
 	Vector2 gunPos = ship->getGun()->getGunPos();
 
-	Vector2 position = ship->getDirection(LOCAL, false) - Vector2(0, textures.launch->getHeight() / 2) + gunPos;
+	Vector2 position = ship->getDirection(LOCAL, false) - Vector2(0, textures.launch->size.h / 2) + gunPos;
 	position = Vector2::getRotatedVector(position, ship->getRotation()) + ship->getRect().pos;
 
 	PJ_Params leftPJParams = {
@@ -18,7 +18,7 @@ void DoublePJManager::startProjectile()
 		textures,
 	};
 
-	Vector2 position2 = ship->getDirection(LOCAL, false) - Vector2(0, textures.launch->getHeight() / 2) + Vector2(0, gunPos.y) - Vector2(gunPos.x, 0);
+	Vector2 position2 = ship->getDirection(LOCAL, false) - Vector2(0, textures.launch->size.h / 2) + Vector2(0, gunPos.y) - Vector2(gunPos.x, 0);
 	position2 = Vector2::getRotatedVector(position2, ship->getRotation()) + ship->getRect().pos;
 
 	PJ_Params rightPJParams = {

@@ -37,11 +37,11 @@ void DynamicBackground::onBeforeRender()
 		scrollingOffset += speed;
 	}
 
-	if (scrollingOffset > getHeight())
+	if (scrollingOffset > size.h)
 	{
 		scrollingOffset = 0;
 	}
 
 	render(Vector2(0, scrollingOffset));
-	render(Vector2(0, scrollingOffset - getHeight()));
+	render(Vector2(0, scrollingOffset - size.h));
 }

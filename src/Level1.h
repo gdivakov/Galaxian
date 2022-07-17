@@ -9,14 +9,8 @@
 #include "EnemyShip.h"
 #include "DynamicBackground.h"
 
-// To Add: 
-// - center the preview ship image on totalView
-// - meteors
-
 // To Refactor:
-// - replace for stl
 // - some design pattern improvements
-// - other todos
 
 struct NextEnemy
 {

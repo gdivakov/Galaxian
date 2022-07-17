@@ -1,6 +1,4 @@
 #include "BossShip.h"
-// Todo: Spawn some enemies when boss health is low and at the beginning of the fight
-// Todo: Add different sounds and PJs to boss
 
 BossShip::BossShip(
     LevelBase* p_level,

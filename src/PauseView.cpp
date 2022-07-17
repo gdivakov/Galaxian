@@ -88,7 +88,7 @@ void PauseView::onBeforeRender()
         std::string displayedValue = NAMES.at(option.fieldType);
 
         int offsetHeight = rect.y + offset;
-        int offsetWidth = rect.x + (rect.w - option.optionTexture->getWidth()) / 2;
+        int offsetWidth = rect.x + (rect.w - option.optionTexture->size.w) / 2;
 
         // Hightlight selected option
         if (selectedIdx == i)
@@ -96,8 +96,8 @@ void PauseView::onBeforeRender()
             SDL_Rect rect = {
                 offsetWidth - 5,
                 offsetHeight,
-                option.optionTexture->getWidth() + 10,
-                option.optionTexture->getHeight() - 3,
+                option.optionTexture->size.w + 10,
+                option.optionTexture->size.h - 3,
             };
 
             SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, 0xFF);

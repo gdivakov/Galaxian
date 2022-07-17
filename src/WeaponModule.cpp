@@ -26,7 +26,7 @@ GunType WeaponModule::selectNextGun()
 
 	if (selectedGunIt == installedGuns.end())
 	{
-		std::cout << "Selected gun is not installed!" << std::endl; // Todo: add debug var and throw an exception here
+		std::cout << "Selected gun is not installed!" << std::endl; // Todo: add debug env var and throw an exception here
 		return *selectedGunIt;
 	}
 

@@ -1,41 +1,12 @@
 #include "CollidersConsts.h"
-
-float findMaxNumber(std::vector<float> nums)
-{
-    float max = nums[0];
-
-    for (int i = 1; i < 4; i++)
-    {
-        if (nums[i] > max)
-        {
-            max = nums[i];
-        }
-    }
-
-    return max;
-}
-
-float findMinNumber(std::vector<float> nums)
-{
-    float min = nums[0];
-
-    for (int i = 1; i < 4; i++)
-    {
-        if (nums[i] < min)
-        {
-            min = nums[i];
-        }
-    }
-
-    return min;
-}
+#include <algorithm>
 
 Extrems getExtrems(std::vector<float> values)
 {
     Extrems preparedExtrems =
     {
-        findMinNumber(values),
-        findMaxNumber(values)
+        *std::min_element(values.begin(), values.end()),
+        *std::max_element(values.begin(), values.end())
     };
 
     return preparedExtrems;

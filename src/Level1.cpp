@@ -37,7 +37,7 @@ void Level1::load()
 	audioPlayer->playMusic();
 }
 
-void Level1::handleTick() // Todo: this logic should be relative to specific level spawner (create Level1Spawner : public Spawner)
+void Level1::handleTick()
 {
 	if (isAccelerated) // Update acceleration status
 	{

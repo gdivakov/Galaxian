@@ -17,7 +17,7 @@ struct ShipUpgrade
 	int frame; // One frame instance as they have equal amount of sprite length
 };
 
-class TotalView
+class TotalView // Todo: center ship previews
 {
 public:
 	TotalView(LevelBase* p_level);

@@ -5,7 +5,7 @@ void SinglePJManager::startProjectile()
 	AmmoParams ammoParams = AMMO_PARAMS.at(gunType);
 
 	Vector2 gunPos = ship->getGun()->getGunPos();
-	Vector2 position = ship->getDirection(LOCAL, false) - Vector2(0, textures.launch->getHeight() / 2) + gunPos;
+	Vector2 position = ship->getDirection(LOCAL, false) - Vector2(0, textures.launch->size.h / 2) + gunPos;
 	position = Vector2::getRotatedVector(position, ship->getRotation()) + ship->getRect().pos;
 
 	PJ_Params PJParams = {

@@ -36,12 +36,13 @@ void ControlPanel::onBeforeRender()
 
 void ControlPanel::renderOptions()
 {
+    const Size* wSize = system->getWindowSize();
     for (int i = 0, offset = 10; i < MENU_OPTION_NAMES.size(); i++, offset += 40)
     {
         Texture* option = options[i];
 
-        int offsetHeight = (WINDOWED_HEIGHT - (option->getHeight() * 3)) / 2;
-        int offsetWidth = (WINDOWED_WIDTH - option->getWidth()) / 2 + 200;
+        int offsetHeight = (wSize->h - (option->size.h * 3)) / 2;
+        int offsetWidth = (wSize->w - option->size.w) / 2 + 200;
 
         // Hightlight selected option
         if (selectedOptionIdx == i)
@@ -51,8 +52,8 @@ void ControlPanel::renderOptions()
             SDL_Rect rect = {
                 selectedOptionPos.x - 5,
                 selectedOptionPos.y,
-                options[i]->getWidth() + 10,
-                options[i]->getHeight() - 3,
+                options[i]->size.w + 10,
+                options[i]->size.h - 3,
             };
 
             SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, 0xFF);
@@ -64,8 +65,8 @@ void ControlPanel::renderOptions()
 
     tooltip->render(
         Vector2(
-            (WINDOWED_WIDTH - tooltip->getWidth())/2, 
-            WINDOWED_HEIGHT - tooltip->getHeight() - 16
+            (wSize->w - tooltip->size.w)/2,
+            wSize->h - tooltip->size.h - 16
         )
     );
 }

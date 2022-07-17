@@ -16,7 +16,7 @@ const float ROCKET_COOLDOWN = 1000.0f;
 const float LAZER_COOLDOWN = 0.0f;
 
 const int BLAST_AMMO_SPEED = 8;
-const int ROCKET_AMMO_SPEED = 4;
+const int ROCKET_AMMO_SPEED = 5;
 const int DIFFUSER_AMMO_SPEED = 3;
 const int LAZER_AMMO_SPEED = 1000;
 

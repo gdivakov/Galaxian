@@ -73,12 +73,13 @@ void ControlView::handleRender()
     }
 
     SDL_Renderer* renderer = level->getSystem()->getRenderer();
+    const Size* wSize = level->getSystem()->getWindowSize();
 
     SDL_Rect rect = {
-        WINDOWED_WIDTH / 14, // Todo: Replace by system->getWindowSize()
-        WINDOWED_HEIGHT / 14,
-        WINDOWED_WIDTH - WINDOWED_WIDTH / 7,
-        WINDOWED_HEIGHT - WINDOWED_HEIGHT / 7
+        wSize->w / 14,
+        wSize->h / 14,
+        wSize->w - wSize->w / 7,
+        wSize->h - wSize->h / 7
     };
 
     SDL_SetRenderDrawColor(renderer, 0x01, 0x62, 0xb1, 0xFF);

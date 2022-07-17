@@ -168,6 +168,4 @@ RectColliderPoint getColliderProjectionOnAxis(RectColliderPoint& collider, Vecto
 std::vector<float> getPointValuesOnAxis(RectColliderPoint& points, Vector2 axis);
 bool checkOverlapSAT(RectColliderPoint& coll1, RectColliderPoint& coll2);
 void renderCollider(SDL_Renderer* renderer, RectColliderPoint& coll);
-float findMaxNumber(std::vector<float> nums); // Todo: replace by stl
-float findMinNumber(std::vector<float> nums); // Todo: replace by stl
-Extrems getExtrems(std::vector<float> values); // Todo: replace by stl
+Extrems getExtrems(std::vector<float> values);

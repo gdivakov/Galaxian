@@ -24,7 +24,10 @@ BuffView::~BuffView()
 
 void BuffView::onBeforeRender()
 {
-	position = Vector2(position.x, position.y) + Vector2(0, BG_SCROLLING_SPEED_ACCELERATED / 4);
+	if (!level->isPaused) // Buff is falling down
+	{
+		position = Vector2(position.x, position.y) + Vector2(0, BG_SCROLLING_SPEED_ACCELERATED / 4); 
+	}
 
 	shiftColliders();
 
