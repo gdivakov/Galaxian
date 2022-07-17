@@ -105,7 +105,7 @@ App::App(int screenWidth, int screenHeight)
 
 	windowSize = { screenWidth, screenHeight };
 
-	//SDL_SetRelativeMouseMode(SDL_TRUE);
+	SDL_SetRelativeMouseMode(SDL_TRUE);
 
 	srand(time(NULL));
 
