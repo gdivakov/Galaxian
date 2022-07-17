@@ -10,6 +10,7 @@
 
 const int SOUND_FREQUENCY = 44100;
 const char* APP_NAME = "Galaxian";
+const std::string MAIN_ICON_PATH = "res/icon.ico";
 
 App::App(int screenWidth, int screenHeight)
 {
@@ -113,6 +114,19 @@ App::App(int screenWidth, int screenHeight)
 	{
 		enableFullScreen();
 	}
+
+	// Set window icon
+	SDL_Surface* surface = IMG_Load(MAIN_ICON_PATH.c_str());
+
+	if (surface == NULL)
+	{
+		std::cout << "Unable to load main icon %s! SDL_image Error: " << IMG_GetError() << std::endl;
+	}
+	else
+	{
+		SDL_SetWindowIcon(window, surface);
+		SDL_FreeSurface(surface);
+	}
 }
 
 App::~App()
@@ -124,11 +138,11 @@ App::~App()
 	SDL_DestroyRenderer(renderer);
 	SDL_DestroyWindow(window);
 
-	audioPlayer = NULL;
-	gameLoop = NULL;
-	timer = NULL;
-	window = NULL;
-	renderer = NULL;
+	audioPlayer = nullptr;
+	gameLoop = nullptr;
+	timer = nullptr;
+	window = nullptr;
+	renderer = nullptr;
 
 	//Quit SDL subsystems
 	Mix_Quit();

@@ -68,6 +68,7 @@
     <ClCompile Include="src\WeaponView.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="resource.h" />
     <ClInclude Include="src\BuffParams.h" />
     <ClInclude Include="src\AmmoParams.h" />
     <ClInclude Include="src\ShipParams.h" />
@@ -153,6 +154,9 @@
   </ItemGroup>
   <ItemGroup>
     <Font Include="res\Staatliches-Regular.ttf" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Galaxian.rc" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

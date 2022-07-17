@@ -413,6 +413,9 @@
     <ClInclude Include="src\BuffParams.h">
       <Filter>Header Files\consts\Ship</Filter>
     </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Galaxian.aps" />
@@ -474,5 +477,10 @@
     <Font Include="res\Staatliches-Regular.ttf">
       <Filter>Resource Files</Filter>
     </Font>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Galaxian.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
   </ItemGroup>
 </Project>
