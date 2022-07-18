@@ -12,6 +12,8 @@ Choose your ship and get ready to fight.
 ## Installation
 There are 2 files under the setup directory. Use one of them to install the game. <br>
 Make sure to run the game as administrator.
+### Supported platforms
+- Windows x64
 
 ## Some tips
 - Check buff/control description from the pause menu.
